@@ -1,7 +1,7 @@
 <?php
-function __autoload($name) {
-  include "$name.class.php";
-}
+//Это временный файл потому удалю, если в нем мне ничего не понадобиться
+
+
 
 class Task implements iTask
 {
@@ -94,9 +94,5 @@ class Task implements iTask
   if((strtotime($dt)-time()) > 0) return true;
   return false;
   }
-  public static function debug($arr){
-    echo '<pre>';
-    print_r($arr);
-    echo '</pre>';
-  }
+  
 }
