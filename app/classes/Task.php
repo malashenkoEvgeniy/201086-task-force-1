@@ -24,27 +24,29 @@ class Task
                  'customer' => 'Заказчик'];
 
     //блок свойств
-  private $idExecutor, $idCustomer, $completionDate, $activeStatus;
+  private $idExecutor;
+  private $idCustomer;
+  private $completionDate;
+  private $activeStatus;
     //блок методов
    function getNextStatus($action){
-     $list = '';
      switch ($action){
        case self::ACTION_CREATE_NEW: 
-            $list .= self::STATUS_NEW;
+            return self::STATUS_NEW;
             break;
        case self::ACTION_CANCEL: 
-            $list .= self::STATUS_CANCELED;
+            return self::STATUS_CANCELED;
             break;
        case self::ACTION_RESPOND: 
-            $list .= self::STATUS_INWORK;
+            return self::STATUS_INWORK;
             break;
        case self::ACTION_DONE: 
-            $list .= self::STATUS_COMPLETED;
+            return self::STATUS_COMPLETED;
             break;
         case self::ACTION_REFUSE: 
-            $list .= self::STATUS_FAILED;
+            return self::STATUS_FAILED;
             break; 
      }
-     return $list;
+     return null;
   }  
 }
