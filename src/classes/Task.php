@@ -36,19 +36,14 @@ class Task
         switch ($action) {
             case self::ACTION_CREATE_NEW:
                 return self::STATUS_NEW;
-                break;
             case self::ACTION_CANCEL:
                 return self::STATUS_CANCELED;
-                break;
             case self::ACTION_RESPOND:
                 return self::STATUS_IN_WORK;
-                break;
             case self::ACTION_DONE:
                 return self::STATUS_COMPLETED;
-                break;
             case self::ACTION_REFUSE:
                 return self::STATUS_FAILED;
-                break;
         }
         return null;
     }
