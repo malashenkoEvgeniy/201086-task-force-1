@@ -6,6 +6,7 @@ CREATE DATABASE taskforce
 
   CREATE TABLE categories (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `user_id` INT NOT NULL,
     `title` VARCHAR(128) NOT NULL
   );
   
@@ -13,6 +14,7 @@ CREATE DATABASE taskforce
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `response` VARCHAR(128) NOT NULL,
     `task_id` INT NOT NULL,
+    `user_id` INT NOT NULL
   );
   
   
@@ -24,15 +26,23 @@ CREATE DATABASE taskforce
   `location_id` INT NULL,
   `birthday` DATETIME NULL,  
   `contact_details` TEXT NULL,
-  `category_id` VARCHAR(128) NULL,
   `password` VARCHAR(128) NOT NULL,
   `phone` VARCHAR(128) NULL,
   `skype` VARCHAR(128) NULL,
   `another_messenger` VARCHAR(128) NULL, 
-  `file_id`  VARCHAR(128) NULL,    
   `avatar`  VARCHAR(128) NULL,
-  `task_id` VARCHAR(128) NULL,
+  `task_name` VARCHAR(128) NULL,  
   `email_on` BINARY NOT NULL  
+  );
+  
+  CREATE TABLE email_settings (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NOT NULL,  
+  `new_response` TINYINT NOT NULL,
+  `new_chat_message` TINYINT NOT NULL,
+  `task_abandonment` TINYINT NOT NULL,
+  `start_task` TINYINT NOT NULL,
+  `task_completion` TINYINT NOT NULL
   );
   
   CREATE TABLE reviews (
@@ -53,11 +63,10 @@ CREATE DATABASE taskforce
     `location_id` INT NULL,
     `budget` INT NULL,
     `deadline` DATETIME NOT NULL,
-    `file_id`  VARCHAR(128) NULL,
     `author_id` INT NOT NULL,
     `executor_id` INT NULL,
     `correspondence`VARCHAR(128) NULL,
-    `status_task` VARCHAR(128) NULL  
+    `status` VARCHAR(128) NULL  
   );
   
   CREATE TABLE correspondence (
@@ -65,8 +74,8 @@ CREATE DATABASE taskforce
     `task_id` INT NOT NULL,
     `writer_id` INT NOT NULL,
     `text` TEXT NOT NULL,
-    `message_time` DATETIME NOT NULL,
-    `viewed` BINARY NOT NULL 
+    `creation_time` DATETIME DEFAULT NOW() NOT NULL,
+    `viewed` TINYINT NOT NULL 
   );
   
     CREATE TABLE locations (
