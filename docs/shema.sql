@@ -31,8 +31,13 @@ CREATE DATABASE taskforce
   `skype` VARCHAR(128) NULL,
   `another_messenger` VARCHAR(128) NULL, 
   `avatar`  VARCHAR(128) NULL,
-  `task_name` VARCHAR(128) NULL,  
-  `email_on` BINARY NOT NULL  
+  `task_name` VARCHAR(128) NULL
+  );
+  
+  CREATE TABLE users_categories (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NOT NULL,
+  `category_id` INT NOT NULL
   );
   
   CREATE TABLE email_settings (
