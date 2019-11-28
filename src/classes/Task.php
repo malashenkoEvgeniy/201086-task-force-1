@@ -3,7 +3,6 @@
 namespace app\classes;
 class Task
 {
-
     //блок констант статусов
     const STATUS_NEW = 'Новое';
     const STATUS_CANCELED = 'Отменено';
@@ -16,18 +15,20 @@ class Task
     const ACTION_RESPOND = 'Откликнуться';
     const ACTION_DONE = 'Выполнено';
     const ACTION_REFUSE = 'Отказаться';
-
+    const ACTION_APPOINT_AN_EXECUTOR = 'Назначить испонителя';
     //блок свойств
-    private $executorId;
-    private $customerId;
-    private $completionTime;
-    private $status;
+    public $executorId;
+    public $customerId;
+    public $completionTime;
+    public $status;
+    public $usersId;
 
-    public function __construct(int $customerId, string $completionTime)
+    public function __construct(int $customerId, array $usersId)
     {
+        $this->usersId = $usersId;
         $this->customerId = $customerId;
-        $this->completionTime = $completionTime;
         $this->status = self::STATUS_NEW;
+        $this->respond = [];
     }
 
     //блок методов
