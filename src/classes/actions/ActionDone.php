@@ -6,7 +6,7 @@ use app\classes\Task;
 
 class ActionDone extends AbstractActions
 {
-    const CODE = Task::ACTION_DONE;
+    const CODE = 'Выполнено';
     public static function getName():string
     {
         return __CLASS__;

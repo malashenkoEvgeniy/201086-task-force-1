@@ -5,7 +5,7 @@ use app\classes\Task;
 
 class ActionRefuse extends AbstractActions
 {
-    const CODE = Task::ACTION_REFUSE;
+    const CODE = 'Отказаться';
     public static function getName():string
     {
         return __CLASS__;

@@ -7,7 +7,7 @@ use app\classes\Task;
 
 class ActionStart extends AbstractActions
 {
-    const CODE = Task::ACTION_RESPOND;
+    const CODE = 'Откликнуться';
     public static function getName():string
     {
         return __CLASS__;

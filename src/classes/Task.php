@@ -14,12 +14,7 @@ class Task
     const STATUS_IN_WORK = 'В работе';
     const STATUS_COMPLETED = 'Выполнено';
     const STATUS_FAILED = 'Провалено';
-    //блок констант действий
-    const ACTION_CREATE_NEW = 'создание новой';
-    const ACTION_CANCEL = 'отменить';
-    const ACTION_RESPOND = 'Откликнуться';
-    const ACTION_DONE = 'Выполнено';
-    const ACTION_REFUSE = 'Отказаться';
+
     //блок свойств
     public $executorId;
     public $customerId;
@@ -62,21 +57,28 @@ class Task
 
     public function getAvailableActions(int $userId)
     {
+        $availableActions = [];
         if( $userId === $this->customerId) {
             switch ($this->status) {
                 case Task::STATUS_NEW:
-                    return ActionCancel::getCode();
+                    $availableActions[] = ActionCancel::getCode();
+                    $availableActions[] = ActionStart::getCode();
+                    return $availableActions;
                 case Task::STATUS_IN_WORK:
-                    return ActionDone::getCode();
+                    $availableActions[] =  ActionDone::getCode();
+                    return $availableActions;
             }
         }
         if( $userId === $this->executorId) {
             switch ($this->status) {
                 case Task::STATUS_NEW:
-                    return ActionStart::getCode();
+                    $availableActions[] = ActionStart::getCode();
+                    return $availableActions;
                 case Task::STATUS_IN_WORK:
-                    return ActionRefuse::getCode();
+                    $availableActions[] =  ActionRefuse::getCode();
+                    return $availableActions;
             }
         }
+
     }
 }

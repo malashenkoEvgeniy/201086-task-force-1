@@ -7,7 +7,7 @@ use app\classes\Task;
 
 class ActionCancel extends AbstractActions
 {
-    const CODE = Task::ACTION_CANCEL;
+    const CODE = 'Отменить';
     public static function getName():string
     {
         return __CLASS__;
