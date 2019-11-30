@@ -26,8 +26,8 @@ class  AvailableActions
                     array_push(self::$task->respond, ActionRespond::verificationOfRights($userId, $usersId));
                     return self::$task;
                 }
-            case  ActionAppointAnExecutor::name():
-                if(ActionAppointAnExecutor::verificationOfRights($userId, $usersId) !== 'false')
+            case  ActionStart::name():
+                if(ActionStart::verificationOfRights($userId, $usersId) !== 'false')
                 {
                     foreach ($usersId as $key=>$user)
                     {
@@ -73,39 +73,6 @@ class  AvailableActions
         }
         return null;
     }
-    public static function actions($userId, $obj)
-    {
-        foreach ($obj->usersId as $key=>$id)
-        {
-            if($obj->status==Task::STATUS_NEW)
-            {
-                if($userId==$key and $id=='executor')
-                {
-                    return "Вам доступно действие: ".ActionRespond::inName();
-                }
-                if($userId==$key and $id=='customer' and $obj->customerId==$key)
-                {
-                    return "Вам доступно действие: ".ActionCancel::inName();
-                }
-            }
-            if($obj->status==Task::STATUS_IN_WORK){
-                if($userId==$key and $id=='executor' and $obj->executorId==$key)
-                {
-                    return "Вам доступно действие: ".ActionRefuse::inName();
-                }
-                if($userId==$key and $id=='customer' and $obj->customerId==$key)
-                {
-                    return "Вам доступно действие: ".ActionDone::inName();
-                }
-            }
-            if($obj->status==Task::STATUS_FAILED){
-                if($userId==$key and $id=='customer' and $obj->customerId==$key)
-                {
-                    return "Вам доступно действие: оставить отзыв";
-                }
-            }
-        }
-        return 'Вам не доступно ни какое действие!';
-    }
+
 }
 

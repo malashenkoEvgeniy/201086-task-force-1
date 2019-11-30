@@ -1,6 +1,8 @@
 <?php
 
 namespace app\classes;
+use app\classes\actions\ActionStart;
+
 class Task
 {
     //блок констант статусов
@@ -20,15 +22,16 @@ class Task
     public $customerId;
     public $completionTime;
     public $status;
-    public $usersId;
+    public $initiatorId;//временное свойство, которое хранит id пользователя, соверщающего действие
 
-    public function __construct(int $customerId, array $usersId)
+    public function __construct(int $customerId)
     {
-        $this->usersId = $usersId;
+
         $this->customerId = $customerId;
         $this->status = self::STATUS_NEW;
-        $this->respond = [];
+
     }
+
 
     //блок методов
     public function getNextStatus($action)
@@ -46,5 +49,48 @@ class Task
                 return self::STATUS_FAILED;
         }
         return null;
+    }
+    public function start()
+    {
+        if (ActionStart::verificationRights($this)) {
+            $this->status = self::STATUS_IN_WORK;
+        }
+        //Проверяем доступно ли действие старт, для текущего статуса и текущего пользователя
+        //Если доступно-переводим в статус "в работе"
+    }
+
+    public function getAvailableActions($userId, $obj)
+    {
+        foreach ($obj->usersId as $key=>$id)
+        {
+            if($obj->status==Task::STATUS_NEW)
+            {
+                if($userId==$key and $id=='executor')
+                {
+                    return "Вам доступно действие: ".ActionRespond::inName();
+                }
+                if($userId==$key and $id=='customer' and $obj->customerId==$key)
+                {
+                    return "Вам доступно действие: ".ActionCancel::inName();
+                }
+            }
+            if($obj->status==Task::STATUS_IN_WORK){
+                if($userId==$key and $id=='executor' and $obj->executorId==$key)
+                {
+                    return "Вам доступно действие: ".ActionRefuse::inName();
+                }
+                if($userId==$key and $id=='customer' and $obj->customerId==$key)
+                {
+                    return "Вам доступно действие: ".ActionDone::inName();
+                }
+            }
+            if($obj->status==Task::STATUS_FAILED){
+                if($userId==$key and $id=='customer' and $obj->customerId==$key)
+                {
+                    return "Вам доступно действие: оставить отзыв";
+                }
+            }
+        }
+        return 'Вам не доступно ни какое действие!';
     }
 }
