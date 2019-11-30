@@ -1,6 +1,7 @@
 <?php
 use app\classes\Task;
 use app\classes\actions\ActionStart;
+use app\classes\actions\ActionCancel;
 
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -9,14 +10,16 @@ $task = new Task(2);
 $task->initiatorId = 2;
 $task->executorId = 7;
 $task->getAvailableActions(2);
-//assert($task->getAvailableActions(2) === Task::ACTION_CANCEL, 'при статусе новая у заказчика доступно только действие отменить');
-//assert($task->getAvailableActions(7) === Task::ACTION_RESPOND, 'при статусе новая у исполнителя доступно только действие старта');
+$arrNew = [ActionCancel::getCode(), ActionStart::getCode()];
+print_r(array_diff($task->getAvailableActions(2), $arrNew));
 
-//$task->start();
-//assert($task->getAvailableActions(2) === Task::ACTION_DONE, 'при статусе в работе у заказчика доступно только действие выполнено');
-//assert($task->getAvailableActions(7) === Task::ACTION_REFUSE, 'при статусе в работе у исполнителя доступно только действие отказаться');
+assert($task->getAvailableActions(7)[0] === Task::ACTION_RESPOND, 'при статусе новая у исполнителя доступно только действие старта');
 
-print_r($task->getAvailableActions(7));
+$task->start();
+assert($task->getAvailableActions(2)[0] === Task::ACTION_DONE, 'при статусе в работе у заказчика доступно только действие выполнено');
+assert($task->getAvailableActions(7)[0] === Task::ACTION_REFUSE, 'при статусе в работе у исполнителя доступно только действие отказаться');
+echo "<hr>";
+print_r($task->getAvailableActions(2));
 
 echo '<hr>';
 
