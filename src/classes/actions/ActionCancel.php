@@ -1,35 +1,37 @@
 <?php
 
 
-namespace app\classes;
+namespace app\classes\actions;
+
+use app\classes\Task;
 
 class ActionCancel extends AbstractActions
 {
-    const NAME = Task::ACTION_CANCEL;
-    public static $customer = true;
-    public static function name()
+    const CODE = Task::ACTION_CANCEL;
+    public static function getName():string
     {
-        return self::NAME;
+        return __CLASS__;
     }
 
-    public static function inName()
+    public static function getCode():string
     {
-        $arr = explode("\\", __CLASS__);
-        return $arr[count($arr)-1];
+        return self::CODE;
     }
 
-    public static function verificationOfRights($userId, $usersId)
+    public static function verificationRights(Task $task):bool
     {
-        foreach ($usersId as $key=>$user)
-        {
-            if ($key == $userId)
-            {
-                if(((self::$customer)and($user=='customer'))or((!self::$customer)and($user!=='customer')))
-                {
-                    return $userId;
-                }
-                return false;
-            }
+        if ($task->status !== Task::STATUS_NEW) {
+            return false;
         }
+        if (!$task->customerId) {
+            return false;
+        }
+        if ($task->executorId === $task->customerId) {
+            return false;
+        }
+        if ($task->initiatorId !== $task->customerId) {
+            return false;
+        }
+        return true;
     }
 }

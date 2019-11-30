@@ -1,7 +1,10 @@
 <?php
 
 namespace app\classes;
+use app\classes\actions\ActionCancel;
 use app\classes\actions\ActionStart;
+use app\classes\actions\ActionRefuse;
+use app\classes\actions\ActionDone;
 
 class Task
 {
@@ -26,71 +29,54 @@ class Task
 
     public function __construct(int $customerId)
     {
-
         $this->customerId = $customerId;
         $this->status = self::STATUS_NEW;
-
+        $this->executorId = '';
     }
-
 
     //блок методов
-    public function getNextStatus($action)
-    {
-        switch ($action) {
-            case self::ACTION_CREATE_NEW:
-                return self::STATUS_NEW;
-            case self::ACTION_CANCEL:
-                return self::STATUS_CANCELED;
-            case self::ACTION_RESPOND:
-                return self::STATUS_IN_WORK;
-            case self::ACTION_DONE:
-                return self::STATUS_COMPLETED;
-            case self::ACTION_REFUSE:
-                return self::STATUS_FAILED;
-        }
-        return null;
-    }
     public function start()
     {
         if (ActionStart::verificationRights($this)) {
             $this->status = self::STATUS_IN_WORK;
         }
-        //Проверяем доступно ли действие старт, для текущего статуса и текущего пользователя
-        //Если доступно-переводим в статус "в работе"
+    }
+    public function cancel()
+    {
+        if (ActionCancel::verificationRights($this)) {
+            $this->status = self::STATUS_CANCELED;
+        }
+    }
+    public function done()
+    {
+        if (ActionDone::verificationRights($this)) {
+            $this->status = self::STATUS_COMPLETED;
+        }
+    }
+    public function refuse()
+    {
+        if (ActionRefuse::verificationRights($this)) {
+            $this->status = self::STATUS_FAILED;
+        }
     }
 
-    public function getAvailableActions($userId, $obj)
+    public function getAvailableActions(int $userId)
     {
-        foreach ($obj->usersId as $key=>$id)
-        {
-            if($obj->status==Task::STATUS_NEW)
-            {
-                if($userId==$key and $id=='executor')
-                {
-                    return "Вам доступно действие: ".ActionRespond::inName();
-                }
-                if($userId==$key and $id=='customer' and $obj->customerId==$key)
-                {
-                    return "Вам доступно действие: ".ActionCancel::inName();
-                }
-            }
-            if($obj->status==Task::STATUS_IN_WORK){
-                if($userId==$key and $id=='executor' and $obj->executorId==$key)
-                {
-                    return "Вам доступно действие: ".ActionRefuse::inName();
-                }
-                if($userId==$key and $id=='customer' and $obj->customerId==$key)
-                {
-                    return "Вам доступно действие: ".ActionDone::inName();
-                }
-            }
-            if($obj->status==Task::STATUS_FAILED){
-                if($userId==$key and $id=='customer' and $obj->customerId==$key)
-                {
-                    return "Вам доступно действие: оставить отзыв";
-                }
+        if( $userId === $this->customerId) {
+            switch ($this->status) {
+                case Task::STATUS_NEW:
+                    return ActionCancel::getCode();
+                case Task::STATUS_IN_WORK:
+                    return ActionDone::getCode();
             }
         }
-        return 'Вам не доступно ни какое действие!';
+        if( $userId === $this->executorId) {
+            switch ($this->status) {
+                case Task::STATUS_NEW:
+                    return ActionStart::getCode();
+                case Task::STATUS_IN_WORK:
+                    return ActionRefuse::getCode();
+            }
+        }
     }
 }

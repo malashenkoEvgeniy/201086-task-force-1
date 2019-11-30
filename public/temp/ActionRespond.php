@@ -2,7 +2,7 @@
 
 
 namespace app\classes;
-
+use app\classes\Task;
 
 class ActionRespond extends AbstractActions
 {
