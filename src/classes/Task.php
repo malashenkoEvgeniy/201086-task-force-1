@@ -15,7 +15,6 @@ class Task
     const ACTION_RESPOND = 'Откликнуться';
     const ACTION_DONE = 'Выполнено';
     const ACTION_REFUSE = 'Отказаться';
-    const ACTION_APPOINT_AN_EXECUTOR = 'Назначить испонителя';
     //блок свойств
     public $executorId;
     public $customerId;

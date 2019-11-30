@@ -5,7 +5,7 @@ namespace app\classes;
 
 class ActionAppointAnExecutor extends AbstractActions
 {
-    const NAME = Task::ACTION_APPOINT_AN_EXECUTOR;
+    const NAME = 'Назначить испонителя';
     public static $customer = true;
     public static function name()
     {
