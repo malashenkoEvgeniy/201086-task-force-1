@@ -2,6 +2,7 @@
 
 namespace app\classes;
 use app\classes\actions\ActionCancel;
+use app\classes\actions\ActionRespond;
 use app\classes\actions\ActionStart;
 use app\classes\actions\ActionRefuse;
 use app\classes\actions\ActionDone;
@@ -20,6 +21,7 @@ class Task
     public $customerId;
     public $completionTime;
     public $status;
+    public $availableActions;
     public $initiatorId;//временное свойство, которое хранит id пользователя, соверщающего действие
 
     public function __construct(int $customerId)
@@ -27,13 +29,31 @@ class Task
         $this->customerId = $customerId;
         $this->status = self::STATUS_NEW;
         $this->executorId = '';
+        $this->completionTime = '21.12.2022';
     }
 
     //блок методов
+    public function newTask()
+    {
+        if ($this->initiatorId == $this->customerId) {
+            $this->availableActions[] = ActionStart::getCode();
+            $this->availableActions[] = ActionCancel::getCode();
+        } else {
+            $this->availableActions[] = ActionRespond::getCode();
+        }
+    }
     public function start()
     {
         if (ActionStart::verificationRights($this)) {
             $this->status = self::STATUS_IN_WORK;
+            $this->availableActions[]= ActionDone::getCode();
+            //$this->availableActions[]= ActionRefuse::getCode();
+        }
+    }
+    public function respond()
+    {
+        if (ActionRespond::verificationRights($this)) {
+            $this->respond[] = $this->initiatorId;
         }
     }
     public function cancel()
@@ -55,30 +75,18 @@ class Task
         }
     }
 
-    public function getAvailableActions(int $userId)
+    public function getAvailableActions()
     {
         $availableActions = [];
-        if( $userId === $this->customerId) {
-            switch ($this->status) {
-                case Task::STATUS_NEW:
-                    $availableActions[] = ActionCancel::getCode();
-                    $availableActions[] = ActionStart::getCode();
-                    return $availableActions;
-                case Task::STATUS_IN_WORK:
-                    $availableActions[] =  ActionDone::getCode();
-                    return $availableActions;
-            }
+        switch ($this->status) {
+            case Task::STATUS_NEW:
+                $this->newTask();
+                return $this->availableActions;
+            case Task::STATUS_IN_WORK:
+                if (ActionRefuse::verificationRights($this)) {
+                    $this->availableActions[] =  ActionRefuse::getCode();
+                }
+                return $this->availableActions;
         }
-        if( $userId === $this->executorId) {
-            switch ($this->status) {
-                case Task::STATUS_NEW:
-                    $availableActions[] = ActionStart::getCode();
-                    return $availableActions;
-                case Task::STATUS_IN_WORK:
-                    $availableActions[] =  ActionRefuse::getCode();
-                    return $availableActions;
-            }
-        }
-
     }
 }

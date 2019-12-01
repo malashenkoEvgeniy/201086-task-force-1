@@ -2,12 +2,11 @@
 
 
 namespace app\classes\actions;
-
 use app\classes\Task;
 
-class ActionStart extends AbstractActions
+class ActionRespond
 {
-    const CODE = 'Назначить';
+    const CODE = 'Откликнуться';
     public static function getName():string
     {
         return __CLASS__;
@@ -15,7 +14,7 @@ class ActionStart extends AbstractActions
 
     public static function getCode():string
     {
-       return self::CODE;
+        return self::CODE;
     }
 
     public static function verificationRights(Task $task):bool
@@ -29,7 +28,7 @@ class ActionStart extends AbstractActions
         if ($task->executorId === $task->customerId) {
             return false;
         }
-        if ($task->initiatorId !== $task->customerId) {
+        if ($task->initiatorId !== $task->executorId) {
             return false;
         }
         return true;
