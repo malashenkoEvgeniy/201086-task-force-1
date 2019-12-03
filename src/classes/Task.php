@@ -21,33 +21,22 @@ class Task
     public $customerId;
     public $completionTime;
     public $status;
-    public $availableActions;
+    public $respond;
+
     public $initiatorId;//временное свойство, которое хранит id пользователя, соверщающего действие
 
-    public function __construct(int $customerId)
+    public function __construct(int $customerId, ?string $completionTime = null)
     {
         $this->customerId = $customerId;
         $this->status = self::STATUS_NEW;
-        $this->executorId = '';
-        $this->completionTime = '21.12.2022';
+        $this->completionTime = $completionTime;
     }
 
     //блок методов
-    public function newTask()
-    {
-        if ($this->initiatorId == $this->customerId) {
-            $this->availableActions[] = ActionStart::getCode();
-            $this->availableActions[] = ActionCancel::getCode();
-        } else {
-            $this->availableActions[] = ActionRespond::getCode();
-        }
-    }
     public function start()
     {
         if (ActionStart::verificationRights($this)) {
             $this->status = self::STATUS_IN_WORK;
-            $this->availableActions[]= ActionDone::getCode();
-            //$this->availableActions[]= ActionRefuse::getCode();
         }
     }
     public function respond()
@@ -78,15 +67,22 @@ class Task
     public function getAvailableActions()
     {
         $availableActions = [];
-        switch ($this->status) {
-            case Task::STATUS_NEW:
-                $this->newTask();
-                return $this->availableActions;
-            case Task::STATUS_IN_WORK:
-                if (ActionRefuse::verificationRights($this)) {
-                    $this->availableActions[] =  ActionRefuse::getCode();
-                }
-                return $this->availableActions;
+        if (ActionStart::verificationRights($this)) {
+            $availableActions[] = ActionStart::getCode();
         }
+        if (ActionCancel::verificationRights($this)) {
+            $availableActions[] = ActionCancel::getCode();
+        }
+        if (ActionRespond::verificationRights($this)) {
+            $availableActions[] = ActionRespond::getCode();
+        }
+
+        if (ActionDone::verificationRights($this)) {
+            $availableActions[] = ActionDone::getCode();
+        }
+        if (ActionRefuse::verificationRights($this)) {
+            $availableActions[] = ActionRefuse::getCode();
+        }
+        return $availableActions;
     }
 }

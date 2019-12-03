@@ -21,7 +21,7 @@ class ActionRefuse extends AbstractActions
         if ($task->status !== Task::STATUS_IN_WORK) {
             return false;
         }
-        if (!$task->customerId) {
+        if (!$task->executorId) {
             return false;
         }
         if ($task->executorId === $task->customerId) {

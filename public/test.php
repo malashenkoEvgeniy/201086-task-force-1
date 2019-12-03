@@ -2,12 +2,13 @@
 use app\classes\Task;
 use app\classes\actions\ActionStart;
 use app\classes\actions\ActionCancel;
+use app\classes\actions\ActionRefuse;
 
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
 $task = new Task(2);
-$task->initiatorId = 2;
+$task->initiatorId = 7;
 $task->executorId = 7;
 $task->start();
 $task->status = Task::STATUS_IN_WORK;
@@ -30,4 +31,5 @@ echo '<pre>';
 print_r($task);
 
 echo '</pre>';
+
 

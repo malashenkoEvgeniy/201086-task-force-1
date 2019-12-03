@@ -22,7 +22,7 @@ class ActionDone extends AbstractActions
         if ($task->status !== Task::STATUS_IN_WORK) {
             return false;
         }
-        if (!$task->executorIdId) {
+        if (!$task->executorId) {
             return false;
         }
         if ($task->executorId === $task->customerId) {
