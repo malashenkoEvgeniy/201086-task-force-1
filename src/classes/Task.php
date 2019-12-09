@@ -6,6 +6,7 @@ use app\classes\actions\ActionRespond;
 use app\classes\actions\ActionStart;
 use app\classes\actions\ActionRefuse;
 use app\classes\actions\ActionDone;
+use app\classes\exceptions\TimeExeption;
 
 class Task
 {
@@ -29,7 +30,15 @@ class Task
     {
         $this->customerId = $customerId;
         $this->status = self::STATUS_NEW;
-        $this->completionTime = $completionTime;
+        try {
+            if (strtotime($completionTime) > time()) {
+                $this->completionTime = $completionTime;
+            } else {
+                throw new TimeExeption("<h2 style=\"color: red\">Время завершения задания должно быть больше текущего!!!</h2>>");
+            }
+        } catch(TimeExeption $e){
+                echo $e->sameMethod() . ":" . $e->getMessage();
+            }
     }
 
     //блок методов

@@ -7,9 +7,9 @@ use app\classes\actions\ActionRefuse;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$task = new Task(2);
+$task = new Task(2, '18.08.2010');
 $task->initiatorId = 7;
-$task->executorId = 7;
+$task->executorId = 6;
 $task->start();
 $task->status = Task::STATUS_IN_WORK;
 
