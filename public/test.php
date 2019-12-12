@@ -1,17 +1,29 @@
 <?php
 use app\classes\Task;
-use app\classes\actions\ActionStart;
-use app\classes\actions\ActionCancel;
-use app\classes\actions\ActionRefuse;
+use app\classes\exceptions\TimeExeption;
+use app\classes\exceptions\UsersException;
+
 
 
 require_once __DIR__ . '/../vendor/autoload.php';
+try {
+    $task = new Task(2, '18.08.2020');
+    if (strtotime($task->completionTime) < time()) {
+        throw new TimeExeption('ВЫ указали время в прошлом!');
+    }
+    if ($task->initiatorId !== $task->customerId or $task->initiatorId !== $task->executorId) {
+        throw new UsersException('По этому заданию Вам не доступно ни каких действий');
+    }
+} catch(UsersException $e) {
+    echo $e->sameMethod() . ":" . $e->getMessage();
+} catch(TimeExeption $e) {
+        echo $e->sameMethod() . ":" . $e->getMessage();
+}
 
-$task = new Task(2, '18.08.2010');
 $task->initiatorId = 7;
 $task->executorId = 6;
 $task->start();
-$task->status = Task::STATUS_IN_WORK;
+//$task->status = Task::STATUS_IN_WORK;
 
 echo '<pre>';
 print_r($task->getAvailableActions());
@@ -32,4 +44,5 @@ print_r($task);
 
 echo '</pre>';
 
-
+/*try {
+            */

@@ -1,7 +1,6 @@
 <?php
 
 namespace app\classes\actions;
-use app\classes\exceptions\UsersException;
 use app\classes\Task;
 
 class ActionRefuse extends AbstractActions
@@ -31,13 +30,7 @@ class ActionRefuse extends AbstractActions
         if ($task->initiatorId !== $task->executorId) {
             return false;
         }
-        try {
-            if ($task->initiatorId !== $task->customerId and $task->initiatorId !== $task->executorId) {
-                throw new UsersException('По этому заданию Вам не доступно ни каких действий');
-            }
-        } catch(UsersException $e) {
-            echo $e->sameMethod() . ":" . $e->getMessage();
-        }
+
         return true;
     }
 }
