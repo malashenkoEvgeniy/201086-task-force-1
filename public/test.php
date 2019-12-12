@@ -2,7 +2,7 @@
 use app\classes\Task;
 use app\classes\exceptions\TimeExeption;
 use app\classes\exceptions\UsersException;
-
+use app\classes\exceptions\IncorrectActionStatusException;
 
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -11,7 +11,7 @@ try {
     if (strtotime($task->completionTime) < time()) {
         throw new TimeExeption('ВЫ указали время в прошлом!');
     }
-    if ($task->initiatorId !== $task->customerId or $task->initiatorId !== $task->executorId) {
+    if ($task->initiatorId !== $task->customerId AND $task->initiatorId !== $task->executorId) {
         throw new UsersException('По этому заданию Вам не доступно ни каких действий');
     }
 } catch(UsersException $e) {
@@ -20,10 +20,16 @@ try {
         echo $e->sameMethod() . ":" . $e->getMessage();
 }
 
-$task->initiatorId = 7;
+$task->initiatorId = 2;
 $task->executorId = 6;
-$task->start();
 //$task->status = Task::STATUS_IN_WORK;
+try {
+    //$task->cancel();
+    $task->done();
+} catch (IncorrectActionStatusException $e){
+    echo $e->sameMethod() . ":" . $e->getMessage();
+}
+
 
 echo '<pre>';
 print_r($task->getAvailableActions());

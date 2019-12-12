@@ -2,6 +2,7 @@
 
 
 namespace app\classes\actions;
+use app\classes\exceptions\IncorrectActionStatusException;
 use app\classes\Task;
 
 class ActionStart extends AbstractActions
@@ -20,7 +21,7 @@ class ActionStart extends AbstractActions
     public static function verificationRights(Task $task):bool
     {
         if ($task->status !== Task::STATUS_NEW) {
-            return false;
+            throw new IncorrectActionStatusException("Статус задачи должен быть: ".Task::STATUS_NEW );
         }
         if (!$task->executorId) {
             return false;

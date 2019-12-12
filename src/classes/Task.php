@@ -6,6 +6,7 @@ use app\classes\actions\ActionRespond;
 use app\classes\actions\ActionStart;
 use app\classes\actions\ActionRefuse;
 use app\classes\actions\ActionDone;
+use app\classes\exceptions\IncorrectActionStatusException;
 
 
 class Task
@@ -34,37 +35,57 @@ class Task
     }
 
     //блок методов
+
+    /**
+     * @throws IncorrectActionStatusException
+     */
     public function start()
     {
-        if (ActionStart::verificationRights($this)) {
-            $this->status = self::STATUS_IN_WORK;
-        }
-    }
-    public function respond()
-    {
-        if (ActionRespond::verificationRights($this)) {
-            $this->respond[] = $this->initiatorId;
-        }
-    }
-    public function cancel()
-    {
-        if (ActionCancel::verificationRights($this)) {
-            $this->status = self::STATUS_CANCELED;
-        }
-    }
-    public function done()
-    {
-        if (ActionDone::verificationRights($this)) {
-            $this->status = self::STATUS_COMPLETED;
-        }
-    }
-    public function refuse()
-    {
-        if (ActionRefuse::verificationRights($this)) {
-            $this->status = self::STATUS_FAILED;
-        }
+        ActionStart::verificationRights($this);
+        $this->status = self::STATUS_IN_WORK;
     }
 
+    /**
+     * @throws IncorrectActionStatusException
+     */
+    public function respond()
+    {
+        ActionRespond::verificationRights($this);
+        $this->respond[] = $this->initiatorId;
+    }
+
+    /**
+     * @throws IncorrectActionStatusException
+     */
+    public function cancel()
+    {
+        ActionCancel::verificationRights($this);
+        $this->status = self::STATUS_CANCELED;
+
+    }
+
+    /**
+     * @throws IncorrectActionStatusException
+     */
+    public function done()
+    {
+        ActionDone::verificationRights($this);
+        $this->status = self::STATUS_COMPLETED;
+    }
+
+    /**
+     * @throws IncorrectActionStatusException
+     */
+    public function refuse()
+    {
+        ActionRefuse::verificationRights($this);
+        $this->status = self::STATUS_FAILED;
+    }
+
+    /**
+     * @return array
+     * @throws IncorrectActionStatusException
+     */
     public function getAvailableActions()
     {
         $availableActions = [];
