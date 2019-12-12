@@ -89,22 +89,26 @@ class Task
     public function getAvailableActions()
     {
         $availableActions = [];
-        if (ActionStart::verificationRights($this)) {
+        try {
+            ActionStart::verificationRights($this);
             $availableActions[] = ActionStart::getCode();
-        }
-        if (ActionCancel::verificationRights($this)) {
+        }catch (\Exception $e){}
+        try {
+            ActionCancel::verificationRights($this);
             $availableActions[] = ActionCancel::getCode();
-        }
-        if (ActionRespond::verificationRights($this)) {
+        }catch (\Exception $e){}
+        try{
+            ActionRespond::verificationRights($this);
             $availableActions[] = ActionRespond::getCode();
-        }
-
-        if (ActionDone::verificationRights($this)) {
+        }catch (\Exception $e){}
+        try{
+            ActionDone::verificationRights($this);
             $availableActions[] = ActionDone::getCode();
-        }
-        if (ActionRefuse::verificationRights($this)) {
+        }catch (\Exception $e){}
+        try {
+            ActionRefuse::verificationRights($this);
             $availableActions[] = ActionRefuse::getCode();
-        }
+        }catch (\Exception $e){}
         return $availableActions;
     }
 }

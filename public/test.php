@@ -30,11 +30,11 @@ try {
     echo $e->sameMethod() . ":" . $e->getMessage();
 }
 
-
+/*
 echo '<pre>';
 print_r($task->getAvailableActions());
 echo '</pre>';
-
+*/
 //assert($task->getAvailableActions(7)[0] === Task::ACTION_RESPOND, 'при статусе новая у исполнителя доступно только действие старта');
 
 //$task->start();
