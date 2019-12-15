@@ -10,5 +10,5 @@ abstract class AbstractActions
 
     abstract static function getName(): string;
     abstract static function getCode(): string;
-    abstract static function verificationRights(Task $task): bool;
+    abstract static function verificationRights(Task $task);
 }

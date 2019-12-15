@@ -21,7 +21,11 @@ class ActionCancel extends AbstractActions
         return self::CODE;
     }
 
-
+    /**
+     * @param Task $task
+     * @throws IncorrectActionStatusException
+     * @throws IncorrectInitiatorException
+     */
     public static function verificationRights(Task $task)
     {
         if ($task->status !== Task::STATUS_NEW) {
@@ -36,6 +40,5 @@ class ActionCancel extends AbstractActions
         if ($task->initiatorId !== $task->customerId) {
             throw new IncorrectInitiatorException("Инициатор действия не заказчик");
         }
-        //return '';
     }
 }

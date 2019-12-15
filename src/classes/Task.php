@@ -37,54 +37,73 @@ class Task
     //блок методов
 
     /**
-     * @throws IncorrectActionStatusException
+     * @throws exceptions\IncorrectInitiatorException
      */
     public function start()
     {
-        ActionStart::verificationRights($this);
-        $this->status = self::STATUS_IN_WORK;
+        try {
+            ActionStart::verificationRights($this);
+            $this->status = self::STATUS_IN_WORK;
+        } catch (IncorrectActionStatusException $e){
+            echo $e->sameMethod() . ":" . $e->getMessage();
+        }
     }
 
     /**
-     * @throws IncorrectActionStatusException
+     * @throws exceptions\IncorrectInitiatorException
      */
     public function respond()
     {
-        ActionRespond::verificationRights($this);
-        $this->respond[] = $this->initiatorId;
+        try {
+            ActionRespond::verificationRights($this);
+            $this->respond[] = $this->initiatorId;
+        } catch (IncorrectActionStatusException $e){
+            echo $e->sameMethod() . ":" . $e->getMessage();
+        }
     }
 
     /**
-     * @throws IncorrectActionStatusException
+     * @throws exceptions\IncorrectInitiatorException
      */
     public function cancel()
     {
-        ActionCancel::verificationRights($this);
-        $this->status = self::STATUS_CANCELED;
+        try {
+            ActionCancel::verificationRights($this);
+            $this->status = self::STATUS_CANCELED;
+        } catch (IncorrectActionStatusException $e){
+            echo $e->sameMethod() . ":" . $e->getMessage();
+        }
 
     }
 
     /**
-     * @throws IncorrectActionStatusException
+     * @throws exceptions\IncorrectInitiatorException
      */
     public function done()
     {
-        ActionDone::verificationRights($this);
-        $this->status = self::STATUS_COMPLETED;
+        try {
+            ActionDone::verificationRights($this);
+            $this->status = self::STATUS_COMPLETED;
+        } catch (IncorrectActionStatusException $e){
+            echo $e->sameMethod() . ":" . $e->getMessage();
+        }
     }
 
     /**
-     * @throws IncorrectActionStatusException
+     * @throws exceptions\IncorrectInitiatorException
      */
     public function refuse()
     {
-        ActionRefuse::verificationRights($this);
-        $this->status = self::STATUS_FAILED;
+        try {
+            ActionRefuse::verificationRights($this);
+            $this->status = self::STATUS_FAILED;
+        } catch (IncorrectActionStatusException $e){
+            echo $e->sameMethod() . ":" . $e->getMessage();
+        }
     }
 
     /**
      * @return array
-     * @throws IncorrectActionStatusException
      */
     public function getAvailableActions()
     {

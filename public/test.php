@@ -21,14 +21,10 @@ try {
 }
 
 $task->initiatorId = 2;
-$task->executorId = 6;
+$task->executorId = 5;
 //$task->status = Task::STATUS_IN_WORK;
-try {
-    //$task->cancel();
-    $task->done();
-} catch (IncorrectActionStatusException $e){
-    echo $e->sameMethod() . ":" . $e->getMessage();
-}
+
+//$task->cancel();
 
 /*
 echo '<pre>';
@@ -41,8 +37,7 @@ echo '</pre>';
 //assert($task->getAvailableActions(2)[0] === Task::ACTION_DONE, 'при статусе в работе у заказчика доступно только действие выполнено');
 //assert($task->getAvailableActions(7)[0] === Task::ACTION_REFUSE, 'при статусе в работе у исполнителя доступно только действие отказаться');
 echo "<hr>";
-//print_r($task->getAvailableActions(2));
-
+print_r($task->getAvailableActions());
 echo '<hr>';
 
 echo '<pre>';
