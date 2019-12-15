@@ -6,6 +6,8 @@ use app\classes\actions\ActionRespond;
 use app\classes\actions\ActionStart;
 use app\classes\actions\ActionRefuse;
 use app\classes\actions\ActionDone;
+use app\classes\exceptions\IncorrectActionStatusException;
+
 
 class Task
 {
@@ -33,56 +35,99 @@ class Task
     }
 
     //блок методов
+
+    /**
+     * @throws exceptions\IncorrectInitiatorException
+     */
     public function start()
     {
-        if (ActionStart::verificationRights($this)) {
+        try {
+            ActionStart::verificationRights($this);
             $this->status = self::STATUS_IN_WORK;
-        }
-    }
-    public function respond()
-    {
-        if (ActionRespond::verificationRights($this)) {
-            $this->respond[] = $this->initiatorId;
-        }
-    }
-    public function cancel()
-    {
-        if (ActionCancel::verificationRights($this)) {
-            $this->status = self::STATUS_CANCELED;
-        }
-    }
-    public function done()
-    {
-        if (ActionDone::verificationRights($this)) {
-            $this->status = self::STATUS_COMPLETED;
-        }
-    }
-    public function refuse()
-    {
-        if (ActionRefuse::verificationRights($this)) {
-            $this->status = self::STATUS_FAILED;
+        } catch (IncorrectActionStatusException $e){
+            echo $e->sameMethod() . ":" . $e->getMessage();
         }
     }
 
+    /**
+     * @throws exceptions\IncorrectInitiatorException
+     */
+    public function respond()
+    {
+        try {
+            ActionRespond::verificationRights($this);
+            $this->respond[] = $this->initiatorId;
+        } catch (IncorrectActionStatusException $e){
+            echo $e->sameMethod() . ":" . $e->getMessage();
+        }
+    }
+
+    /**
+     * @throws exceptions\IncorrectInitiatorException
+     */
+    public function cancel()
+    {
+        try {
+            ActionCancel::verificationRights($this);
+            $this->status = self::STATUS_CANCELED;
+        } catch (IncorrectActionStatusException $e){
+            echo $e->sameMethod() . ":" . $e->getMessage();
+        }
+
+    }
+
+    /**
+     * @throws exceptions\IncorrectInitiatorException
+     */
+    public function done()
+    {
+        try {
+            ActionDone::verificationRights($this);
+            $this->status = self::STATUS_COMPLETED;
+        } catch (IncorrectActionStatusException $e){
+            echo $e->sameMethod() . ":" . $e->getMessage();
+        }
+    }
+
+    /**
+     * @throws exceptions\IncorrectInitiatorException
+     */
+    public function refuse()
+    {
+        try {
+            ActionRefuse::verificationRights($this);
+            $this->status = self::STATUS_FAILED;
+        } catch (IncorrectActionStatusException $e){
+            echo $e->sameMethod() . ":" . $e->getMessage();
+        }
+    }
+
+    /**
+     * @return array
+     */
     public function getAvailableActions()
     {
         $availableActions = [];
-        if (ActionStart::verificationRights($this)) {
+        try {
+            ActionStart::verificationRights($this);
             $availableActions[] = ActionStart::getCode();
-        }
-        if (ActionCancel::verificationRights($this)) {
+        }catch (\Exception $e){}
+        try {
+            ActionCancel::verificationRights($this);
             $availableActions[] = ActionCancel::getCode();
-        }
-        if (ActionRespond::verificationRights($this)) {
+        }catch (\Exception $e){}
+        try{
+            ActionRespond::verificationRights($this);
             $availableActions[] = ActionRespond::getCode();
-        }
-
-        if (ActionDone::verificationRights($this)) {
+        }catch (\Exception $e){}
+        try{
+            ActionDone::verificationRights($this);
             $availableActions[] = ActionDone::getCode();
-        }
-        if (ActionRefuse::verificationRights($this)) {
+        }catch (\Exception $e){}
+        try {
+            ActionRefuse::verificationRights($this);
             $availableActions[] = ActionRefuse::getCode();
-        }
+        }catch (\Exception $e){}
         return $availableActions;
     }
 }
