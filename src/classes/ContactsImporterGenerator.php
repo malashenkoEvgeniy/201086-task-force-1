@@ -6,24 +6,29 @@ use app\classes\exceptions\FileFormatException;
 use app\classes\exceptions\SourceFileException;
 
 
-class ContactsImporterV2
+class ContactsImporterGenerator
 {
-    private $filename;
-    private $columns;
+    private  $filename;
+    private  $columns;
     private $fp;
-    private $result = [];
-    private $error = null;
+    private  $result = [];
+    //private ?string $error = null;
     /**
      * ContactsImporter constructor.
      * @param $filename
      * @param $columns
      */
-    public function __construct($filename, $columns)
+    public function __construct(string $filename, array $columns)
     {
         $this->filename = $filename;
         $this->columns = $columns;
     }
-    public function import()
+
+    /**
+     * @throws FileFormatException
+     * @throws SourceFileException
+     */
+    public function import():void
     {
         if (!$this->validateColumns($this->columns)) {
             throw new FileFormatException("Заданы неверные заголовки столбцов");
@@ -39,26 +44,26 @@ class ContactsImporterV2
         if ($header_data !== $this->columns) {
             throw new FileFormatException("Исходный файл не содержит необходимых столбцов");
         }
-        while ($line = $this->getNextLine()) {
+        foreach ($this->getNextLine() as $line) {
             $this->result[] = $line;
         }
     }
-    public function getData() {
+    public function getData():array {
         return $this->result;
     }
-    private function getHeaderData() {
+    private function getHeaderData():?array {
         rewind($this->fp);
         $data = fgetcsv($this->fp);
         return $data;
     }
-    private function getNextLine() {
-        $result = false;
-        if (!feof($this->fp)) {
-            $result = fgetcsv($this->fp);
+    private function getNextLine():?iterable {
+        $result = null;
+        while (!feof($this->fp)) {
+            yield fgetcsv($this->fp);
         }
         return $result;
     }
-    private function validateColumns($columns)
+    private function validateColumns(array $columns):bool
     {
         $result = true;
         if (count($columns)) {
@@ -74,4 +79,3 @@ class ContactsImporterV2
         return $result;
     }
 }
-

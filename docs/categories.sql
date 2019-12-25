@@ -1,0 +1,1 @@
+INSERT INTO `categories`(`title`, `title_en`) VALUES ('',''),("Курьерские услуги", "translation"),("Уборка", "clean"),("Переезды", "cargo"),("Компьютерная помощь", "neo"),("Ремонт квартирный", "flat"),("Ремонт техники", "repair"),("Красота", "beauty"),("Фото", "photo")
