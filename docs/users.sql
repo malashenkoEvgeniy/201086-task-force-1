@@ -1,0 +1,1 @@
+INSERT INTO `users`(`id`, `creation_time`, `name`, `email`, `location_id`, `birthday`, `info`, `password`, `phone`, `skype`) VALUES

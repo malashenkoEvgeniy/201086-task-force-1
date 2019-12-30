@@ -1,1 +1,1 @@
-INSERT INTO `categories`(`title`, `title_en`) VALUES ('',''),("Курьерские услуги", "translation"),("Уборка", "clean"),("Переезды", "cargo"),("Компьютерная помощь", "neo"),("Ремонт квартирный", "flat"),("Ремонт техники", "repair"),("Красота", "beauty"),("Фото", "photo")
+INSERT INTO `categories`(`id`, `title`, `title_en`) VALUES("1","Курьерские услуги", "translation"),("2","Уборка", "clean"),("3","Переезды", "cargo"),("4","Компьютерная помощь", "neo"),("5","Ремонт квартирный", "flat"),("6","Ремонт техники", "repair"),("7","Красота", "beauty"),("8","Фото", "photo")
