@@ -1,24 +1,32 @@
 <?php
 use app\classes\ContactsImporterGenerator;
 use app\classes\Task;
+use app\classes\QueryBuilder;
 require_once __DIR__ . '/../vendor/autoload.php';
-
+$categories = [];
 $categoryTab = new ContactsImporterGenerator('data/categories.csv', ['name', 'icon']);
 foreach($categoryTab->getArrayFromFile() as $value) {
   $categories[] = $value;
 }
+//require_once 'createdb/categories.php';
+$queryStr = "`id`, `title`, `title_en`";
+$queryBuilder = new QueryBuilder('categories'); // конструктор принимает имя таблицы
+$result = $queryBuilder->getInsertQuery($categories, $queryStr); // Передаем массив с данными записи и получаем строку, содержащую INSERT запрос
+file_put_contents("../docs/categories.sql", $result);
 
-require_once 'createdb/categories.php';
+$cities = [];
 $cityTab = new ContactsImporterGenerator('data/cities.csv', ['city','lat','long']);
 foreach($cityTab->getArrayFromFile() as $value) {
   $cities[] = $value;
 }
 
+$profiles = [];
 $profilTab = new ContactsImporterGenerator('data/profiles.csv', ['address', 'bd', 'about', 'phone', 'skype']);
 foreach($profilTab->getArrayFromFile() as $value) {
   $profiles[] = $value;
 }
 
+$users = [];
 $userTab = new ContactsImporterGenerator('data/users.csv', ['email', 'name', 'password', 'dt_add']);
 foreach($userTab->getArrayFromFile() as $value) {
   $users[] = $value;
@@ -44,7 +52,7 @@ for ($i = 0; $i < count($user); $i++) {
         }
     }
     if($flag==0){
-        array_push($cities, ['id'=>count($cities)+1, 'city'=>$user[$i]['address']]);     
+        array_push($cities, ['id'=>count($cities)+1, 'city'=>$user[$i]['address']]);
     }
 }
 for ($i = 0; $i < count($user); $i++) {
@@ -71,7 +79,7 @@ for ($i = 0; $i < count($tasks); $i++) {
         }
     }
     if($flag==0){
-        array_push($cities, ['id'=>count($cities)+1, 'city'=>$tasks[$i]['address'], 'lat' =>$tasks[$i]['lat'], 'long' =>$tasks[$i]['long'] ]);     
+        array_push($cities, ['id'=>count($cities)+1, 'city'=>$tasks[$i]['address'], 'lat' =>$tasks[$i]['lat'], 'long' =>$tasks[$i]['long'] ]);
     }
 }
 for ($i = 0; $i < count($tasks); $i++) {

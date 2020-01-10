@@ -79,7 +79,7 @@ class Task
     /**
      * @throws exceptions\IncorrectInitiatorException
      */
-    public function done()
+    public function  done()
     {
         try {
             ActionDone::verificationRights($this);

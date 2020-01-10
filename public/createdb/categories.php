@@ -1,12 +1,10 @@
 <?php
 $result = "INSERT INTO"." `categories`(`id`, `title`, `title_en`) VALUES";
-for ($i = 0; $i < count($categories); $i++) {
-        $id = $categories[$i]['id'];
-        $name = $categories[$i]['name'];
-        $icon = $categories[$i]['icon'];
-        $result .= "(\"$id\",\"$name\", \"$icon\")";
-        if ($i !== (count($categories)-1)) {
-            $result .= ",";
-        }
+
+foreach ($categories as $category){
+    $result .= " ('".implode('\', \'', $category)."'),";
 }
+
+$result = substr($result, 0, strlen($result) - 1);
+
 file_put_contents("../docs/categories.sql", $result);
