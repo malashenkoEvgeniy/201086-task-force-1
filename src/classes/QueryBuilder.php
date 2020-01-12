@@ -9,12 +9,12 @@ class QueryBuilder
     private $tab;
     public function __construct($tab)
     {
-        $this->arr = $tab;
+        $this->tab = $tab;
     }
 
     public function getInsertQuery($arr)
     {
-        $result = "INSERT INTO"." `categories`(";
+        $result = "INSERT INTO"." $this->tab (";
         foreach ($arr as $item){
             $arrayKeys = array_keys($item);
             foreach ($arrayKeys as $key=>$value){

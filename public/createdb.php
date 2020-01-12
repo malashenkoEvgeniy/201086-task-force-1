@@ -11,7 +11,7 @@ foreach($categoryTab->getArrayFromFile() as $value) {
 
 $queryBuilderCategory = new QueryBuilder('categories'); // конструктор принимает имя таблицы
 $result = $queryBuilderCategory->getInsertQuery($categories); // Передаем массив с данными записи и получаем строку, содержащую INSERT запрос
-echo $result;
+//echo $result.'<hr>';
 file_put_contents("../docs/categories.sql", $result);
 /***********************************************************************************/
 
@@ -40,6 +40,10 @@ for ($i = 0; $i < count($profiles); $i++) {
     }
     if($users[$i]['id']==null){
         $user[$i] = $profiles[$i];
+        $user[$i]['email'] = '';
+        $user[$i]['name'] = '';
+        $user[$i]['password'] = '';
+        $user[$i]['dt_add'] = '';
     }
 }
 
@@ -48,67 +52,79 @@ for ($i = 0; $i < count($user); $i++) {
     $flag = 0;
     for ($j = 0; $j < count($cities); $j++) {
         if($user[$i]['address'] == $cities[$j]['city']){
-            $user[$i]['address'] = $cities[$j]['id'];
+            $user[$i]['location_id'] = $cities[$j]['id'];
             $flag = 1;
         }
     }
     if($flag==0){
-        array_push($cities, ['id'=>count($cities)+1, 'city'=>$user[$i]['address']]);
+        array_push($cities, ['id'=>count($cities)+1, 'city'=>$user[$i]['address'], 'lat' => '', 'long' => '']);
     }
 }
 for ($i = 0; $i < count($user); $i++) {
      for ($j = 0; $j < count($cities); $j++) {
           if($user[$i]['address'] == $cities[$j]['city']){
-                $user[$i]['address'] = $cities[$j]['id'];
+              $user[$i]['location_id'] = $cities[$j]['id'];
+              $user[$i]['birthday'] = $user[$i]['bd'];
+              $user[$i]['info'] = $user[$i]['about'];
+              $user[$i]['creation_time'] = $user[$i]['dt_add'];
+              unset($user[$i]['dt_add']);
+              unset($user[$i]['address']);
+              unset($user[$i]['bd']);
+              unset($user[$i]['about']);
           }
      }
 }
-$count_user = count($user);/*
-echo '<pre>';
-print_r($user);
-echo '</pre>';
+$count_user = count($user);
 
-//require_once 'createdb/users.php';
-/*
-$queryStr = "`id`, `creation_time`, `name`, `email`, `location_id`, `birthday`, `info`, `password`, `phone`, `skype`";
 $queryBuilderUser = new QueryBuilder('users'); // конструктор принимает имя таблицы
-$result = $queryBuilderUser->getInsertQuery($user, $queryStr); // Передаем массив с данными записи и получаем строку, содержащую INSERT запрос
-file_put_contents("../docs/users.sql", $result);*/
+$result = $queryBuilderUser->getInsertQuery($user); // Передаем массив с данными записи и получаем строку, содержащую INSERT запрос
+file_put_contents("../docs/users.sql", $result);
 
 $taskTab = new ContactsImporterGenerator('data/tasks.csv', ['dt_add', 'category_id', 'description', 'expire', 'name', 'address', 'budget', 'lat', 'long']);
 foreach($taskTab->getArrayFromFile() as $value) {
-  $tasks[] = $value;
+  $tasks[] = array_combine(['id', 'creation_time', 'category_id', 'description', 'deadline', 'name' ,  'location_id', 'budget', 'lat', 'long'], array_values($value));
 }
+
 for ($i = 0; $i < count($tasks); $i++) {
     $flag = 0;
     for ($j = 0; $j < count($cities); $j++) {
-        if($tasks[$i]['address'] == $cities[$j]['city']){
-            $tasks[$i]['address'] = $cities[$j]['id'];
+        if($tasks[$i]['location_id'] == $cities[$j]['city']){
+            $tasks[$i]['location_id'] = $cities[$j]['id'];
             $flag = 1;
         }
     }
     if($flag==0){
-        array_push($cities, ['id'=>count($cities)+1, 'city'=>$tasks[$i]['address'], 'lat' =>$tasks[$i]['lat'], 'long' =>$tasks[$i]['long'] ]);
+        array_push($cities, ['id'=>count($cities)+1, 'city'=>$tasks[$i]['location_id'], 'lat' =>$tasks[$i]['lat'], 'long' =>$tasks[$i]['long'] ]);
     }
 }
 for ($i = 0; $i < count($tasks); $i++) {
      for ($j = 0; $j < count($cities); $j++) {
-          if($tasks[$i]['address'] == $cities[$j]['city']){
-                $tasks[$i]['address'] = $cities[$j]['id'];
+          if($tasks[$i]['location_id'] == $cities[$j]['city']){
+                $tasks[$i]['location_id'] = $cities[$j]['id'];
           }
      }
     $tasks[$i]['customer_id'] = mt_rand(0, $count_user);
     $tasks[$i]['status'] = Task::STATUS_NEW;
+    unset($tasks[$i]['lat']);
+    unset($tasks[$i]['long']);
+
 }
 
 $count_task = count($tasks);
 
-require_once 'createdb/tasks.php';
-require_once 'createdb/locations.php';
+$queryBuilderTask = new QueryBuilder('task'); // конструктор принимает имя таблицы
+$result = $queryBuilderTask->getInsertQuery($tasks); // Передаем массив с данными записи и получаем строку, содержащую INSERT запрос
+file_put_contents("../docs/tasks.sql", $result);
+
+
+$queryBuilderLocation = new QueryBuilder('locations'); // конструктор принимает имя таблицы
+$result = $queryBuilderLocation->getInsertQuery($cities); // Передаем массив с данными записи и получаем строку, содержащую INSERT запрос
+file_put_contents("../docs/locations.sql", $result);
 
 $opinionTab = new ContactsImporterGenerator('data/opinions.csv', ['dt_add', 'rate', 'description']);
 foreach($opinionTab->getArrayFromFile() as $value) {
-  $opinions[] = $value;
+  $opinions[] =  array_combine(['id', 'creation_time', 'assessment', 'comment'], array_values($value));
+
 }
 for ($i = 0; $i < count($opinions); $i++){
     $opinions[$i]['executor_id'] = mt_rand(1, $count_user);
@@ -119,8 +135,11 @@ for ($i = 0; $i < count($opinions); $i++){
     $opinions[$i]['customer_id'] = $rand;
     $opinions[$i]['task_id'] = mt_rand(1, $count_task);
 }
+$queryBuilderReviews = new QueryBuilder('reviews'); // конструктор принимает имя таблицы
+$result = $queryBuilderReviews->getInsertQuery($opinions);
+file_put_contents("../docs/reviews.sql", $result);
 
-require_once 'createdb/reviews.php';
+
 
 $repliesTab = new ContactsImporterGenerator('data/replies.csv', ['dt_add', 'rate', 'description']);
 foreach($repliesTab->getArrayFromFile() as $value) {
