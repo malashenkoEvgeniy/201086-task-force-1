@@ -6,13 +6,14 @@ require_once __DIR__ . '/../vendor/autoload.php';
 $categories = [];
 $categoryTab = new ContactsImporterGenerator('data/categories.csv', ['name', 'icon']);
 foreach($categoryTab->getArrayFromFile() as $value) {
-  $categories[] = $value;
-}
-//require_once 'createdb/categories.php';
-$queryStr = "`id`, `title`, `title_en`";
-$queryBuilder = new QueryBuilder('categories'); // конструктор принимает имя таблицы
-$result = $queryBuilder->getInsertQuery($categories, $queryStr); // Передаем массив с данными записи и получаем строку, содержащую INSERT запрос
+    $categories[] =  array_combine(['id', 'title', 'title_en'], array_values($value));
+    }
+
+$queryBuilderCategory = new QueryBuilder('categories'); // конструктор принимает имя таблицы
+$result = $queryBuilderCategory->getInsertQuery($categories); // Передаем массив с данными записи и получаем строку, содержащую INSERT запрос
+echo $result;
 file_put_contents("../docs/categories.sql", $result);
+/***********************************************************************************/
 
 $cities = [];
 $cityTab = new ContactsImporterGenerator('data/cities.csv', ['city','lat','long']);
@@ -62,9 +63,17 @@ for ($i = 0; $i < count($user); $i++) {
           }
      }
 }
-$count_user = count($user);
+$count_user = count($user);/*
+echo '<pre>';
+print_r($user);
+echo '</pre>';
 
-require_once 'createdb/users.php';
+//require_once 'createdb/users.php';
+/*
+$queryStr = "`id`, `creation_time`, `name`, `email`, `location_id`, `birthday`, `info`, `password`, `phone`, `skype`";
+$queryBuilderUser = new QueryBuilder('users'); // конструктор принимает имя таблицы
+$result = $queryBuilderUser->getInsertQuery($user, $queryStr); // Передаем массив с данными записи и получаем строку, содержащую INSERT запрос
+file_put_contents("../docs/users.sql", $result);*/
 
 $taskTab = new ContactsImporterGenerator('data/tasks.csv', ['dt_add', 'category_id', 'description', 'expire', 'name', 'address', 'budget', 'lat', 'long']);
 foreach($taskTab->getArrayFromFile() as $value) {
