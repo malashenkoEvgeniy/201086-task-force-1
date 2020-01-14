@@ -63,7 +63,7 @@ CREATE DATABASE taskforce
     `comment` TEXT NULL
   );
 
-  CREATE TABLE task (
+  CREATE TABLE tasks (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `creation_time` DATETIME DEFAULT NOW() NOT NULL,
     `name` VARCHAR(128) NOT NULL,
