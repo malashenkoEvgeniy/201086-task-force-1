@@ -1,26 +1,35 @@
 <?php
 
-use app\classes\CategorySqlFileCreater;
+
+use app\classes\sqlFileCreater\CategorySqlFileCreater;
+use app\classes\sqlFileCreater\UsersSqlFileCreater;
+use app\classes\sqlFileCreater\ProfilesSqlFileCreater;
+use app\classes\sqlFileCreater\CitiesSqlFileCreater;
+use app\classes\sqlFileCreater\TasksSqlFileCreater;
+use app\classes\sqlFileCreater\ReviewsSqlFileCreater;
+
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__.'\..\function.php';
 
-$categories = new CategorySqlFileCreater(__DIR__ . '\data\categories.csv');
-$categories->queryBuildInFile('categories', $categories::CATAGORIES_FILE, $categories::CATAGORIES_FILDS);
+$category = new CategorySqlFileCreater(__DIR__ . '/data/categories.csv');
+$category->execute();
 
-$cities = new CategorySqlFileCreater(__DIR__ . '\data\cities.csv');
+$profiles = new ProfilesSqlFileCreater(__DIR__ . '\data\profiles.csv');
+$profilesArr = $profiles->execute();
 
-$profiles = new CategorySqlFileCreater(__DIR__ . '\data\profiles.csv');
+$cities = new CitiesSqlFileCreater(__DIR__ . '\data\cities.csv');
+$cityArr = $cities->execute();
 
-$users = new CategorySqlFileCreater(__DIR__ . '\data\users.csv');
-$user = $users->createUsersFile($profiles->execute($profiles::PROFILES_FILE, $profiles::PROFILES_FILDS), $users->execute($users::USERS_FILE, $users::USERS_FILDS), $cities->execute($cities::CITIES_FILE, $cities::CITIES_FILDS));
-$users->queryBuildInFile('users', $users::USERS_FILE, $users::USERS_FILDS, $user);
 
-$tasks = new CategorySqlFileCreater(__DIR__ . '\data\tasks.csv');
-$arrTask = $tasks->execute($tasks::TASK_FILE, $tasks::TASK_FILDS);
+$users = new UsersSqlFileCreater(__DIR__ . '\data\users.csv');
+$users->execute();
+$user = $users->createUsersFile($profilesArr, $cityArr);
 
-$arrTaskForQuery = $tasks->createTasksFile($arrTask, $users->location, count($user));
-$tasks->queryBuildInFile('tasks', $tasks::TASK_FILE, $tasks::TASK_FILDS, $arrTaskForQuery);
+$tasks = new TasksSqlFileCreater(__DIR__ . '\data\tasks.csv');
+$arrTask = $tasks->execute();
+$tasks->createTasksFile($users->cities, count($user));
 
-$reviews = new CategorySqlFileCreater(__DIR__ . '\data\opinions.csv');
-$arrReviews = $reviews->execute($reviews::REVIEWS_FILE, $reviews::REVIEWS_FILDS);
-$reviews->createReviewsFile($arrReviews, count($user), count($arrTask));
+
+$reviews = new ReviewsSqlFileCreater(__DIR__ . '\data\opinions.csv');
+$reviews->execute();
+$reviews->createReviewsFile(count($user), count($arrTask));
