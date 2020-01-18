@@ -12,7 +12,6 @@ class ContactsImporterGenerator
   private  $columns;
   private $fp;
   private  $result = [];
-  //private ?string $error = null;
   /**
    * ContactsImporter constructor.
    * @param $filename
@@ -49,7 +48,23 @@ class ContactsImporterGenerator
       }
   }
   public function getData():array {
-      return $this->result;
+      $counter = 0;
+      $arr = [];
+      $arr_result = [];
+      foreach ($this->result as $item) {
+          if($counter < count($item)) $counter = count($item) - 1;
+      }
+      foreach ($this->result as $item) {
+          for ($i = 0; $i <=$counter; $i++){
+              if(!isset($item[$i])) {
+                  $item[$i] = '';
+              }
+              $arr[$i] = $item[$i];
+          }
+          array_push($arr_result, $arr);
+
+      }
+      return $arr_result;
   }
   private function getHeaderData():?array {
       rewind($this->fp);
@@ -86,12 +101,15 @@ class ContactsImporterGenerator
     } catch (FileFormatException $e) {
         error_log("Неверный форма файла импорта: " . $e->getMessage());
     }
+
     for ($i = 0; $i < count($this->getData()); $i++) {
+
         if(!empty($this->getData()[$i][0])) {
             $newArray[$i]['id'] = $i + 1;
             $k = 0;
             foreach ($this->columns as $value){
                 $newArray[$i][$value] = $this->getData()[$i][$k];
+                //echo $this->getData()[$i][$k].'<hr>';
                 $k++;
             }
         }
