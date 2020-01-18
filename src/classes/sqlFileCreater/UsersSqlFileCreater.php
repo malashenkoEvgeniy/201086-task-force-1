@@ -29,13 +29,17 @@ class UsersSqlFileCreater
         }
         return $arr;
     }
-    public function createUsersFile($profiles, $cities)
+    public function createUsersFile($users, $profiles, $cities)
     {
         $counter = count($cities)+1;
         for ($i = 0; $i < count($profiles); $i++) {
-            if($profiles[$i]['id']==$this->execute()[$i]['id']){
-                $user[$i] = array_merge($profiles[$i], $this->execute()[$i]);
-            }
+           if(!isset( $users[$i])){
+               $users[$i]['email'] = '';
+               $users[$i]['name'] = '';
+               $users[$i]['password'] = '';
+               $users[$i]['creation_time'] = '';
+           }
+           $user[$i] = array_merge($profiles[$i], $users[$i]);
         }
 
         for ($i = 0; $i < count($user); $i++) {
