@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-use Yii;
+use Yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "categories".
@@ -11,7 +11,7 @@ use Yii;
  * @property string $title
  * @property string $title_en
  */
-class Categories extends \yii\db\ActiveRecord
+class Categories extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -43,4 +43,12 @@ class Categories extends \yii\db\ActiveRecord
             'title_en' => 'Title En',
         ];
     }
+
+	public function getTasks() {
+		return $this->hasMany(Tasks::class, ['category_id' => 'id'])->inverseOf('categories');
+	}
+
+	public function getUsersCategories() {
+		return $this->hasMany(UsersCategories::class, ['category_id' => 'id']);
+	}
 }

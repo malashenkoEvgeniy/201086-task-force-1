@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-use Yii;
+use Yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "tasks".
@@ -19,7 +19,7 @@ use Yii;
  * @property int|null $executor_id
  * @property string|null $status
  */
-class Tasks extends \yii\db\ActiveRecord
+class Tasks extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -62,4 +62,36 @@ class Tasks extends \yii\db\ActiveRecord
             'status' => 'Status',
         ];
     }
+
+	public function getCategories() {
+		return $this->hasOne(Categories::class, ['id' => 'category_id']);
+	}
+
+	public function getPropasal() {
+		return $this->hasMany(Proposal::class, ['task_id' => 'id']);
+	}
+
+	public function getIdReviews() {
+		return $this->hasOne(Reviews::class, ['task_id' => 'id']);
+	}
+
+	public function getIdLocation() {
+		return $this->hasOne(Locations::class, ['id' => 'location_id']);
+	}
+
+	public function getIdTasksExecutor() {
+		return $this->hasOne(Users::class, ['executor_id' => 'id']);
+	}
+
+	public function getIdTasksCustomer() {
+		return $this->hasOne(Users::class, ['customer_id' => 'id']);
+	}
+
+	public function getChatMessages() {
+		return $this->hasMany(ChatMessages::class, ['task_id' => 'id'])->inverseOf('chatMessages');
+	}
+
+	public function getIdFile() {
+		return $this->hasOne(File::class, ['task_id' => 'id']);
+	}
 }

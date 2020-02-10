@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-use Yii;
+use Yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "users_categories".
@@ -11,7 +11,7 @@ use Yii;
  * @property int $user_id
  * @property int $category_id
  */
-class UsersCategories extends \yii\db\ActiveRecord
+class UsersCategories extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -43,4 +43,12 @@ class UsersCategories extends \yii\db\ActiveRecord
             'category_id' => 'Category ID',
         ];
     }
+
+	public function getIdCategories() {
+		return $this->hasOne(Categories::class, ['id' => 'category_id']);
+	}
+
+	public function getIdUsers() {
+		return $this->hasOne(Users::class, ['id' => 'user_id']);
+	}
 }

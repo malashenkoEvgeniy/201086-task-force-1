@@ -48,4 +48,12 @@ class Proposal extends \yii\db\ActiveRecord
             'user_id' => 'User ID',
         ];
     }
+
+	public function getIdTasks() {
+		return $this->hasOne(Tasks::class, ['id' => 'task_id']);
+	}
+
+	public function getIdUsers() {
+		return $this->hasOne(Users::class, ['id' => 'user_id']);
+	}
 }

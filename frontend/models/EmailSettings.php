@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-use Yii;
+use Yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "email_settings".
@@ -15,7 +15,7 @@ use Yii;
  * @property int $start_task
  * @property int $completion_task
  */
-class EmailSettings extends \yii\db\ActiveRecord
+class EmailSettings extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -51,4 +51,7 @@ class EmailSettings extends \yii\db\ActiveRecord
             'completion_task' => 'Completion Task',
         ];
     }
+	public function getIdUsers() {
+		return $this->hasOne(Users::class, ['id' => 'user_id']);
+	}
 }

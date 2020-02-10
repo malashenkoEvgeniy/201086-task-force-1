@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-use Yii;
+use Yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "users".
@@ -23,7 +23,7 @@ use Yii;
  * @property int $show_contacts_for_customer
  * @property int $hide_profile
  */
-class Users extends \yii\db\ActiveRecord
+class Users extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -70,4 +70,36 @@ class Users extends \yii\db\ActiveRecord
             'hide_profile' => 'Hide Profile',
         ];
     }
+
+	public function getPropasal() {
+		return $this->hasMany(Proposal::class, ['user_id' => 'id']);
+	}
+
+	public function getUsersCategories() {
+		return $this->hasMany(UsersCategories::class, ['user_id' => 'id']);
+	}
+
+	public function getIdLocation() {
+		return $this->hasOne(Locations::class, ['id' => 'location_id']);
+	}
+
+	public function getIdEmailSettings() {
+		return $this->hasOne(EmailSettings::class, ['id' => 'location_id']);
+	}
+
+	public function getIdReviewsExecutor() {
+		return $this->hasOne(Reviews::class, ['executor_id' => 'id']);
+	}
+
+	public function getIdReviewsCustomer() {
+		return $this->hasOne(Reviews::class, ['customer_id' => 'id']);
+	}
+
+	public function getChatMessages() {
+		return $this->hasMany(ChatMessages::class, ['writer_id' => 'id'])->inverseOf('chatMessages');
+	}
+
+	public function getIdFile() {
+		return $this->hasOne(File::class, ['user_id' => 'id']);
+	}
 }

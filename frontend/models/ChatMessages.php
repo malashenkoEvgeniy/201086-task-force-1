@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-use Yii;
+use Yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "chat_messages".
@@ -14,7 +14,7 @@ use Yii;
  * @property string $creation_time
  * @property int $viewed
  */
-class ChatMessages extends \yii\db\ActiveRecord
+class ChatMessages extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -51,4 +51,13 @@ class ChatMessages extends \yii\db\ActiveRecord
             'viewed' => 'Viewed',
         ];
     }
+
+	public function getIdTasks() {
+		return $this->hasOne(Tasks::class, ['id' => 'task_id']);
+	}
+
+	public function getIdUsers() {
+		return $this->hasOne(Users::class, ['id' => 'writer_id']);
+	}
+
 }

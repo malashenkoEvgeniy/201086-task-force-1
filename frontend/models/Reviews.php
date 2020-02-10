@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-use Yii;
+use Yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "reviews".
@@ -15,7 +15,7 @@ use Yii;
  * @property int|null $task_id
  * @property string|null $comment
  */
-class Reviews extends \yii\db\ActiveRecord
+class Reviews extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -52,4 +52,16 @@ class Reviews extends \yii\db\ActiveRecord
             'comment' => 'Comment',
         ];
     }
+
+	public function getIdTasks() {
+		return $this->hasOne(Tasks::class, ['id' => 'task_id']);
+	}
+
+	public function getIdExecutor() {
+		return $this->hasOne(Users::class, ['id' => 'executor_id']);
+	}
+
+	public function getIdCustomer() {
+		return $this->hasOne(Users::class, ['id' => 'customer_id']);
+	}
 }

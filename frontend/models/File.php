@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-use Yii;
+use Yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "file".
@@ -12,7 +12,7 @@ use Yii;
  * @property int $user_id
  * @property int|null $task_id
  */
-class File extends \yii\db\ActiveRecord
+class File extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -46,4 +46,12 @@ class File extends \yii\db\ActiveRecord
             'task_id' => 'Task ID',
         ];
     }
+
+	public function getIdTasks() {
+		return $this->hasOne(Tasks::class, ['id' => 'task_id']);
+	}
+
+	public function getIdUsers() {
+		return $this->hasOne(Users::class, ['id' => 'user_id']);
+	}
 }

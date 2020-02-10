@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-use Yii;
+use Yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "locations".
@@ -12,7 +12,7 @@ use Yii;
  * @property string $lat
  * @property string $long
  */
-class Locations extends \yii\db\ActiveRecord
+class Locations extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -45,4 +45,12 @@ class Locations extends \yii\db\ActiveRecord
             'long' => 'Long',
         ];
     }
+
+	public function getUsers() {
+		return $this->hasMany(Users::class, ['location_id' => 'id'])->inverseOf('usersLoc');
+	}
+
+	public function getTasks() {
+		return $this->hasMany(Tasks::class, ['location_id' => 'id'])->inverseOf('tasksLoc');
+	}
 }
