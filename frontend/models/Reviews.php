@@ -2,18 +2,23 @@
 
 namespace app\models;
 
-use Yii\db\ActiveRecord;
+use yii\db\ActiveRecord;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "reviews".
  *
  * @property int $id
  * @property string $creation_time
- * @property int|null $executor_id
  * @property int|null $customer_id
+ * @property int|null $executor_id
  * @property int|null $assessment
  * @property int|null $task_id
  * @property string|null $comment
+ *
+ * @property Users $customer
+ * @property Users $executor
+ * @property Tasks $task
  */
 class Reviews extends ActiveRecord
 {
@@ -32,8 +37,11 @@ class Reviews extends ActiveRecord
     {
         return [
             [['creation_time'], 'safe'],
-            [['executor_id', 'customer_id', 'assessment', 'task_id'], 'integer'],
+            [['customer_id', 'executor_id', 'assessment', 'task_id'], 'integer'],
             [['comment'], 'string'],
+            [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['customer_id' => 'id']],
+            [['executor_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['executor_id' => 'id']],
+            [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Tasks::className(), 'targetAttribute' => ['task_id' => 'id']],
         ];
     }
 
@@ -45,23 +53,41 @@ class Reviews extends ActiveRecord
         return [
             'id' => 'ID',
             'creation_time' => 'Creation Time',
-            'executor_id' => 'Executor ID',
             'customer_id' => 'Customer ID',
+            'executor_id' => 'Executor ID',
             'assessment' => 'Assessment',
             'task_id' => 'Task ID',
             'comment' => 'Comment',
         ];
     }
 
-	public function getIdTasks() {
-		return $this->hasOne(Tasks::class, ['id' => 'task_id']);
-	}
+    /**
+     * Gets query for [[Customer]].
+     *
+     * @return ActiveQuery
+     */
+    public function getCustomer()
+    {
+        return $this->hasOne(Users::className(), ['id' => 'customer_id']);
+    }
 
-	public function getIdExecutor() {
-		return $this->hasOne(Users::class, ['id' => 'executor_id']);
-	}
+    /**
+     * Gets query for [[Executor]].
+     *
+     * @return ActiveQuery
+     */
+    public function getExecutor()
+    {
+        return $this->hasOne(Users::className(), ['id' => 'executor_id']);
+    }
 
-	public function getIdCustomer() {
-		return $this->hasOne(Users::class, ['id' => 'customer_id']);
-	}
+    /**
+     * Gets query for [[Task]].
+     *
+     * @return ActiveQuery
+     */
+    public function getTask()
+    {
+        return $this->hasOne(Tasks::className(), ['id' => 'task_id']);
+    }
 }

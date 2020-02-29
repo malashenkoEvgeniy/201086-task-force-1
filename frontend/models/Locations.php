@@ -2,7 +2,8 @@
 
 namespace app\models;
 
-use Yii\db\ActiveRecord;
+use yii\db\ActiveRecord;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "locations".
@@ -11,6 +12,9 @@ use Yii\db\ActiveRecord;
  * @property string $city
  * @property string $lat
  * @property string $long
+ *
+ * @property Tasks[] $tasks
+ * @property Users[] $users
  */
 class Locations extends ActiveRecord
 {
@@ -30,6 +34,7 @@ class Locations extends ActiveRecord
         return [
             [['city', 'lat', 'long'], 'required'],
             [['city', 'lat', 'long'], 'string', 'max' => 128],
+            [['city'], 'unique'],
         ];
     }
 
@@ -46,11 +51,23 @@ class Locations extends ActiveRecord
         ];
     }
 
-	public function getUsers() {
-		return $this->hasMany(Users::class, ['location_id' => 'id'])->inverseOf('usersLoc');
-	}
+    /**
+     * Gets query for [[Tasks]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTasks()
+    {
+        return $this->hasMany(Tasks::className(), ['location_id' => 'id']);
+    }
 
-	public function getTasks() {
-		return $this->hasMany(Tasks::class, ['location_id' => 'id'])->inverseOf('tasksLoc');
-	}
+    /**
+     * Gets query for [[Users]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUsers()
+    {
+        return $this->hasMany(Users::className(), ['location_id' => 'id']);
+    }
 }

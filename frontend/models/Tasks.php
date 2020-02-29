@@ -2,7 +2,8 @@
 
 namespace app\models;
 
-use Yii\db\ActiveRecord;
+use yii\db\ActiveRecord;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "tasks".
@@ -12,12 +13,21 @@ use Yii\db\ActiveRecord;
  * @property string $name
  * @property int $category_id
  * @property string|null $description
- * @property int|null $location_id
+ * @property int $location_id
  * @property int|null $budget
  * @property string $deadline
  * @property int $customer_id
  * @property int|null $executor_id
  * @property string|null $status
+ *
+ * @property ChatMessages[] $chatMessages
+ * @property File[] $files
+ * @property Proposal[] $proposals
+ * @property Reviews[] $reviews
+ * @property Categories $category
+ * @property Users $customer
+ * @property Users $executor
+ * @property Locations $location
  */
 class Tasks extends ActiveRecord
 {
@@ -36,10 +46,14 @@ class Tasks extends ActiveRecord
     {
         return [
             [['creation_time', 'deadline'], 'safe'],
-            [['name', 'category_id', 'deadline', 'customer_id'], 'required'],
+            [['name', 'category_id', 'location_id', 'deadline', 'customer_id'], 'required'],
             [['category_id', 'location_id', 'budget', 'customer_id', 'executor_id'], 'integer'],
             [['description'], 'string'],
             [['name', 'status'], 'string', 'max' => 128],
+            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Categories::className(), 'targetAttribute' => ['category_id' => 'id']],
+            [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['customer_id' => 'id']],
+            [['executor_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['executor_id' => 'id']],
+            [['location_id'], 'exist', 'skipOnError' => true, 'targetClass' => Locations::className(), 'targetAttribute' => ['location_id' => 'id']],
         ];
     }
 
@@ -63,35 +77,83 @@ class Tasks extends ActiveRecord
         ];
     }
 
-	public function getCategories() {
-		return $this->hasOne(Categories::class, ['id' => 'category_id']);
-	}
+    /**
+     * Gets query for [[ChatMessages]].
+     *
+     * @return ActiveQuery
+     */
+    public function getChatMessages()
+    {
+        return $this->hasMany(ChatMessages::className(), ['task_id' => 'id']);
+    }
 
-	public function getPropasal() {
-		return $this->hasMany(Proposal::class, ['task_id' => 'id']);
-	}
+    /**
+     * Gets query for [[Files]].
+     *
+     * @return ActiveQuery
+     */
+    public function getFiles()
+    {
+        return $this->hasMany(File::className(), ['task_id' => 'id']);
+    }
 
-	public function getIdReviews() {
-		return $this->hasOne(Reviews::class, ['task_id' => 'id']);
-	}
+    /**
+     * Gets query for [[Proposals]].
+     *
+     * @return ActiveQuery
+     */
+    public function getProposals()
+    {
+        return $this->hasMany(Proposal::className(), ['task_id' => 'id']);
+    }
 
-	public function getIdLocation() {
-		return $this->hasOne(Locations::class, ['id' => 'location_id']);
-	}
+    /**
+     * Gets query for [[Reviews]].
+     *
+     * @return ActiveQuery
+     */
+    public function getReviews()
+    {
+        return $this->hasMany(Reviews::className(), ['task_id' => 'id']);
+    }
 
-	public function getIdTasksExecutor() {
-		return $this->hasOne(Users::class, ['executor_id' => 'id']);
-	}
+    /**
+     * Gets query for [[Category]].
+     *
+     * @return ActiveQuery
+     */
+    public function getCategory()
+    {
+        return $this->hasOne(Categories::className(), ['id' => 'category_id']);
+    }
 
-	public function getIdTasksCustomer() {
-		return $this->hasOne(Users::class, ['customer_id' => 'id']);
-	}
+    /**
+     * Gets query for [[Customer]].
+     *
+     * @return ActiveQuery
+     */
+    public function getCustomer()
+    {
+        return $this->hasOne(Users::className(), ['id' => 'customer_id']);
+    }
 
-	public function getChatMessages() {
-		return $this->hasMany(ChatMessages::class, ['task_id' => 'id'])->inverseOf('chatMessages');
-	}
+    /**
+     * Gets query for [[Executor]].
+     *
+     * @return ActiveQuery
+     */
+    public function getExecutor()
+    {
+        return $this->hasOne(Users::className(), ['id' => 'executor_id']);
+    }
 
-	public function getIdFile() {
-		return $this->hasOne(File::class, ['task_id' => 'id']);
-	}
+    /**
+     * Gets query for [[Location]].
+     *
+     * @return ActiveQuery
+     */
+    public function getLocation()
+    {
+        return $this->hasOne(Locations::className(), ['id' => 'location_id']);
+    }
 }

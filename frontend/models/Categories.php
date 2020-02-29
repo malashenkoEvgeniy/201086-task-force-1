@@ -2,7 +2,9 @@
 
 namespace app\models;
 
-use Yii\db\ActiveRecord;
+use yii\db\ActiveRecord;
+use yii\db\ActiveQuery;
+
 
 /**
  * This is the model class for table "categories".
@@ -10,6 +12,9 @@ use Yii\db\ActiveRecord;
  * @property int $id
  * @property string $title
  * @property string $title_en
+ *
+ * @property Tasks[] $tasks
+ * @property UsersCategories[] $usersCategories
  */
 class Categories extends ActiveRecord
 {
@@ -29,6 +34,7 @@ class Categories extends ActiveRecord
         return [
             [['title', 'title_en'], 'required'],
             [['title', 'title_en'], 'string', 'max' => 128],
+            [['title'], 'unique'],
         ];
     }
 
@@ -44,11 +50,23 @@ class Categories extends ActiveRecord
         ];
     }
 
-	public function getTasks() {
-		return $this->hasMany(Tasks::class, ['category_id' => 'id'])->inverseOf('categories');
-	}
+    /**
+     * Gets query for [[Tasks]].
+     *
+     * @return ActiveQuery
+     */
+    public function getTasks()
+    {
+        return $this->hasMany(Tasks::className(), ['category_id' => 'id']);
+    }
 
-	public function getUsersCategories() {
-		return $this->hasMany(UsersCategories::class, ['category_id' => 'id']);
-	}
+    /**
+     * Gets query for [[UsersCategories]].
+     *
+     * @return ActiveQuery
+     */
+    public function getUsersCategories()
+    {
+        return $this->hasMany(UsersCategories::className(), ['category_id' => 'id']);
+    }
 }

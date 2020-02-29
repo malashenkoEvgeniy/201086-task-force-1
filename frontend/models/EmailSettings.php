@@ -2,7 +2,8 @@
 
 namespace app\models;
 
-use Yii\db\ActiveRecord;
+use yii\db\ActiveRecord;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "email_settings".
@@ -14,6 +15,8 @@ use Yii\db\ActiveRecord;
  * @property int $refuse
  * @property int $start_task
  * @property int $completion_task
+ *
+ * @property Users $user
  */
 class EmailSettings extends ActiveRecord
 {
@@ -33,6 +36,7 @@ class EmailSettings extends ActiveRecord
         return [
             [['user_id', 'proposal', 'chat_message', 'refuse', 'start_task', 'completion_task'], 'required'],
             [['user_id', 'proposal', 'chat_message', 'refuse', 'start_task', 'completion_task'], 'integer'],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -51,7 +55,14 @@ class EmailSettings extends ActiveRecord
             'completion_task' => 'Completion Task',
         ];
     }
-	public function getIdUsers() {
-		return $this->hasOne(Users::class, ['id' => 'user_id']);
-	}
+
+    /**
+     * Gets query for [[User]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(Users::className(), ['id' => 'user_id']);
+    }
 }
