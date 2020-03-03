@@ -3,8 +3,6 @@
 namespace app\models;
 
 use yii\db\ActiveRecord;
-use yii\db\ActiveQuery;
-
 
 /**
  * This is the model class for table "categories".
@@ -53,20 +51,22 @@ class Categories extends ActiveRecord
     /**
      * Gets query for [[Tasks]].
      *
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getTasks()
     {
         return $this->hasMany(Tasks::className(), ['category_id' => 'id']);
     }
 
-    /**
-     * Gets query for [[UsersCategories]].
-     *
-     * @return ActiveQuery
-     */
-    public function getUsersCategories()
-    {
-        return $this->hasMany(UsersCategories::className(), ['category_id' => 'id']);
-    }
+	/**
+	 * Gets query for [[UsersCategories]].
+	 *
+	 * @return \yii\db\ActiveQuery
+	 * @throws \yii\base\InvalidConfigException
+	 */
+	public function getUsers()
+	{
+		return $this->hasMany(Users::className(), ['id' => 'user_id'])
+			->viaTable('users_categories', ['category_id' => 'id']);
+	}
 }

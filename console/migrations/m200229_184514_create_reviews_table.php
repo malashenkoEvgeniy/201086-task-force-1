@@ -26,6 +26,7 @@ class m200229_184514_create_reviews_table extends Migration
             'task_id' => $this->integer(),
             'comment' => $this->text(),
         ]);
+			$this->alterColumn('{{%reviews}}', 'id', $this->integer().' NOT NULL AUTO_INCREMENT');
 
         // creates index for column `customer_id`
         $this->createIndex(

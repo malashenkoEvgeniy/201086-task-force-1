@@ -3,7 +3,6 @@
 namespace app\models;
 
 use yii\db\ActiveRecord;
-use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "email_settings".

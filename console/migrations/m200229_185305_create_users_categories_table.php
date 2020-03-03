@@ -21,6 +21,7 @@ class m200229_185305_create_users_categories_table extends Migration
             'user_id' => $this->integer()->notNull(),
             'category_id' => $this->integer()->notNull(),
         ]);
+			$this->alterColumn('{{%users_categories}}', 'id', $this->integer().' NOT NULL AUTO_INCREMENT');
 
         // creates index for column `user_id`
         $this->createIndex(

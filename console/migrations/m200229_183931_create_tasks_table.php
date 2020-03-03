@@ -31,6 +31,7 @@ class m200229_183931_create_tasks_table extends Migration
             'executor_id' => $this->integer(),
             'status' => $this->string(128),
         ]);
+			$this->alterColumn('{{%tasks}}', 'id', $this->integer().' NOT NULL AUTO_INCREMENT');
 
         // creates index for column `category_id`
         $this->createIndex(

@@ -3,7 +3,6 @@
 namespace app\models;
 
 use yii\db\ActiveRecord;
-use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "tasks".
@@ -80,7 +79,7 @@ class Tasks extends ActiveRecord
     /**
      * Gets query for [[ChatMessages]].
      *
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getChatMessages()
     {
@@ -90,7 +89,7 @@ class Tasks extends ActiveRecord
     /**
      * Gets query for [[Files]].
      *
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getFiles()
     {
@@ -100,7 +99,7 @@ class Tasks extends ActiveRecord
     /**
      * Gets query for [[Proposals]].
      *
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getProposals()
     {
@@ -110,7 +109,7 @@ class Tasks extends ActiveRecord
     /**
      * Gets query for [[Reviews]].
      *
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getReviews()
     {
@@ -120,7 +119,7 @@ class Tasks extends ActiveRecord
     /**
      * Gets query for [[Category]].
      *
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getCategory()
     {
@@ -130,7 +129,7 @@ class Tasks extends ActiveRecord
     /**
      * Gets query for [[Customer]].
      *
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getCustomer()
     {
@@ -140,7 +139,7 @@ class Tasks extends ActiveRecord
     /**
      * Gets query for [[Executor]].
      *
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getExecutor()
     {
@@ -150,7 +149,7 @@ class Tasks extends ActiveRecord
     /**
      * Gets query for [[Location]].
      *
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getLocation()
     {

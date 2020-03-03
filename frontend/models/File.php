@@ -3,7 +3,6 @@
 namespace app\models;
 
 use yii\db\ActiveRecord;
-use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "file".
@@ -56,7 +55,7 @@ class File extends ActiveRecord
     /**
      * Gets query for [[Task]].
      *
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getTask()
     {
@@ -66,7 +65,7 @@ class File extends ActiveRecord
     /**
      * Gets query for [[User]].
      *
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getUser()
     {

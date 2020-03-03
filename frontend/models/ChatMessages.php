@@ -3,7 +3,6 @@
 namespace app\models;
 
 use yii\db\ActiveRecord;
-use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "chat_messages".
@@ -61,7 +60,7 @@ class ChatMessages extends ActiveRecord
     /**
      * Gets query for [[Task]].
      *
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getTask()
     {
@@ -71,7 +70,7 @@ class ChatMessages extends ActiveRecord
     /**
      * Gets query for [[Writer]].
      *
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getWriter()
     {

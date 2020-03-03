@@ -17,6 +17,7 @@ class m200229_183557_create_categories_table extends Migration
             'title' => $this->string(128)->notNull()->unique(),
             'title_en' => $this->string(128)->notNull(),
         ]);
+			$this->alterColumn('{{%categories}}', 'id', $this->integer().' NOT NULL AUTO_INCREMENT');
     }
 
     /**

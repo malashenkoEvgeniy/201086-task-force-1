@@ -49,6 +49,7 @@ class m200229_183751_create_users_table extends Migration
             'id',
             'CASCADE'
         );
+			$this->alterColumn('{{%users}}', 'id', $this->integer().' NOT NULL AUTO_INCREMENT');
     }
 
     /**

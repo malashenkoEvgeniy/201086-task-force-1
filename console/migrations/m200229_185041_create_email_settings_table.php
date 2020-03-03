@@ -24,6 +24,7 @@ class m200229_185041_create_email_settings_table extends Migration
             'start_task' => $this->tinyInteger()->notNull(),
             'completion_task' => $this->tinyInteger()->notNull(),
         ]);
+			$this->alterColumn('{{%email_settings}}', 'id', $this->integer().' NOT NULL AUTO_INCREMENT');
 
         // creates index for column `user_id`
         $this->createIndex(

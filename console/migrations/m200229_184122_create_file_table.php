@@ -22,6 +22,7 @@ class m200229_184122_create_file_table extends Migration
             'user_id' => $this->integer()->notNull(),
             'task_id' => $this->integer(),
         ]);
+			$this->alterColumn('{{%file}}', 'id', $this->integer().' NOT NULL AUTO_INCREMENT');
 
         // creates index for column `user_id`
         $this->createIndex(

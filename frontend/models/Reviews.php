@@ -3,7 +3,6 @@
 namespace app\models;
 
 use yii\db\ActiveRecord;
-use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "reviews".
@@ -64,7 +63,7 @@ class Reviews extends ActiveRecord
     /**
      * Gets query for [[Customer]].
      *
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getCustomer()
     {
@@ -74,7 +73,7 @@ class Reviews extends ActiveRecord
     /**
      * Gets query for [[Executor]].
      *
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getExecutor()
     {
@@ -84,7 +83,7 @@ class Reviews extends ActiveRecord
     /**
      * Gets query for [[Task]].
      *
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getTask()
     {

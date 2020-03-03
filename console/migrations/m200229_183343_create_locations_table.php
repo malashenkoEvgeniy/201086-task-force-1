@@ -18,6 +18,7 @@ class m200229_183343_create_locations_table extends Migration
             'lat' => $this->string(128)->notNull(),
             'long' => $this->string(128)->notNull(),
         ]);
+        $this->alterColumn('{{%locations}}', 'id', $this->integer().' NOT NULL AUTO_INCREMENT');
     }
 
     /**

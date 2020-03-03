@@ -24,6 +24,7 @@ class m200229_184313_create_chat_messages_table extends Migration
             'creation_time' => $this->dateTime()->defaultValue(0)->notNull(),
             'viewed' => $this->tinyInteger()->notNull(),
         ]);
+			$this->alterColumn('{{%chat_messages}}', 'id', $this->integer().' NOT NULL AUTO_INCREMENT');
 
         // creates index for column `task_id`
         $this->createIndex(

@@ -3,7 +3,6 @@
 namespace app\models;
 
 use yii\db\ActiveRecord;
-use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "users".
@@ -87,7 +86,7 @@ class Users extends ActiveRecord
     /**
      * Gets query for [[ChatMessages]].
      *
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getChatMessages()
     {
@@ -97,7 +96,7 @@ class Users extends ActiveRecord
     /**
      * Gets query for [[EmailSettings]].
      *
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getEmailSettings()
     {
@@ -107,7 +106,7 @@ class Users extends ActiveRecord
     /**
      * Gets query for [[Files]].
      *
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getFiles()
     {
@@ -117,7 +116,7 @@ class Users extends ActiveRecord
     /**
      * Gets query for [[Proposals]].
      *
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getProposals()
     {
@@ -127,9 +126,9 @@ class Users extends ActiveRecord
     /**
      * Gets query for [[Reviews]].
      *
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
-    public function getReviews()
+    public function getCustomerReviews()
     {
         return $this->hasMany(Reviews::className(), ['customer_id' => 'id']);
     }
@@ -137,9 +136,9 @@ class Users extends ActiveRecord
     /**
      * Gets query for [[Reviews0]].
      *
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
-    public function getReviews0()
+    public function getExecutorReviews()
     {
         return $this->hasMany(Reviews::className(), ['executor_id' => 'id']);
     }
@@ -147,9 +146,9 @@ class Users extends ActiveRecord
     /**
      * Gets query for [[Tasks]].
      *
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
-    public function getTasks()
+    public function getCustomerTasks()
     {
         return $this->hasMany(Tasks::className(), ['customer_id' => 'id']);
     }
@@ -157,9 +156,9 @@ class Users extends ActiveRecord
     /**
      * Gets query for [[Tasks0]].
      *
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
-    public function getTasks0()
+    public function getExecutorTasks()
     {
         return $this->hasMany(Tasks::className(), ['executor_id' => 'id']);
     }
@@ -167,7 +166,7 @@ class Users extends ActiveRecord
     /**
      * Gets query for [[Location]].
      *
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getLocation()
     {
@@ -177,10 +176,11 @@ class Users extends ActiveRecord
     /**
      * Gets query for [[UsersCategories]].
      *
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
-    public function getUsersCategories()
-    {
-        return $this->hasMany(UsersCategories::className(), ['user_id' => 'id']);
-    }
+	public function getCategories()
+	{
+		return $this->hasMany(Categories::className(), ['id' => 'category_id'])
+			->viaTable('users_categories', ['user_id' => 'id']);
+	}
 }

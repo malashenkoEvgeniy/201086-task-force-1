@@ -23,6 +23,7 @@ class m200229_190030_create_proposal_table extends Migration
             'budget' => $this->integer(),
             'user_id' => $this->integer()->notNull(),
         ]);
+			$this->alterColumn('{{%proposal}}', 'id', $this->integer().' NOT NULL AUTO_INCREMENT');
 
         // creates index for column `task_id`
         $this->createIndex(
