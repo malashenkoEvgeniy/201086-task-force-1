@@ -15,51 +15,20 @@ $this->params['breadcrumbs'][] = $this->title;
     <section class="new-task">
         <div class="new-task__wrapper">
             <h1>Новые задания</h1>
+            <?php foreach($tasks as $task):?>
             <div class="new-task__card">
                 <div class="new-task__title">
-                    <a href="#" class="link-regular"><h2>Перевести войну и мир на клингонский</h2></a>
-                    <a  class="new-task__type link-regular" href="#"><p>Переводы</p></a>
+                    <a href="#" class="link-regular"><h2><?= $task['name']?></h2></a>
+                    <a  class="new-task__type link-regular" href="#"><p><?= $task['category']['title'];?></p></a>
                 </div>
-                <div class="new-task__icon new-task__icon--translation"></div>
-                <p class="new-task_description">
-                    Значимость этих проблем настолько очевидна, что начало
-                    повседневной работы по формированию позиции
-                    требуют определения и уточнения позиций…
-                </p>
-                <b class="new-task__price new-task__price--translation">3400<b> ₽</b></b>
-                <p class="new-task__place">Санкт-Петербург, Центральный район</p>
-                <span class="new-task__time">4 часа назад</span>
+                <div class="new-task__icon new-task__icon--<?= $task['category']['title_en'];?>"></div>
+                <p class="new-task_description"><?= $task['description'];?> </p>
+                <b class="new-task__price new-task__price--<?= $task['category']['title_en'];?>"><?= $task['budget'];?><b> ₽</b></b>
+                <p class="new-task__place"><?= $task['location']['city'];?></p>
+                <span class="new-task__time"><?=(time() - mktime($task['creation_time']))/3600?> часа назад</span>
             </div>
-            <div class="new-task__card">
-                <div class="new-task__title">
-                    <a href="#" class="link-regular"><h2>Убраться в квартире после вписки</h2></a>
-                    <a class="new-task__type link-regular" href="#"><p>Уборка</p></a>
-                </div>
-                <div class="new-task__icon new-task__icon--clean"></div>
-                <p class="new-task_description">
-                    Значимость этих проблем настолько очевидна, что начало
-                    повседневной работы по формированию позиции
-                    требуют определения и уточнения позиций…
-                </p>
-                <b class="new-task__price new-task__price--clean">1500<b> ₽</b></b>
-                <p class="new-task__place">Санкт-Петербург, Центральный район</p>
-                <span class="new-task__time">5 часов назад</span>
-            </div>
-            <div class="new-task__card">
-                <div class="new-task__title">
-                    <a href="#" class="link-regular"><h2>Перевезти груз на новое место</h2></a>
-                    <a class="new-task__type link-regular" href="#"><p>Грузоперевозки</p></a>
-                </div>
-                <div class="new-task__icon new-task__icon--cargo"></div>
-                <p class="new-task_description">
-                    Значимость этих проблем настолько очевидна, что начало
-                    повседневной работы по формированию позиции
-                    требуют определения и уточнения позиций…
-                </p>
-                <b class="new-task__price new-task__price--cargo">3000<b> ₽</b></b>
-                <p class="new-task__place">Москва, Центральный район</p>
-                <span class="new-task__time">10 часов назад</span>
-            </div>
+            <?php endforeach;?>
+
         </div>
        <!--Блок пагинации--> <div class="new-task__pagination">
             <ul class="new-task__pagination-list">
@@ -107,40 +76,4 @@ $this->params['breadcrumbs'][] = $this->title;
             </form>
         </div>
     </section>
-</div>
-<hr>
-
-<div class="tasks-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Create Tasks', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'creation_time',
-            'name',
-            'category_id',
-            'description:ntext',
-            //'location_id',
-            //'budget',
-            //'deadline',
-            //'customer_id',
-            //'executor_id',
-            //'status',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
-
-
 </div>

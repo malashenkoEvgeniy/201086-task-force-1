@@ -2,9 +2,12 @@
 
 namespace frontend\controllers;
 
+use Throwable;
 use Yii;
 use app\models\Tasks;
 use app\models\TasksSearch;
+
+use yii\db\StaleObjectException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -35,13 +38,15 @@ class TasksController extends Controller
      */
     public function actionIndex()
     {
+
         $searchModel = new TasksSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+				$tasks = Tasks::find()
+											->with('category')
+											->with('location')
+											->with('customer')
+											->asArray()->all();
+			return $this->render('index', compact('searchModel','dataProvider', 'tasks'));
     }
 
     /**
@@ -104,9 +109,14 @@ class TasksController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+			try {
+				$this->findModel($id)->delete();
+			} catch (StaleObjectException $e) {
+			} catch (NotFoundHttpException $e) {
+			} catch (Throwable $e) {
+			}
 
-        return $this->redirect(['index']);
+			return $this->redirect(['index']);
     }
 
     /**
