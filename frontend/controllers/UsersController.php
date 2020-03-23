@@ -37,10 +37,16 @@ class UsersController extends Controller
     {
         $searchModel = new UsersSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+				$users = Users::find()
+								->with('categories')
+								->with('location')
+								->with('files')
+								->with('executorTasks')
+								->asArray()->all();
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+						'users' => $users
         ]);
     }
 
