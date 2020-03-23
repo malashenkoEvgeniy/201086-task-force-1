@@ -3,6 +3,7 @@
 namespace app\models;
 
 use yii\db\ActiveRecord;
+use common\fixtures\TasksFixture;
 
 /**
  * This is the model class for table "tasks".

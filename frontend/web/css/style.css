@@ -4,7 +4,7 @@ body {
   font-weight: 400;
   font-size: 16px;
   line-height: normal;
-  background-color: #ffffff;
+  background-color: blue;
   color: #333438; }
   body.landing {
     background-image: url("../img/polygon.png");
