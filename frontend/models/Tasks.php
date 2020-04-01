@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models;
+namespace frontend\models;
 
 use yii\db\ActiveRecord;
 use common\fixtures\TasksFixture;
