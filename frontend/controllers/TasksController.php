@@ -4,8 +4,8 @@ namespace frontend\controllers;
 
 use Throwable;
 use Yii;
-use app\models\Tasks;
-use app\models\TasksSearch;
+use frontend\models\Tasks;
+use frontend\models\TasksSearch;
 
 use yii\db\StaleObjectException;
 use yii\web\Controller;

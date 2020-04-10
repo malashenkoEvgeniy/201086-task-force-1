@@ -4,12 +4,12 @@ namespace frontend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Users;
+use frontend\models\Users;
 
 /**
- * UsersSearch represents the model behind the search form of `app\models\Users`.
+ * SearchUsers represents the model behind the search form of `frontend\models\Users`.
  */
-class UsersSearch extends Users
+class SearchUsers extends Users
 {
     /**
      * {@inheritdoc}
@@ -18,7 +18,7 @@ class UsersSearch extends Users
     {
         return [
             [['id', 'location_id', 'show_contacts_for_customer', 'hide_profile'], 'integer'],
-            [['creation_time', 'name', 'email', 'birthday', 'info', 'password', 'phone', 'skype', 'another_messenger', 'avatar', 'task_name'], 'safe'],
+            [['creation_time', 'name', 'email', 'birthday', 'info', 'password', 'phone', 'skype', 'another_messenger', 'avatar', 'task_name', 'last_visit_time'], 'safe'],
         ];
     }
 
@@ -64,6 +64,7 @@ class UsersSearch extends Users
             'birthday' => $this->birthday,
             'show_contacts_for_customer' => $this->show_contacts_for_customer,
             'hide_profile' => $this->hide_profile,
+            'last_visit_time' => $this->last_visit_time,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])

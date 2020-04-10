@@ -3,8 +3,8 @@
 namespace frontend\controllers;
 
 use Yii;
-use app\models\Users;
-use app\models\UsersSearch;
+use frontend\models\Users;
+use frontend\models\SearchUsers;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -35,18 +35,12 @@ class UsersController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new UsersSearch();
+        $searchModel = new SearchUsers();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-				$users = Users::find()
-								->with('categories')
-								->with('location')
-								->with('files')
-								->with('executorTasks')
-								->asArray()->all();
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-						'users' => $users
         ]);
     }
 
@@ -101,7 +95,21 @@ class UsersController extends Controller
         ]);
     }
 
-	/**
+    /**
+     * Deletes an existing Users model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionDelete($id)
+    {
+        $this->findModel($id)->delete();
+
+        return $this->redirect(['index']);
+    }
+
+    /**
      * Finds the Users model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id

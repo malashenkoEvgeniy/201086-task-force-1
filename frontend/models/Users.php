@@ -2,7 +2,7 @@
 
 namespace frontend\models;
 
-use yii\db\ActiveRecord;
+use Yii;
 
 /**
  * This is the model class for table "users".
@@ -22,6 +22,7 @@ use yii\db\ActiveRecord;
  * @property string|null $task_name
  * @property int|null $show_contacts_for_customer
  * @property int|null $hide_profile
+ * @property string $last_visit_time
  *
  * @property ChatMessages[] $chatMessages
  * @property EmailSettings[] $emailSettings
@@ -34,7 +35,7 @@ use yii\db\ActiveRecord;
  * @property Locations $location
  * @property UsersCategories[] $usersCategories
  */
-class Users extends ActiveRecord
+class Users extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -50,8 +51,8 @@ class Users extends ActiveRecord
     public function rules()
     {
         return [
-            [['creation_time', 'birthday'], 'safe'],
-            [['name', 'email', 'location_id', 'password'], 'required'],
+            [['creation_time', 'birthday', 'last_visit_time'], 'safe'],
+            [['name', 'email', 'location_id', 'password', 'last_visit_time'], 'required'],
             [['location_id', 'show_contacts_for_customer', 'hide_profile'], 'integer'],
             [['info'], 'string'],
             [['name', 'email', 'password', 'phone', 'skype', 'another_messenger', 'avatar', 'task_name'], 'string', 'max' => 128],
@@ -80,6 +81,7 @@ class Users extends ActiveRecord
             'task_name' => 'Task Name',
             'show_contacts_for_customer' => 'Show Contacts For Customer',
             'hide_profile' => 'Hide Profile',
+            'last_visit_time' => 'Last Visit Time',
         ];
     }
 
@@ -124,44 +126,44 @@ class Users extends ActiveRecord
     }
 
     /**
-     * Gets query for [[Reviews]].
+     * Gets query for [[CustomerReviews]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getCustomerReviews()
-    {
-        return $this->hasMany(Reviews::className(), ['customer_id' => 'id']);
-    }
+		public function getCustomerReviews()
+		{
+			return $this->hasMany(Reviews::className(), ['customer_id' => 'id']);
+		}
 
     /**
-     * Gets query for [[Reviews0]].
+     * Gets query for [[ExecutorReviews]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getExecutorReviews()
-    {
-        return $this->hasMany(Reviews::className(), ['executor_id' => 'id']);
-    }
+		public function getExecutorReviews()
+		{
+			return $this->hasMany(Reviews::className(), ['executor_id' => 'id']);
+		}
 
     /**
-     * Gets query for [[Tasks]].
+     * Gets query for [[CustomerTasks]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getCustomerTasks()
-    {
-        return $this->hasMany(Tasks::className(), ['customer_id' => 'id']);
-    }
+		public function getCustomerTasks()
+		{
+			return $this->hasMany(Tasks::className(), ['customer_id' => 'id']);
+		}
 
     /**
-     * Gets query for [[Tasks0]].
+     * Gets query for [[ExecutorTasks]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getExecutorTasks()
-    {
-        return $this->hasMany(Tasks::className(), ['executor_id' => 'id']);
-    }
+		public function getExecutorTasks()
+		{
+			return $this->hasMany(Tasks::className(), ['executor_id' => 'id']);
+		}
 
     /**
      * Gets query for [[Location]].

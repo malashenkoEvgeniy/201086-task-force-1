@@ -34,7 +34,8 @@ CREATE DATABASE taskforce
   `avatar`  VARCHAR(128) NULL,
   `task_name` VARCHAR(128) NULL,
   `show_contacts_for_customer`  TINYINT NOT NULL DEFAULT 0,
-  `hide_profile`  TINYINT NOT NULL DEFAULT 0
+  `hide_profile`  TINYINT NOT NULL DEFAULT 0,
+  `last_visit_time` TIMESTAMP NOT NULL
   );
 
   CREATE TABLE users_categories (

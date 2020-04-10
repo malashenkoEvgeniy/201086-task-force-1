@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Users */
+/* @var $model frontend\models\Users */
 
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
@@ -44,6 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'task_name',
             'show_contacts_for_customer',
             'hide_profile',
+            'last_visit_time',
         ],
     ]) ?>
 

@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Users */
+/* @var $model frontend\models\Users */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -39,6 +39,8 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'show_contacts_for_customer')->textInput() ?>
 
     <?= $form->field($model, 'hide_profile')->textInput() ?>
+
+    <?= $form->field($model, 'last_visit_time')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
