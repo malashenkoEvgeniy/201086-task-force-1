@@ -5,22 +5,21 @@
  */
 try {
 	return [
-		'creation_time' => $faker->dateTime(),
+		'creation_time' => $faker->dateTime()->format('Y-m-d H:i:s'),
 		'name' => $faker->name(),
 		'email' => $faker->email,
 		'location_id' => $faker->numberBetween(1, 500),//нужно число count(location_id)
-		'birthday' => $faker->dateTimeThisCentury,
+		'birthday' => $faker->dateTimeThisCentury->format('Y-m-d H:i:s'),
 		'info' => $faker->text,
 		'password' => Yii::$app->getSecurity()->generatePasswordHash('password_' . $index),
 		'phone' => substr($faker->e164PhoneNumber, 1, 11),
-		'company' => $faker->company,
-		'skype' => $faker->text,
-		'another_messenger' => $faker->text,
-		'avatar'  => './img/avatar/ava'.$faker->numberBetween(1, 8).'.jpg',
-		'task_name'=> $faker->text,
+		'skype' => $faker->userName,
+		'another_messenger' => $faker->text($maxNbChars = 128) ,
+		'avatar'  => 'img/avatar/ava'.$faker->numberBetween(1, 8).'.jpg',
+		'task_name'=> $faker->text($maxNbChars = 128),
 		'show_contacts_for_customer'  => $faker->boolean,
   	'hide_profile' => $faker->boolean,
-		'last_visit_time'=>$faker->unixTime($max = 'now')
+		'last_visit_time'=>$faker->dateTime()->format('Y-m-d H:i:s'),
 
 
 	];
