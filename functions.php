@@ -5,14 +5,34 @@ function debug($arr){
 	echo '</pre><hr>';
 }
 
+function getValidDate($date, $modifier){
+	$mod = 0;
+	if (($date === 1)||($date % 10 === 1) ) $mod = 1;
+	if (($date === 2)||($date % 10 === 2) ) $mod = 2;
+	if (($date === 3)||($date % 10 === 3) ) $mod = 2;
+	if (($date === 4)||($date % 10 === 4) ) $mod = 2;
+	if (($date === 11)||($date === 12)||($date === 13)||($date === 14)) $mod = 0;
+	if($modifier === 'min' AND $mod === 0) 	return "$date минут";
+	if($modifier === 'min' AND $mod === 1) 	return "$date минуту";
+	if($modifier === 'min' AND $mod === 2) 	return "$date минуты";
+	if($modifier === 'h' AND $mod === 0) 	return "$date часов";
+	if($modifier === 'h' AND $mod === 1) 	return "$date час";
+	if($modifier === 'h' AND $mod === 2) 	return "$date часа";
+	if($modifier === 'd' AND $mod === 0) 	return "$date дней";
+	if($modifier === 'd' AND $mod === 1) 	return "$date день";
+	if($modifier === 'd' AND $mod === 2) 	return "$date дня";
+	if($modifier === 'm' AND $mod === 0) 	return "$date месяцев";
+	if($modifier === 'm' AND $mod === 1) 	return "$date месяц";
+	if($modifier === 'm' AND $mod === 2) 	return "$date месяца";
+	if($modifier === 'y' AND $mod === 0) 	return "$date лет";
+	if($modifier === 'y' AND $mod === 1) 	return "$date год";
+	if($modifier === 'y' AND $mod === 2) 	return "$date года";
+}
+
 function getTimeLastVisit($data){
-	$array = explode(' ', $data);
-	$arr1 = explode(':', $array[1]);
-	$arr2 = explode('-', $array[0]);
-	$time = time() - mktime($arr1[0], $arr1[2], $arr1[3], $arr2[1], $arr2[2], $arr2[0]);
+	$time = time() - strtotime($data);
 	$str1 = "Был на сайте ";
-	$str2 = " минут";
-	$str3 = " назад";
+	$str = " назад";
 
 	if($time > 30){
 		$m = round($time / 60);
@@ -29,21 +49,21 @@ function getTimeLastVisit($data){
 						$y = round($manth / 30);
 						$manth = $manth % 12;
 					} else {
-						return $str1.$manth.' месяцев '.$d.' дней '.$h.' часов '.$m.$str2.$str3;
+						return getValidDate($manth, 'm').getValidDate($d, 'd').getValidDate($h, 'h').getValidDate($m, 'min').$str;
 					}
 				} else {
-					return $str1.$d.' дней '.$h.' часов '.$m.$str2.$str3;
+					return $d.getValidDate($d, 'd').getValidDate($h, 'h').getValidDate($m, 'min').$str;
 				}
 			} else {
-				return $str1.$h.' часов '.$m.$str2.$str3;
+				return getValidDate($h, 'h').getValidDate($m, 'min').$str;
 			}
 		} else {
-			return $str1.$m.$str2.$str3;
+			return getValidDate($m, 'min').$str;
 		}
 
 	} else {
 		$m = 0;
-		return $str1.$m.$str2.$str3;
+		return getValidDate($m, 'min').$str;
 	}
-	return $str1.$y.' лет '.$manth.' месяцев '.$d.' дней '.$h.' часов '.$m.$str2.$str3;
+	return getValidDate($y, 'y').getValidDate($manth, 'm').getValidDate($d, 'd').getValidDate($h, 'h').getValidDate($m, 'min').$str;
 }

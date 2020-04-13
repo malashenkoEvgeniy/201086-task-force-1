@@ -47,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <b><?= round($item['count-assessment'], 1);?></b>
                     <p class="user__search-content"><?= $item['info'];?></p>
                 </div>
-                <span class="new-task__time"><?= getTimeLastVisit($item['last_visit_time']);?></span>
+                <span class="new-task__time"><?="Был на сайте ".getTimeLastVisit($item['last_visit_time']);?></span>
             </div>
             <div class="link-specialization user__search-link--bottom">
                 <?php foreach($item['categories'] as $itemCategory): ?>

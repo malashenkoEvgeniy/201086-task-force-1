@@ -9,6 +9,7 @@ use yii\grid\GridView;
 
 $this->title = 'Tasks';
 $this->params['breadcrumbs'][] = $this->title;
+debug($tasks);
 ?>
 
 <div class="main-container page-container">
@@ -25,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <p class="new-task_description"><?= $task['description'];?> </p>
                 <b class="new-task__price new-task__price--<?= $task['category']['title_en'];?>"><?= $task['budget'];?><b> ₽</b></b>
                 <p class="new-task__place"><?= $task['location']['city'];?></p>
-                <span class="new-task__time"><?=(time() - mktime($task['creation_time']))/3600?> часа назад</span>
+                <span class="new-task__time"><?=  getTimeLastVisit($task['creation_time']);?></span>
             </div>
             <?php endforeach;?>
 
