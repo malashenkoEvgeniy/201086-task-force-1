@@ -1,7 +1,7 @@
 <?php
 
-use yii\helpers\Html;
-use yii\grid\GridView;
+use frontend\web\classes\TimeAgo;
+
 
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\models\SearchUsers */
@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="content-view__feedback-card user__search-wrapper">
             <div class="feedback-card__top">
                 <div class="user__search-icon">
-                    <a href="#"><img src="<?= $item['avatar'];?>" width="65" height="65"></a>
+                    <a href="#"><img src="<?= $item['avatar'];?>" width="65" height="65" alt=""></a>
                     <span><?= $item['count-tasks'];?> заданий</span>
                     <span><?= $item['count-reviews'];?> отзывов</span>
                 </div>
@@ -47,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <b><?= round($item['count-assessment'], 1);?></b>
                     <p class="user__search-content"><?= $item['info'];?></p>
                 </div>
-                <span class="new-task__time"><?="Был на сайте ".getTimeLastVisit($item['last_visit_time']);?></span>
+                <span class="new-task__time"><?="Был на сайте ".TimeAgo::app($item['last_visit_time'])->getDate();?></span>
             </div>
             <div class="link-specialization user__search-link--bottom">
                 <?php foreach($item['categories'] as $itemCategory): ?>

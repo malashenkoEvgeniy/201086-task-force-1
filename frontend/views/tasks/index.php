@@ -1,15 +1,14 @@
 <?php
 
-use yii\helpers\Html;
-use yii\grid\GridView;
+
+use frontend\web\classes\TimeAgo;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\TasksSearch */
+
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Tasks';
 $this->params['breadcrumbs'][] = $this->title;
-debug($tasks);
 ?>
 
 <div class="main-container page-container">
@@ -26,7 +25,7 @@ debug($tasks);
                 <p class="new-task_description"><?= $task['description'];?> </p>
                 <b class="new-task__price new-task__price--<?= $task['category']['title_en'];?>"><?= $task['budget'];?><b> ₽</b></b>
                 <p class="new-task__place"><?= $task['location']['city'];?></p>
-                <span class="new-task__time"><?=  getTimeLastVisit($task['creation_time']);?></span>
+                <span class="new-task__time"><?=  TimeAgo::app($task['creation_time'])->getDate(); ?></span>
             </div>
             <?php endforeach;?>
 
@@ -66,7 +65,7 @@ debug($tasks);
                     <label for="7">Удаленная работа </label>
                 </fieldset>
                 <label class="search-task__name" for="8">Период</label>
-                <select class="multiple-select input" id="8"size="1" name="time[]">
+                <select class="multiple-select input" id="8" size="1" name="time[]">
                     <option value="day">За день</option>
                     <option selected value="week">За неделю</option>
                     <option value="month">За месяц</option>
