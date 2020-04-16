@@ -3,7 +3,7 @@
 namespace frontend\models;
 
 use yii\db\ActiveRecord;
-use common\fixtures\TasksFixture;
+
 
 /**
  * This is the model class for table "tasks".
@@ -84,7 +84,7 @@ class Tasks extends ActiveRecord
      */
     public function getChatMessages()
     {
-        return $this->hasMany(ChatMessages::className(), ['task_id' => 'id']);
+        return $this->hasMany(ChatMessages::class, ['task_id' => 'id']);
     }
 
     /**
@@ -94,7 +94,7 @@ class Tasks extends ActiveRecord
      */
     public function getFiles()
     {
-        return $this->hasMany(File::className(), ['task_id' => 'id']);
+        return $this->hasMany(File::class, ['task_id' => 'id']);
     }
 
     /**
@@ -104,7 +104,7 @@ class Tasks extends ActiveRecord
      */
     public function getProposals()
     {
-        return $this->hasMany(Proposal::className(), ['task_id' => 'id']);
+        return $this->hasMany(Proposal::class, ['task_id' => 'id']);
     }
 
     /**
@@ -114,7 +114,7 @@ class Tasks extends ActiveRecord
      */
     public function getReviews()
     {
-        return $this->hasMany(Reviews::className(), ['task_id' => 'id']);
+        return $this->hasMany(Reviews::class, ['task_id' => 'id']);
     }
 
     /**
@@ -124,7 +124,7 @@ class Tasks extends ActiveRecord
      */
     public function getCategory()
     {
-        return $this->hasOne(Categories::className(), ['id' => 'category_id']);
+        return $this->hasOne(Categories::class, ['id' => 'category_id']);
     }
 
     /**
@@ -134,7 +134,7 @@ class Tasks extends ActiveRecord
      */
     public function getCustomer()
     {
-        return $this->hasOne(Users::className(), ['id' => 'customer_id']);
+        return $this->hasOne(Users::class, ['id' => 'customer_id']);
     }
 
     /**
@@ -144,7 +144,7 @@ class Tasks extends ActiveRecord
      */
     public function getExecutor()
     {
-        return $this->hasOne(Users::className(), ['id' => 'executor_id']);
+        return $this->hasOne(Users::class, ['id' => 'executor_id']);
     }
 
     /**
@@ -154,6 +154,6 @@ class Tasks extends ActiveRecord
      */
     public function getLocation()
     {
-        return $this->hasOne(Locations::className(), ['id' => 'location_id']);
+        return $this->hasOne(Locations::class, ['id' => 'location_id']);
     }
 }

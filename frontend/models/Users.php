@@ -1,8 +1,8 @@
 <?php
 
 namespace frontend\models;
+use yii\db\ActiveRecord;
 
-use Yii;
 
 /**
  * This is the model class for table "users".
@@ -35,7 +35,7 @@ use Yii;
  * @property Locations $location
  * @property UsersCategories[] $usersCategories
  */
-class Users extends \yii\db\ActiveRecord
+class Users extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -92,7 +92,7 @@ class Users extends \yii\db\ActiveRecord
      */
     public function getChatMessages()
     {
-        return $this->hasMany(ChatMessages::className(), ['writer_id' => 'id']);
+        return $this->hasMany(ChatMessages::class, ['writer_id' => 'id']);
     }
 
     /**
@@ -102,7 +102,7 @@ class Users extends \yii\db\ActiveRecord
      */
     public function getEmailSettings()
     {
-        return $this->hasMany(EmailSettings::className(), ['user_id' => 'id']);
+        return $this->hasMany(EmailSettings::class, ['user_id' => 'id']);
     }
 
     /**
@@ -112,7 +112,7 @@ class Users extends \yii\db\ActiveRecord
      */
     public function getFiles()
     {
-        return $this->hasMany(File::className(), ['user_id' => 'id']);
+        return $this->hasMany(File::class, ['user_id' => 'id']);
     }
 
     /**
@@ -122,7 +122,7 @@ class Users extends \yii\db\ActiveRecord
      */
     public function getProposals()
     {
-        return $this->hasMany(Proposal::className(), ['user_id' => 'id']);
+        return $this->hasMany(Proposal::class, ['user_id' => 'id']);
     }
 
     /**
@@ -132,7 +132,7 @@ class Users extends \yii\db\ActiveRecord
      */
 		public function getCustomerReviews()
 		{
-			return $this->hasMany(Reviews::className(), ['customer_id' => 'id']);
+			return $this->hasMany(Reviews::class, ['customer_id' => 'id']);
 		}
 
     /**
@@ -142,7 +142,7 @@ class Users extends \yii\db\ActiveRecord
      */
 		public function getExecutorReviews()
 		{
-			return $this->hasMany(Reviews::className(), ['executor_id' => 'id']);
+			return $this->hasMany(Reviews::class, ['executor_id' => 'id']);
 		}
 
     /**
@@ -152,7 +152,7 @@ class Users extends \yii\db\ActiveRecord
      */
 		public function getCustomerTasks()
 		{
-			return $this->hasMany(Tasks::className(), ['customer_id' => 'id']);
+			return $this->hasMany(Tasks::class, ['customer_id' => 'id']);
 		}
 
     /**
@@ -162,7 +162,7 @@ class Users extends \yii\db\ActiveRecord
      */
 		public function getExecutorTasks()
 		{
-			return $this->hasMany(Tasks::className(), ['executor_id' => 'id']);
+			return $this->hasMany(Tasks::class, ['executor_id' => 'id']);
 		}
 
     /**
@@ -172,17 +172,18 @@ class Users extends \yii\db\ActiveRecord
      */
     public function getLocation()
     {
-        return $this->hasOne(Locations::className(), ['id' => 'location_id']);
+        return $this->hasOne(Locations::class, ['id' => 'location_id']);
     }
 
-    /**
-     * Gets query for [[UsersCategories]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
+	/**
+	 * Gets query for [[UsersCategories]].
+	 *
+	 * @return \yii\db\ActiveQuery
+	 * @throws \yii\base\InvalidConfigException
+	 */
 	public function getCategories()
 	{
-		return $this->hasMany(Categories::className(), ['id' => 'category_id'])
+		return $this->hasMany(Categories::class, ['id' => 'category_id'])
 			->viaTable('users_categories', ['user_id' => 'id']);
 	}
 }
