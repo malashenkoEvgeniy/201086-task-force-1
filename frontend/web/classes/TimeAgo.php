@@ -17,68 +17,53 @@ class TimeAgo
 		$this->time = time() - strtotime($this->date);
 	}
 
-	private function getMinute(){
-		$date = floor($this->time / 60) % 60;
+
+	private function numericFormatter($num, $arrayTime){
+		if($num>100) $num = substr((string) $num , -2, 2);
 		$mod = 0;
-		if (($date === 1)||($date % 10 === 1) ) $mod = 1;
-		if (($date === 2)||($date % 10 === 2) || ($date === 3)||($date % 10 === 3) || ($date === 4) || ($date % 10 === 4)) $mod = 2;
-		if (($date === 11)||($date === 12)||($date === 13)||($date === 14)) $mod = 0;
-		if($mod === 0) return "$date минут";
-		if($mod === 2) return "$date минуты";
-		return "$date минуту";
+		$arrMod = [2,3,4];
+		if (($num === 1)||($num % 10 === 1) ) $mod = 1;
+		foreach($arrMod as $item){
+			if (($num === $item)||($num % 10 === $item) ) $mod = 2;
+		}
+		if ((($num - ($num % 10))/10) === 1) $mod = 0;
+		return $arrayTime[$mod];
+	}
+
+	private function getMinute(){
+		$arr = [' минут', ' минута', ' минуты'];
+		$date = floor($this->time / 60) % 60;
+		return $date . $this->numericFormatter($date, $arr);
 	}
 
 	private function getHour(){
-		$date = floor($this->time / 3600) % 60;
-		if ($date > 0){
-			$mod = 0;
-			if (($date === 1)||($date % 10 === 1) ) $mod = 1;
-			if (($date === 2)||($date % 10 === 2) || ($date === 3)||($date % 10 === 3) || ($date === 4) || ($date % 10 === 4)) $mod = 2;
-			if (($date === 11)||($date === 12)||($date === 13)||($date === 14)) $mod = 0;
-			if($mod === 0) return "$date часов ";
-			if($mod === 2) return "$date часа ";
-			return "$date час ";
-		}
+		$arr = [' часов ', ' час ', ' часа '];
+		$date = floor($this->time / 3600) % 24;
+		$dateDay = floor($this->time / 3600/24);
+		if ($date > 0 || $dateDay > 0 ) return $date . $this->numericFormatter($date, $arr);
 		return '';
 	}
+
 	private function getDays(){
-		$date = floor($this->time / 3600/24) % 24;
-		if ($date > 0){
-			$mod = 0;
-			if (($date === 1)||($date % 10 === 1) ) $mod = 1;
-			if (($date === 2)||($date % 10 === 2) || ($date === 3)||($date % 10 === 3) || ($date === 4) || ($date % 10 === 4)) $mod = 2;
-			if (($date === 11)||($date === 12)||($date === 13)||($date === 14)) $mod = 0;
-			if($mod === 0) return "$date дней ";
-			if($mod === 2) return "$date дня ";
-			return "$date день ";
-		}
+		$arr = [' дней ', ' день ', ' дня '];
+		$date = floor($this->time / 3600 / 24) % 30;
+		$dateMonth = floor($this->time / 3600 / 24 / 30);
+		if ($date > 0 || $dateMonth > 0) return $date . $this->numericFormatter($date, $arr);
 		return '';
 	}
+
 	private function getMonth(){
-		$date = floor($this->time / 3600/24/30) % 30;
-		if ($date > 0){
-			$mod = 0;
-			if (($date === 1)||($date % 10 === 1) ) $mod = 1;
-			if (($date === 2)||($date % 10 === 2) || ($date === 3)||($date % 10 === 3) || ($date === 4) || ($date % 10 === 4)) $mod = 2;
-			if (($date === 11)||($date === 12)||($date === 13)||($date === 14)) $mod = 0;
-			if($mod === 0) return "$date месяцев ";
-			if($mod === 2) return "$date месяца ";
-			return "$date месяц ";
-		}
+		$arr = [' месяцев ', ' месяц ', ' месяца '];
+		$date = floor($this->time / 3600 / 24 / 30) % 12 ;
+		$dateYear  =  floor($this->time / 3600/24/365) ;
+		if ($date > 0 || $dateYear >0) return $date . $this->numericFormatter($date, $arr);
 		return '';
 	}
 
 	private function getYear(){
+		$arr = [' лет ', ' год ', ' года '];
 		$date = floor($this->time / 3600/24/365) % 365;
-		if ($date > 0){
-			$mod = 0;
-			if (($date === 1)||($date % 10 === 1) ) $mod = 1;
-			if (($date === 2)||($date % 10 === 2) || ($date === 3)||($date % 10 === 3) || ($date === 4) || ($date % 10 === 4)) $mod = 2;
-			if (($date === 11)||($date === 12)||($date === 13)||($date === 14)) $mod = 0;
-			if($mod === 0) return "$date лет ";
-			if($mod === 2) return "$date года ";
-			return "$date год ";
-		}
+		if ($date > 0 ) return $date . $this->numericFormatter($date, $arr);
 		return '';
 	}
 
@@ -86,6 +71,7 @@ class TimeAgo
 		return $this->getYear().
 			$this->getMonth().
 			$this->getDays().
-			$this->getHour().$this->getMinute().' назад';
+			$this->getHour().
+			$this->getMinute().' назад';
 	}
 }
