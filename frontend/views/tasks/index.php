@@ -9,13 +9,21 @@ use frontend\web\classes\TimeAgo;
 
 $this->title = 'Tasks';
 $this->params['breadcrumbs'][] = $this->title;
+
+
+//foreach($tasks as $task):
+  //echo $task['status'];
+//	debug($task);
+  //echo '<hr>';
+//endforeach;
 ?>
 
 <div class="main-container page-container">
     <section class="new-task">
         <div class="new-task__wrapper">
             <h1>Новые задания</h1>
-            <?php foreach($tasks as $task):?>
+            <?php foreach($tasks as $task):
+                    if($task['status'] == 0):    ?>
             <div class="new-task__card">
                 <div class="new-task__title">
                     <a href="#" class="link-regular"><h2><?= $task['name']?></h2></a>
@@ -27,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <p class="new-task__place"><?= $task['location']['city'];?></p>
                 <span class="new-task__time"><?=  TimeAgo::app($task['creation_time'])->getDate(); ?></span>
             </div>
-            <?php endforeach;?>
+            <?php endif; endforeach;?>
 
         </div>
        <!--Блок пагинации--> <div class="new-task__pagination">

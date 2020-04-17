@@ -31,6 +31,7 @@ use yii\db\ActiveRecord;
  */
 class Tasks extends ActiveRecord
 {
+		const STATUS = ['Новое', 'Отменено', 'В работе', 'Выполнено', 'Провалено'];
     /**
      * {@inheritdoc}
      */

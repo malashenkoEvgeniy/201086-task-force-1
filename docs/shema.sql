@@ -75,7 +75,7 @@ CREATE DATABASE taskforce
     `deadline` DATETIME NOT NULL,
     `customer_id` INT NOT NULL,
     `executor_id` INT NULL,
-    `status` VARCHAR(128) NULL
+    `status` INT NULL
   );
 
   CREATE TABLE chat_messages (

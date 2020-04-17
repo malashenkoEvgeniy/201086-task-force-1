@@ -13,7 +13,7 @@ return [
 	'deadline' => $faker->dateTime()->format('Y-m-d H:i:s'),
 	'customer_id' => $faker->numberBetween(1,10),
 	'executor_id' => $faker->numberBetween(1,10),
-	'status' => $faker->text(128)
+	'status' => $faker->numberBetween(0, 4),
 ];
 //php yii fixture/generate tasks --count=10
 

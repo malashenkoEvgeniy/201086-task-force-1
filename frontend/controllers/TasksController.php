@@ -46,6 +46,7 @@ class TasksController extends Controller
 											->with('location')
 											->with('customer')
 											->asArray()->all();
+
 			return $this->render('index', compact('searchModel','dataProvider', 'tasks'));
     }
 
