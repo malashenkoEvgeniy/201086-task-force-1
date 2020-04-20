@@ -2,6 +2,8 @@
 
 
 use frontend\web\classes\TimeAgo;
+use yii\widgets\ActiveForm;
+use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 
@@ -58,25 +60,45 @@ $this->params['breadcrumbs'][] = $this->title;
     </section>
     <!--Блок поиска--> <section  class="search-task">
         <div class="search-task__wrapper">
-            <form class="search-task__form" name="test" method="post" action="#">
+			<?php $form = ActiveForm::begin([
+			        'id'=>'tasks-form',
+			        'options'=> ['class'=>'search-task__form']
+
+            ]) ;?>
+            <fieldset class="search-task__categories">
+                <legend>Категории</legend>
+                <?= $form->field($model,'translation')
+                  ->checkbox(['name'=>'translation',
+                              'id'=>1,
+                               'template' => '{input}{label}',
+                               'options'=>[
+                                'class'=> 'checkbox__input'
+                                ]], false);
+
+					//$form->field($model, 'rememberMe')->checkbox(['template' => '{input}{label}']);
+?>
+            </fieldset>
+			<?= Html::submitButton('Искать', ['class'=>'button']);?>
+			<?php ActiveForm::end() ;?>
+            <form class="search-task__form" name="test" method="get" action="<?= \yii\helpers\Url::to('tasks/search')?>">
                 <fieldset class="search-task__categories">
                     <legend>Категории</legend>
-                    <input class="visually-hidden checkbox__input" id="1" type="checkbox" name="" value="" checked>
+                    <input class="visually-hidden checkbox__input" id="1" type="checkbox" name="1" value="услуги" checked>
                     <label for="1">Курьерские услуги </label>
-                    <input class="visually-hidden checkbox__input" id="2" type="checkbox" name="" value="" checked>
+                    <input class="visually-hidden checkbox__input" id="2" type="checkbox" name="2" value="перевозки" checked>
                     <label  for="2">Грузоперевозки </label>
-                    <input class="visually-hidden checkbox__input" id="3" type="checkbox" name="" value="">
+                    <input class="visually-hidden checkbox__input" id="3" type="checkbox" name="3" value="">
                     <label  for="3">Переводы </label>
-                    <input class="visually-hidden checkbox__input" id="4" type="checkbox" name="" value="">
+                    <input class="visually-hidden checkbox__input" id="4" type="checkbox" name="4" value="">
                     <label  for="4">Строительство и ремонт </label>
-                    <input class="visually-hidden checkbox__input" id="5" type="checkbox" name="" value="">
+                    <input class="visually-hidden checkbox__input" id="5" type="checkbox" name="5" value="">
                     <label  for="5">Выгул животных </label>
                 </fieldset>
                 <fieldset class="search-task__categories">
                     <legend>Дополнительно</legend>
-                    <input class="visually-hidden checkbox__input" id="6" type="checkbox" name="" value="">
+                    <input class="visually-hidden checkbox__input" id="6" type="checkbox" name="отклик" value="">
                     <label for="6">Без откликов</label>
-                    <input class="visually-hidden checkbox__input" id="7" type="checkbox" name="" value="" checked>
+                    <input class="visually-hidden checkbox__input" id="7" type="checkbox" name="удаленно" value="" checked>
                     <label for="7">Удаленная работа </label>
                 </fieldset>
                 <label class="search-task__name" for="8">Период</label>
@@ -86,7 +108,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <option value="month">За месяц</option>
                 </select>
                 <label class="search-task__name" for="9">Поиск по названию</label>
-                <input class="input-middle input" id="9" type="search" name="q" placeholder="">
+                <input class="input-middle input" id="9" type="search" name="search_word" placeholder="">
                 <button class="button" type="submit">Искать</button>
             </form>
         </div>

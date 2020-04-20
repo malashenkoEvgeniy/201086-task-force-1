@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use frontend\models\SearchForm;
 use Throwable;
 use Yii;
 use frontend\models\Tasks;
@@ -45,8 +46,14 @@ class TasksController extends AppController
 				$query = Tasks::find()->with('category')->with('location')->with('customer');
 				$pages = new Pagination(['totalCount'=>$query->count(), 'pageSize'=> 5, 'forcePageParam'=>false, 'pageSizeParam'=>false]);
 				$tasks = $query->offset($pages->offset)->limit($pages->limit)->asArray()->all();
-			return $this->render('index', compact('searchModel','dataProvider', 'tasks', 'pages'));
+				$model = new SearchForm();
+			return $this->render('index', compact( 'tasks', 'pages', 'model'));
     }
+
+    public function actionSearch()
+		{
+
+		}
 
     /**
      * Displays a single Tasks model.
