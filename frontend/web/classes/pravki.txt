@@ -1,0 +1,23 @@
+
+2.
+Слишком сложно читаемый код. Сделай несколько retur-нов и последовательно обрабатывай различные случаи, чтобы сделать алгоритм более читаемым
+
+    $mod100 = $num % 100;
+
+    if ($mod100 >= 9 && $mod100 <= 20) {
+        return $this->formOne;
+    }
+
+    $mod10 = $num % 10;
+
+    if ($mod10 === 1) {
+        return $this->formTwo;
+    }
+
+    if ($mod10 >= 2 && $mod10 <= 4) {
+        return $this->formThree;
+    }
+
+    return $this->formOne;
+
+

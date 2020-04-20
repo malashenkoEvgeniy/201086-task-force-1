@@ -8,62 +8,58 @@ class TimeAgo
 {
 	public $date;
 	public $time;
-	public static function app($date){
-		return new self($date);
-	}
 
-	private function __construct($date){
+	public function __construct($date){
 		$this->date = $date;
 		$this->time = time() - strtotime($this->date);
 	}
 
-
-	private function numericFormatter($num, $arrayTime){
-		if($num>100) $num = substr((string) $num , -2, 2);
-		$mod = 0;
-		$arrMod = [2,3,4];
-		if (($num === 1)||($num % 10 === 1) ) $mod = 1;
-		foreach($arrMod as $item){
-			if (($num === $item)||($num % 10 === $item) ) $mod = 2;
-		}
-		if ((($num - ($num % 10))/10) === 1) $mod = 0;
-		return $arrayTime[$mod];
-	}
-
-	private function getMinute(){
-		$arr = [' минут', ' минута', ' минуты'];
+	private function getMinute():string
+	{
 		$date = floor($this->time / 60) % 60;
-		return $date . $this->numericFormatter($date, $arr);
+		$dateHour = floor($this->time / 3600) % 24;
+		if($dateHour>0){
+			return '';
+		}
+		return $date .' '. (new NumericFormatter($date, 'minutes'))->getWord();
 	}
 
-	private function getHour(){
-		$arr = [' часов ', ' час ', ' часа '];
+	private function getHour():string
+	{
 		$date = floor($this->time / 3600) % 24;
 		$dateDay = floor($this->time / 3600/24);
-		if ($date > 0 || $dateDay > 0 ) return $date . $this->numericFormatter($date, $arr);
-		return '';
+		if ($dateDay > 0 ) {
+			return '';
+		}
+		return $date .' '. (new NumericFormatter($date, 'hours'))->getWord();
 	}
 
-	private function getDays(){
-		$arr = [' дней ', ' день ', ' дня '];
+	private function getDays():string
+	{
 		$date = floor($this->time / 3600 / 24) % 30;
 		$dateMonth = floor($this->time / 3600 / 24 / 30);
-		if ($date > 0 || $dateMonth > 0) return $date . $this->numericFormatter($date, $arr);
-		return '';
+		if ($dateMonth > 0) {
+			return '';
+		}
+		return $date .' '. (new NumericFormatter($date, 'days'))->getWord();
 	}
 
-	private function getMonth(){
-		$arr = [' месяцев ', ' месяц ', ' месяца '];
+	private function getMonth():string
+	{
 		$date = floor($this->time / 3600 / 24 / 30) % 12 ;
 		$dateYear  =  floor($this->time / 3600/24/365) ;
-		if ($date > 0 || $dateYear >0) return $date . $this->numericFormatter($date, $arr);
-		return '';
+		if ($dateYear >0) {
+			return '';
+		}
+		return $date .' '. (new NumericFormatter($date, 'months'))->getWord();
 	}
 
-	private function getYear(){
-		$arr = [' лет ', ' год ', ' года '];
+	private function getYear():string
+	{
 		$date = floor($this->time / 3600/24/365) % 365;
-		if ($date > 0 ) return $date . $this->numericFormatter($date, $arr);
+		if ($date > 0 ) {
+			return $date .' '. (new NumericFormatter($date, 'years'))->getWord();
+		}
 		return '';
 	}
 

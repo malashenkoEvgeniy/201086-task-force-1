@@ -47,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <b><?= round($item['count-assessment'], 1);?></b>
                     <p class="user__search-content"><?= $item['info'];?></p>
                 </div>
-                <span class="new-task__time"><?="Был на сайте ".TimeAgo::app($item['last_visit_time'])->getDate();?></span>
+                <span class="new-task__time"><?="Был на сайте ".(new TimeAgo($item['last_visit_time']))->getDate();?></span>
             </div>
             <div class="link-specialization user__search-link--bottom">
                 <?php foreach($item['categories'] as $itemCategory): ?>

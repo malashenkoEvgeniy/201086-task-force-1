@@ -29,7 +29,7 @@ AppAsset::register($this);
 	<header class="page-header">
 		<div class="main-container page-header__container">
 			<div class="page-header__logo">
-				<a href="index.html">
+				<a href="<?=\yii\helpers\Url::home()?>">
 					<svg class="page-header__logo-image" id="Layer_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1634 646.35">
 						<title>taskforce_logo2-01</title>
 						<g>
@@ -59,10 +59,10 @@ AppAsset::register($this);
 			<div class="header__nav">
 				<ul class="header-nav__list site-list">
 					<li class="site-list__item site-list__item--active">
-						<a href="index?r=tasks/index">Задания</a>
+						<a href="?r=tasks/index">Задания</a>
 					</li>
 					<li class="site-list__item">
-						<a href="users%2Findex">Исполнители</a>
+						<a href="?r=users%2Findex">Исполнители</a>
 					</li>
 					<li class="site-list__item">
 						<a href="#">Создать задание</a>

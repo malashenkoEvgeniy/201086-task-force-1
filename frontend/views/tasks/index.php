@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <p class="new-task_description"><?= $task['description'];?> </p>
                 <b class="new-task__price new-task__price--<?= $task['category']['title_en'];?>"><?= $task['budget'];?><b> ₽</b></b>
                 <p class="new-task__place"><?= $task['location']['city'];?></p>
-                <span class="new-task__time"><?=  TimeAgo::app($task['creation_time'])->getDate(); ?></span>
+                <span class="new-task__time"><?=  (new TimeAgo($task['creation_time']))->getDate(); ?></span>
             </div>
             <?php endif; endforeach;?>
 
