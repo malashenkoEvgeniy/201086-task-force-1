@@ -8,15 +8,15 @@ use frontend\models\UsersCategories;
 use Yii;
 use frontend\models\Users;
 use frontend\models\SearchUsers;
+use yii\data\Pagination;
 use yii\db\StaleObjectException;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * UsersController implements the CRUD actions for Users model.
  */
-class UsersController extends Controller
+class UsersController extends AppController
 {
     /**
      * {@inheritdoc}
@@ -41,49 +41,45 @@ class UsersController extends Controller
     {
         $searchModel = new SearchUsers();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-			$users = Users::find()
-				->with('location')
-				->asArray()->all();
-			$reviews = Reviews::find()->asArray()->all();
-			$tasks = Tasks::find()->asArray()->all();
-			$usersCategories = UsersCategories::find()->with('category')->asArray()->all();
-			$i = 0;
-			foreach ($users as $user) {
-				$count = ['count-reviews'=> 0,
-									'count-tasks' => 0,
-									'count-assessment' => 0,
-									'divider-assessment' => 0,
-									'categories' => []];
-				foreach ($reviews as $review){
-					if($review['executor_id'] === $user['id']){
-						$count['count-reviews'] ++;
-						$count['count-assessment'] += $review['assessment'];
-						$count['divider-assessment'] ++;
-					}
+				$query = Users::find()->with('location');
+				$pages = new Pagination(['totalCount'=>$query->count(), 'pageSize'=> 5, 'forcePageParam'=>false, 'pageSizeParam'=>false]);
+				$users = $query->offset($pages->offset)->limit($pages->limit)->asArray()->all();
+				$reviews = Reviews::find()->asArray()->all();
+				$tasks = Tasks::find()->asArray()->all();
+				$usersCategories = UsersCategories::find()->with('category')->asArray()->all();
+				$i = 0;
+				foreach ($users as $user) {
+						$count = ['count-reviews'=> 0,
+											'count-tasks' => 0,
+											'count-assessment' => 0,
+											'divider-assessment' => 0,
+											'categories' => []];
+						foreach ($reviews as $review){
+							if($review['executor_id'] === $user['id']){
+								$count['count-reviews'] ++;
+								$count['count-assessment'] += $review['assessment'];
+								$count['divider-assessment'] ++;
+							}
+						}
+						if($count['divider-assessment']===0){
+							$count['divider-assessment'] = 1;
+						}
+						$count['count-assessment'] = $count['count-assessment'] / $count['divider-assessment'];
+						$count['assessment-stars'] = round($count['count-assessment']);
+						foreach ($tasks as $task){
+							if($task['executor_id'] === $user['id']){
+								$count['count-tasks'] ++;
+							}
+						}
+						foreach ($usersCategories as $categories){
+							if($categories['user_id'] === $user['id']){
+								array_push($count['categories'], $categories['category']['title']);
+							}
+						}
+						$newUser[$i] = array_merge($user, $count);
+						$i++;
 				}
-				if($count['divider-assessment']===0){
-					$count['divider-assessment'] = 1;
-				}
-				$count['count-assessment'] = $count['count-assessment'] / $count['divider-assessment'];
-				$count['assessment-stars'] = round($count['count-assessment']);
-				foreach ($tasks as $task){
-					if($task['executor_id'] === $user['id']){
-						$count['count-tasks'] ++;
-					}
-				}
-				foreach ($usersCategories as $categories){
-					if($categories['user_id'] === $user['id']){
-						array_push($count['categories'], $categories['category']['title']);
-					}
-				}
-				$newUser[$i] = array_merge($user, $count);
-				$i++;
-			}
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-						'newUser' => $newUser,
-        ]);
+					return $this->render('index', compact('searchModel', 'dataProvider',	'newUser', 'pages'));
     }
 
     /**

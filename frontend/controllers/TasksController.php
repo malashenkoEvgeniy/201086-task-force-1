@@ -7,15 +7,15 @@ use Yii;
 use frontend\models\Tasks;
 use frontend\models\TasksSearch;
 
+use yii\data\Pagination;
 use yii\db\StaleObjectException;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * TasksController implements the CRUD actions for Tasks model.
  */
-class TasksController extends Controller
+class TasksController extends AppController
 {
     /**
      * {@inheritdoc}
@@ -41,13 +41,11 @@ class TasksController extends Controller
 
         $searchModel = new TasksSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-				$tasks = Tasks::find()
-											->with('category')
-											->with('location')
-											->with('customer')
-											->asArray()->all();
-
-			return $this->render('index', compact('searchModel','dataProvider', 'tasks'));
+				//$tasks = Tasks::find()->with('category')->with('location')->with('customer')->asArray()->all();
+				$query = Tasks::find()->with('category')->with('location')->with('customer');
+				$pages = new Pagination(['totalCount'=>$query->count(), 'pageSize'=> 5, 'forcePageParam'=>false, 'pageSizeParam'=>false]);
+				$tasks = $query->offset($pages->offset)->limit($pages->limit)->asArray()->all();
+			return $this->render('index', compact('searchModel','dataProvider', 'tasks', 'pages'));
     }
 
     /**

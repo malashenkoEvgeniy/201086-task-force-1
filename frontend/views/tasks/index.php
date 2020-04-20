@@ -38,15 +38,22 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php endif; endforeach;?>
 
         </div>
-       <!--Блок пагинации--> <div class="new-task__pagination">
-            <ul class="new-task__pagination-list">
-                <li class="pagination__item"><a href="#"></a></li>
-                <li class="pagination__item pagination__item--current">
-                    <a>1</a></li>
-                <li class="pagination__item"><a href="#">2</a></li>
-                <li class="pagination__item"><a href="#">3</a></li>
-                <li class="pagination__item"><a href="#"></a></li>
-            </ul>
+       <!--Блок пагинации-->
+        <div class="new-task__pagination">
+
+          <?= \yii\widgets\LinkPager::widget(['pagination'=>$pages,
+                                            'pageCssClass' => 'pagination__item',
+                                            'nextPageCssClass' =>'pagination__item',
+                                            'prevPageCssClass' =>'pagination__item',
+                                            'activePageCssClass' => 'pagination__item--current',
+                                            'hideOnSinglePage'=> true,
+                                            'maxButtonCount' => 3,
+                                            'options' => ['class' => 'new-task__pagination-list'],
+                                            'nextPageLabel' => '&#8195',
+                                            'prevPageLabel' => '&#8195'
+                                                ]);
+          ?>
+
         </div>
     </section>
     <!--Блок поиска--> <section  class="search-task">

@@ -53,12 +53,25 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php foreach($item['categories'] as $itemCategory): ?>
                     <a href="#" class="link-regular"><?= $itemCategory;?></a>
                 <?php endforeach;?>
-
-                <a href="#" class="link-regular">Курьер</a>
-                <a href="#" class="link-regular">Оператор ПК</a>
             </div>
         </div>
         <?php endforeach; ?>
+        <div class="new-task__pagination">
+
+					<?= \yii\widgets\LinkPager::widget(['pagination'=>$pages,
+						'pageCssClass' => 'pagination__item',
+						'nextPageCssClass' =>'pagination__item',
+						'prevPageCssClass' =>'pagination__item',
+						'activePageCssClass' => 'pagination__item--current',
+						'hideOnSinglePage'=> true,
+						'maxButtonCount' => 3,
+						'options' => ['class' => 'new-task__pagination-list'],
+						'nextPageLabel' => '&#8195',
+						'prevPageLabel' => '&#8195'
+					]);
+					?>
+        </div>
+
     </section>
     <section  class="search-task">
         <div class="search-task__wrapper">
