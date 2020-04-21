@@ -9,5 +9,17 @@ return [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+				'urlManager' => [
+				'enablePrettyUrl' => true,
+				'showScriptName' => false,
+				'enableStrictParsing' => false,
+				'rules' => [
+					// ...
+				],
+			],
+			'request' => [
+
+				//'baseUrl' => '',
+			]
     ],
 ];
