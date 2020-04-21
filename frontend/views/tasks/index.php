@@ -86,7 +86,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </fieldset>
             <?= Html::label('Период' ,count($categories)+3,
                                                          [ 'class'=>'search-task__name']) ?>
-            <?= Html::dropDownList('time[]',
+            <?= Html::dropDownList('time',
 							'week', [
 							'month' => 'За месяц',
 							'week' => 'За неделю',
