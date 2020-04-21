@@ -1,6 +1,9 @@
 <?php
 
 use frontend\web\classes\TimeAgo;
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+use yii\widgets\LinkPager;
 
 
 /* @var $this yii\web\View */
@@ -58,52 +61,61 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php endforeach; ?>
         <div class="new-task__pagination">
 
-					<?= \yii\widgets\LinkPager::widget(['pagination'=>$pages,
-						'pageCssClass' => 'pagination__item',
-						'nextPageCssClass' =>'pagination__item',
-						'prevPageCssClass' =>'pagination__item',
-						'activePageCssClass' => 'pagination__item--current',
-						'hideOnSinglePage'=> true,
-						'maxButtonCount' => 3,
-						'options' => ['class' => 'new-task__pagination-list'],
-						'nextPageLabel' => '&#8195',
-						'prevPageLabel' => '&#8195'
-					]);
-					?>
+        <?= LinkPager::widget(['pagination'=>$pages,
+            'pageCssClass' => 'pagination__item',
+            'nextPageCssClass' =>'pagination__item',
+            'prevPageCssClass' =>'pagination__item',
+            'activePageCssClass' => 'pagination__item--current',
+            'hideOnSinglePage'=> true,
+            'maxButtonCount' => 3,
+            'options' => ['class' => 'new-task__pagination-list'],
+            'nextPageLabel' => '&#8195',
+            'prevPageLabel' => '&#8195'
+        ]);
+        ?>
         </div>
 
     </section>
     <section  class="search-task">
         <div class="search-task__wrapper">
-            <form class="search-task__form" name="users" method="post" action="#">
-                <fieldset class="search-task__categories">
-                    <legend>Категории</legend>
-                    <input class="visually-hidden checkbox__input" id="101" type="checkbox" name="" value="" checked disabled>
-                    <label for="101">Курьерские услуги </label>
-                    <input class="visually-hidden checkbox__input" id="102" type="checkbox" name="" value="" checked>
-                    <label  for="102">Грузоперевозки </label>
-                    <input class="visually-hidden checkbox__input" id="103" type="checkbox" name="" value="">
-                    <label  for="103">Переводы </label>
-                    <input class="visually-hidden checkbox__input" id="104" type="checkbox" name="" value="">
-                    <label  for="104">Строительство и ремонт </label>
-                    <input class="visually-hidden checkbox__input" id="105" type="checkbox" name="" value="">
-                    <label  for="105">Выгул животных </label>
-                </fieldset>
-                <fieldset class="search-task__categories">
-                    <legend>Дополнительно</legend>
-                    <input class="visually-hidden checkbox__input" id="106" type="checkbox" name="" value="" disabled>
-                    <label for="106">Сейчас свободен</label>
-                    <input class="visually-hidden checkbox__input" id="107" type="checkbox" name="" value="" checked>
-                    <label for="107">Сейчас онлайн</label>
-                    <input class="visually-hidden checkbox__input" id="108" type="checkbox" name="" value="" checked>
-                    <label for="108">Есть отзывы</label>
-                    <input class="visually-hidden checkbox__input" id="109" type="checkbox" name="" value="" checked>
-                    <label for="109">В избранном</label>
-                </fieldset>
-                <label class="search-task__name" for="110">Поиск по имени</label>
-                <input class="input-middle input" id="110" type="search" name="q" placeholder="">
-                <button class="button" type="submit">Искать</button>
-            </form>
+					<?php $form = ActiveForm::begin([
+						'id'=>'tasks-form',
+						'method'=>'get',
+						'action'=>'?r=tasks/search',
+						'options'=> ['class'=>'search-task__form',
+							'name'=>'q']
+					]) ;?>
+            <fieldset class="search-task__categories">
+                <legend>Категории</legend>
+                <?php foreach($categories as $category): ?>
+                    <?php echo  Html::checkbox($category->title_en, false,['class'=>'visually-hidden checkbox__input',                        'id'=>$category->id]);
+                    echo Html::label($category->title,$category->id)?>
+                <?php endforeach;?>
+            </fieldset>
+            <fieldset class="search-task__categories">
+                <legend>Дополнительно</legend>
+                <?php echo  Html::checkbox('now-free', false,['class'=>'visually-hidden checkbox__input',
+                    'id'=>count($categories)+1]);
+                echo Html::label('Сейчас свободен',count($categories)+1)?>
+                <?php echo  Html::checkbox('online-now', false,['class'=>'visually-hidden checkbox__input',
+                    'id'=>count($categories)+2]);
+                echo Html::label('Сейчас онлайн' ,count($categories)+2)?>
+                <?php echo  Html::checkbox('there-are-reviews', false,['class'=>'visually-hidden checkbox__input',
+                    'id'=>count($categories)+3]);
+                echo Html::label('Есть отзывы' ,count($categories)+3)?>
+                <?php echo  Html::checkbox('in-favorites', false,['class'=>'visually-hidden checkbox__input',
+                    'id'=>count($categories)+4]);
+                echo Html::label('В избранном' ,count($categories)+4)?>
+            </fieldset>
+                <?= Html::label('Поиск по имени' ,count($categories)+5,
+                    [ 'class'=>'search-task__name']) ?>
+                <?= Html::tag('input' ,'',
+                    [ 'class'=>'input-middle input',
+                        'id'=>count($categories)+5,
+                        'type'=>'search',
+                        'name'=>'search-word']) ?>
+                <?= Html::submitButton('Искать', ['class'=>'button']);?>
+                <?php ActiveForm::end() ;?>
         </div>
     </section>
 </div>

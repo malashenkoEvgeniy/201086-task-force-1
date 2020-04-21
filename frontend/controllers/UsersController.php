@@ -2,7 +2,9 @@
 
 namespace frontend\controllers;
 
+use frontend\models\Categories;
 use frontend\models\Reviews;
+use frontend\models\SearchForm;
 use frontend\models\Tasks;
 use frontend\models\UsersCategories;
 use Yii;
@@ -39,8 +41,8 @@ class UsersController extends AppController
      */
     public function actionIndex()
     {
-        $searchModel = new SearchUsers();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+
 				$query = Users::find()->with('location');
 				$pages = new Pagination(['totalCount'=>$query->count(), 'pageSize'=> 5, 'forcePageParam'=>false, 'pageSizeParam'=>false]);
 				$users = $query->offset($pages->offset)->limit($pages->limit)->asArray()->all();
@@ -79,8 +81,19 @@ class UsersController extends AppController
 						$newUser[$i] = array_merge($user, $count);
 						$i++;
 				}
-					return $this->render('index', compact('searchModel', 'dataProvider',	'newUser', 'pages'));
+					$model = new SearchForm();
+					$categories = Categories::find()->indexBy('id')->all();
+					return $this->render('index', compact('model', 'categories',	'newUser', 'pages'));
     }
+
+		public function actionSearch()
+		{
+			$q = trim(\Yii::$app->request->get('q'));
+			print_r($q);
+
+			//return $this->render('search', compact('q'));
+
+		}
 
     /**
      * Displays a single Users model.
