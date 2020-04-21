@@ -33,6 +33,12 @@ class TimeAgo
 		return $date;
 	}
 
+	private function getWeek():int
+	{
+		$date = intdiv(floor($this->time / 3600 / 24), 7);
+		return $date;
+	}
+
 	private function getMonth():int
 	{
 		$date = floor($this->time / 3600 / 24 / 30) % 12 ;
@@ -52,6 +58,9 @@ class TimeAgo
 		}
 		if ($this->getMonth() > 0){
 			return $this->getMonth().' '. (new NumericFormatter($this->getMonth(), 'months'))->getWord().' назад';
+		}
+		if ($this->getWeek() > 0){
+			return $this->getWeek().' '. (new NumericFormatter($this->getWeek(), 'week'))->getWord().' назад';
 		}
 		if ($this->getDays() > 0){
 			return $this->getDays().' '. (new NumericFormatter($this->getDays(), 'days'))->getWord().' назад';

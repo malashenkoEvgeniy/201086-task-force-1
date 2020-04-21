@@ -62,22 +62,43 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="search-task__wrapper">
 			<?php $form = ActiveForm::begin([
 			        'id'=>'tasks-form',
-			        'options'=> ['class'=>'search-task__form']
+                    'method'=>'get',
+							'action'=>'?r=tasks/search',
+			        'options'=> ['class'=>'search-task__form',
+
+
+                      'name'=>'q']
 
             ]) ;?>
             <fieldset class="search-task__categories">
                 <legend>Категории</legend>
-                <?= $form->field($model,'translation')
-                  ->checkbox(['name'=>'translation',
-                              'id'=>1,
-                               'template' => '{input}{label}',
-                               'options'=>[
-                                'class'=> 'checkbox__input'
-                                ]], false);
-
-					//$form->field($model, 'rememberMe')->checkbox(['template' => '{input}{label}']);
-?>
+                <?php foreach($categories as $category):?>
+                <?php echo  Html::checkbox($category->title_en, false,['class'=>'visually-hidden checkbox__input',
+                                                                        'id'=>$category->id]);
+                    echo Html::label($category->title,$category->id)?>
+                <?php endforeach;?>
             </fieldset>
+            <fieldset class="search-task__categories">
+                <legend>Дополнительно</legend>
+                <?php echo  Html::checkbox('response', false,['class'=>'visually-hidden checkbox__input',
+                    'id'=>count($categories)+1]);
+                echo Html::label('Без откликов',count($categories)+1)?>
+                <?php echo  Html::checkbox('teleworking', false,['class'=>'visually-hidden checkbox__input',
+                    'id'=>count($categories)+2]);
+                echo Html::label('Удаленная работа' ,count($categories)+2)?>
+            </fieldset>
+            <?= Html::label('Период' ,count($categories)+3,
+                                                         [ 'class'=>'search-task__name']) ?>
+            <?= Html::dropDownList('time[]',
+							'week', [
+							'month' => 'За месяц',
+							'week' => 'За неделю',
+							'day' => 'За день'],
+                      ['class' => 'multiple-select input']);?>
+					<?= Html::label('Поиск по названию' ,count($categories)+4,
+						[ 'class'=>'search-task__name']) ?>
+
+
 			<?= Html::submitButton('Искать', ['class'=>'button']);?>
 			<?php ActiveForm::end() ;?>
             <form class="search-task__form" name="test" method="get" action="<?= \yii\helpers\Url::to('tasks/search')?>">

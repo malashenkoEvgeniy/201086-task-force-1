@@ -2,11 +2,11 @@
 
 namespace frontend\controllers;
 
+use frontend\models\Categories;
 use frontend\models\SearchForm;
 use Throwable;
 use Yii;
 use frontend\models\Tasks;
-use frontend\models\TasksSearch;
 
 use yii\data\Pagination;
 use yii\db\StaleObjectException;
@@ -40,18 +40,22 @@ class TasksController extends AppController
     public function actionIndex()
     {
 
-        $searchModel = new TasksSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $categories = Categories::find()->indexBy('id')->all();
+
+
 				//$tasks = Tasks::find()->with('category')->with('location')->with('customer')->asArray()->all();
 				$query = Tasks::find()->with('category')->with('location')->with('customer');
 				$pages = new Pagination(['totalCount'=>$query->count(), 'pageSize'=> 5, 'forcePageParam'=>false, 'pageSizeParam'=>false]);
 				$tasks = $query->offset($pages->offset)->limit($pages->limit)->asArray()->all();
 				$model = new SearchForm();
-			return $this->render('index', compact( 'tasks', 'pages', 'model'));
+			return $this->render('index', compact( 'tasks', 'pages', 'model', 'categories'));
     }
 
     public function actionSearch()
 		{
+			$q = trim(\Yii::$app->request->get('q'));
+
+			return $this->render('search', compact('q'));
 
 		}
 

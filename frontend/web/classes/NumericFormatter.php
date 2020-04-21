@@ -9,10 +9,11 @@ namespace frontend\web\classes;
 class NumericFormatter
 {
 	const WORDS_MINUTES = ['минут', 'минута', 'минуты'];
-	const WORDS_HOURS = [' часов ', ' час ', ' часа '];
-	const WORDS_DAYS = [' дней ', ' день ', ' дня '];
-	const WORDS_MONTHS = [' месяцев ', ' месяц ', ' месяца '];
-	const WORDS_YEARS = [' лет ', ' год ', ' года '];
+	const WORDS_HOURS = ['часов ', 'час', 'часа'];
+	const WORDS_DAYS = ['дней ', ' день ', 'дня'];
+	const WORDS_WEEK = ['неделю', 'недель', 'недели' ];
+	const WORDS_MONTHS = ['месяцев', 'месяц', 'месяца'];
+	const WORDS_YEARS = ['лет', 'год', 'года'];
 	public $num;
 	private $indicator;
 
@@ -31,6 +32,8 @@ class NumericFormatter
 				return self::WORDS_HOURS[$this->getMod()];
 			case 'days':
 				return self::WORDS_DAYS[$this->getMod()];
+			case 'week':
+				return self::WORDS_WEEK[$this->getMod()];
 			case 'months':
 				return self::WORDS_MONTHS[$this->getMod()];
 			case 'years':
@@ -47,7 +50,7 @@ class NumericFormatter
 		if (($this->num === 1)||($this->num % 10 === 1) ){
 			return 1;
 		}
-		$arrMod = [2,3,4];
+		$arrMod = [2, 3, 4];
 		foreach($arrMod as $item){
 			if (($this->num === $item)||($this->num % 10 === $item) ) {
 				return 2;
