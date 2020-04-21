@@ -65,10 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'method'=>'get',
 							'action'=>'?r=tasks/search',
 			        'options'=> ['class'=>'search-task__form',
-
-
                       'name'=>'q']
-
             ]) ;?>
             <fieldset class="search-task__categories">
                 <legend>Категории</legend>
@@ -95,43 +92,15 @@ $this->params['breadcrumbs'][] = $this->title;
 							'week' => 'За неделю',
 							'day' => 'За день'],
                       ['class' => 'multiple-select input']);?>
-					<?= Html::label('Поиск по названию' ,count($categories)+4,
+			<?= Html::label('Поиск по названию' ,count($categories)+4,
 						[ 'class'=>'search-task__name']) ?>
-
-
+            <?= Html::tag('input' ,'',
+						[ 'class'=>'input-middle input',
+                          'id'=>count($categories)+4,
+                          'type'=>'search',
+                          'name'=>'search-word']) ?>
 			<?= Html::submitButton('Искать', ['class'=>'button']);?>
 			<?php ActiveForm::end() ;?>
-            <form class="search-task__form" name="test" method="get" action="<?= \yii\helpers\Url::to('tasks/search')?>">
-                <fieldset class="search-task__categories">
-                    <legend>Категории</legend>
-                    <input class="visually-hidden checkbox__input" id="1" type="checkbox" name="1" value="услуги" checked>
-                    <label for="1">Курьерские услуги </label>
-                    <input class="visually-hidden checkbox__input" id="2" type="checkbox" name="2" value="перевозки" checked>
-                    <label  for="2">Грузоперевозки </label>
-                    <input class="visually-hidden checkbox__input" id="3" type="checkbox" name="3" value="">
-                    <label  for="3">Переводы </label>
-                    <input class="visually-hidden checkbox__input" id="4" type="checkbox" name="4" value="">
-                    <label  for="4">Строительство и ремонт </label>
-                    <input class="visually-hidden checkbox__input" id="5" type="checkbox" name="5" value="">
-                    <label  for="5">Выгул животных </label>
-                </fieldset>
-                <fieldset class="search-task__categories">
-                    <legend>Дополнительно</legend>
-                    <input class="visually-hidden checkbox__input" id="6" type="checkbox" name="отклик" value="">
-                    <label for="6">Без откликов</label>
-                    <input class="visually-hidden checkbox__input" id="7" type="checkbox" name="удаленно" value="" checked>
-                    <label for="7">Удаленная работа </label>
-                </fieldset>
-                <label class="search-task__name" for="8">Период</label>
-                <select class="multiple-select input" id="8" size="1" name="time[]">
-                    <option value="day">За день</option>
-                    <option selected value="week">За неделю</option>
-                    <option value="month">За месяц</option>
-                </select>
-                <label class="search-task__name" for="9">Поиск по названию</label>
-                <input class="input-middle input" id="9" type="search" name="search_word" placeholder="">
-                <button class="button" type="submit">Искать</button>
-            </form>
         </div>
     </section>
 </div>

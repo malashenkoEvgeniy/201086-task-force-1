@@ -54,6 +54,7 @@ class TasksController extends AppController
     public function actionSearch()
 		{
 			$q = trim(\Yii::$app->request->get('q'));
+			print_r($q);
 
 			return $this->render('search', compact('q'));
 
