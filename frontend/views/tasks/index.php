@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 //foreach($tasks as $task):
   //echo $task['status'];
-//	debug($task);
+//debug($tasks);
   //echo '<hr>';
 //endforeach;
 ?>

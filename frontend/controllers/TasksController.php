@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use frontend\models\Categories;
+use frontend\models\Proposal;
 use frontend\models\SearchForm;
 use Throwable;
 use Yii;
@@ -18,6 +19,7 @@ use yii\filters\VerbFilter;
  */
 class TasksController extends AppController
 {
+	public $countTask;
     /**
      * {@inheritdoc}
      */
@@ -43,6 +45,8 @@ class TasksController extends AppController
 				$query = Tasks::find()->with('category')->with('location')->with('customer');
 				$pages = new Pagination(['totalCount'=>$query->count(), 'pageSize'=> 5, 'forcePageParam'=>false, 'pageSizeParam'=>false]);
 				$tasks = $query->offset($pages->offset)->limit($pages->limit)->asArray()->all();
+
+
 				$model = new SearchForm();
 			return $this->render('index', compact( 'tasks', 'pages', 'model', 'categories'));
     }
@@ -55,12 +59,68 @@ class TasksController extends AppController
 			foreach ($q as $itemQuery){
 				$arr[$i] = explode('=', $itemQuery);
 				$i++;
+			}
+			$categories = Categories::find()->indexBy('id')->all();
+			$query = Tasks::find();
+			$arrCat = [];
+			foreach ($arr as $arrItem) {
+				if($arrItem[0]==='time') {
+					switch ($arrItem[1]){
+						case 'month':
+							$toDate = date('Y-m-d H:i:s', strtotime('1 months ago'));
+							break;
+						case 'week':
+							$toDate = date('Y-m-d H:i:s', strtotime('-1 weeks'));
+							break;
+						case 'day':
+							$toDate = date('Y-m-d H:i:s', strtotime('today'));
+							break;
+					}
+				}
+			}
+			$query->andFilterCompare('tasks.creation_time', ">$toDate");
+
+			if(!empty($arrCat)){
+				$query->andWhere(['like', 'category_id', $arrCat]);
+			}
+			for ($i=1; $i<count($arr); $i++){
+				foreach ($categories as $category) {
+					if ($arr[$i][0] === $category->title_en) {
+						array_push($arrCat, $category->id);
+					}
+				}
+				if($arr[$i][0]==='search-word'&& $arr[$i][1]!=='') {
+					$query->andWhere(['like', 'name', $arr[$i][1]]);
+				}
+				if($arr[$i][0]==='teleworking') {
+					$query->andWhere(['location_id' => null]);
+				}
+
+				if($arr[$i][0]==='response') {
+					//foreach ($query->all() as $item){
+						//foreach(Proposal::find()->all() as $valProposal){}
+//}
+					//foreach ($query as $val){
+//						debug($val['proposals']);
+					//}
+				}
 
 			}
-			debug($arr);
 
-			return $this->render('search', compact('q'));
+			//debug($query->all());
+			if(!empty($arrCat)){
+				$query->andWhere(['like', 'category_id', $arrCat]);
+			}
 
+			$query->with('category')->with('location')->with('customer');
+			//$this->countTask = $query->count();
+			//echo $this->countTask;
+			//debug($query);
+			$pages = new Pagination(['totalCount'=>$query->count(), 'pageSize'=> 5, 'forcePageParam'=>false, 'pageSizeParam'=>false]);
+			$tasks = $query->offset($pages->offset)->limit($pages->limit)->asArray()->all();
+			$model = new SearchForm();
+			//debug($tasks);
+			return $this->render('index', compact( 'tasks', 'pages', 'model', 'categories'));
 		}
 
     /**

@@ -11,7 +11,7 @@ class NumericFormatter
 	const WORDS_MINUTES = ['минут', 'минута', 'минуты'];
 	const WORDS_HOURS = ['часов ', 'час', 'часа'];
 	const WORDS_DAYS = ['дней ', ' день ', 'дня'];
-	const WORDS_WEEK = ['неделю', 'недель', 'недели' ];
+	const WORDS_WEEK = ['неделю', 'неделю', 'недели' ];
 	const WORDS_MONTHS = ['месяцев', 'месяц', 'месяца'];
 	const WORDS_YEARS = ['лет', 'год', 'года'];
 	public $num;
