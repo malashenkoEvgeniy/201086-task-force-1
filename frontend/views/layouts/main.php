@@ -64,7 +64,7 @@ AppAsset::register($this);
                     'activeCssClass'=>'site-list__item--active',
                     'itemOptions' => ['class'=>'site-list__item'],
                     'items' => [
-                        ['label' => 'Задания', 'class'=>'site-list__item', 'url' => ['tasks/index']],
+                        ['label' => 'Задания', 'url' => ['tasks/index']],
                         ['label' => 'Исполнители', 'url' => ['users/index']],
                         ['label' => 'Создать задание', 'url' => ['site/login']],
                         ['label' => 'Мой профиль', 'url' => ['site/login']],
@@ -140,26 +140,19 @@ AppAsset::register($this);
 				</p>
 			</div>
 			<div class="page-footer__links">
-				<ul class="links__list">
-					<li class="links__item">
-						<a href="">Задания</a>
-					</li>
-					<li class="links__item">
-						<a href="">Мой профиль</a>
-					</li>
-					<li class="links__item">
-						<a href="">Исполнители</a>
-					</li>
-					<li class="links__item">
-						<a href="">Регистрация</a>
-					</li>
-					<li class="links__item">
-						<a href="">Создать задание</a>
-					</li>
-					<li class="links__item">
-						<a href="">Справка</a>
-					</li>
-				</ul>
+				<?php
+				echo Menu::widget([
+					'options'=> ['class'=>'links__list'],
+					'itemOptions' => ['class'=>'links__item'],
+					'items' => [
+						['label' => 'Задания', 'url' => ['tasks/index']],
+						['label' => 'Мой профиль', 'url' => ['tasks/index']],
+						['label' => 'Исполнители', 'url' => ['users/index']],
+						['label' => 'Регистрация', 'url' => ['users/index']],
+						['label' => 'Создать задание', 'url' => ['site/login']],
+						['label' => 'Справка', 'url' => ['site/login']],
+					],
+				]);?>
 			</div>
 			<div class="page-footer__copyright">
 				<a>
