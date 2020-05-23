@@ -2,23 +2,17 @@
 
 namespace frontend\controllers;
 
-use frontend\models\Categories;
-use frontend\models\Reviews;
-use frontend\models\SearchForm;
-use frontend\models\Tasks;
-use frontend\models\UsersCategories;
 use Yii;
 use frontend\models\Users;
-use frontend\models\SearchUsers;
-use yii\data\Pagination;
-use yii\db\StaleObjectException;
+use frontend\models\UsersSearch;
+use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * UsersController implements the CRUD actions for Users model.
  */
-class UsersController extends AppController
+class UsersController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -41,59 +35,17 @@ class UsersController extends AppController
      */
     public function actionIndex()
     {
+			$q = explode("&", trim(\Yii::$app->request->queryString));
+			//debug($q);
 
+        $searchModel = new UsersSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-				$query = Users::find()->with('location');
-				$pages = new Pagination(['totalCount'=>$query->count(), 'pageSize'=> 5, 'forcePageParam'=>false, 'pageSizeParam'=>false]);
-				$users = $query->offset($pages->offset)->limit($pages->limit)->asArray()->all();
-				$reviews = Reviews::find()->asArray()->all();
-				$tasks = Tasks::find()->asArray()->all();
-				$usersCategories = UsersCategories::find()->with('category')->asArray()->all();
-				$i = 0;
-				foreach ($users as $user) {
-						$count = ['count-reviews'=> 0,
-											'count-tasks' => 0,
-											'count-assessment' => 0,
-											'divider-assessment' => 0,
-											'categories' => []];
-						foreach ($reviews as $review){
-							if($review['executor_id'] === $user['id']){
-								$count['count-reviews'] ++;
-								$count['count-assessment'] += $review['assessment'];
-								$count['divider-assessment'] ++;
-							}
-						}
-						if($count['divider-assessment']===0){
-							$count['divider-assessment'] = 1;
-						}
-						$count['count-assessment'] = $count['count-assessment'] / $count['divider-assessment'];
-						$count['assessment-stars'] = round($count['count-assessment']);
-						foreach ($tasks as $task){
-							if($task['executor_id'] === $user['id']){
-								$count['count-tasks'] ++;
-							}
-						}
-						foreach ($usersCategories as $categories){
-							if($categories['user_id'] === $user['id']){
-								array_push($count['categories'], $categories['category']['title']);
-							}
-						}
-						$newUser[$i] = array_merge($user, $count);
-						$i++;
-				}
-					$model = new SearchForm();
-					$categories = Categories::find()->indexBy('id')->all();
-					return $this->render('index', compact('model', 'categories',	'newUser', 'pages'));
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
-
-		public function actionSearch()
-		{
-			$q = trim(\Yii::$app->request->get('q'));
-			print_r($q);
-
-			//return $this->render('search', compact('q'));
-
-		}
 
     /**
      * Displays a single Users model.
@@ -155,14 +107,9 @@ class UsersController extends AppController
      */
     public function actionDelete($id)
     {
-			try {
-				$this->findModel($id)->delete();
-			} catch (StaleObjectException $e) {
-			} catch (NotFoundHttpException $e) {
-			} catch (\Throwable $e) {
-			}
+        $this->findModel($id)->delete();
 
-			return $this->redirect(['index']);
+        return $this->redirect(['index']);
     }
 
     /**

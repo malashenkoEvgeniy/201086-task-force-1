@@ -1,8 +1,9 @@
 <?php
 
 namespace frontend\models;
-use yii\db\ActiveRecord;
 
+use app\models\Favorites;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "users".
@@ -23,6 +24,13 @@ use yii\db\ActiveRecord;
  * @property int|null $show_contacts_for_customer
  * @property int|null $hide_profile
  * @property string $last_visit_time
+ * @property int $rating
+ * @property int $count_orders
+ * @property int $popularity
+ * @property int $now_free
+ * @property int $has_reviews
+ * @property int $is_executor
+ * @property int $count_reviews
  *
  * @property ChatMessages[] $chatMessages
  * @property EmailSettings[] $emailSettings
@@ -37,6 +45,7 @@ use yii\db\ActiveRecord;
  */
 class Users extends ActiveRecord
 {
+
     /**
      * {@inheritdoc}
      */
@@ -52,8 +61,8 @@ class Users extends ActiveRecord
     {
         return [
             [['creation_time', 'birthday', 'last_visit_time'], 'safe'],
-            [['name', 'email', 'location_id', 'password', 'last_visit_time'], 'required'],
-            [['location_id', 'show_contacts_for_customer', 'hide_profile'], 'integer'],
+            [['name', 'email', 'location_id', 'password', 'last_visit_time', 'now_free'], 'required'],
+            [['location_id', 'show_contacts_for_customer', 'hide_profile', 'rating', 'count_orders', 'popularity', 'now_free', 'has_reviews', 'is_executor', 'count_reviews'], 'integer'],
             [['info'], 'string'],
             [['name', 'email', 'password', 'phone', 'skype', 'another_messenger', 'avatar', 'task_name'], 'string', 'max' => 128],
             [['location_id'], 'exist', 'skipOnError' => true, 'targetClass' => Locations::className(), 'targetAttribute' => ['location_id' => 'id']],
@@ -82,98 +91,115 @@ class Users extends ActiveRecord
             'show_contacts_for_customer' => 'Show Contacts For Customer',
             'hide_profile' => 'Hide Profile',
             'last_visit_time' => 'Last Visit Time',
+            'rating' => 'Rating',
+            'count_orders' => 'Count Orders',
+            'popularity' => 'Popularity',
+            'now_free' => 'Now Free',
+            'has_reviews' => 'Has Reviews',
+            'is_executor' => 'Is Executor',
+            'count_reviews' => 'Count Reviews',
         ];
     }
 
-    /**
-     * Gets query for [[ChatMessages]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getChatMessages()
-    {
-        return $this->hasMany(ChatMessages::class, ['writer_id' => 'id']);
-    }
+	/**
+	 * Gets query for [[Favorites]].
+	 *
+	 * @return \yii\db\ActiveQuery
+	 */
+	public function getFavorites()
+	{
+		return $this->hasMany(Favorites::class, ['user_id' => 'id']);
+	}
 
-    /**
-     * Gets query for [[EmailSettings]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getEmailSettings()
-    {
-        return $this->hasMany(EmailSettings::class, ['user_id' => 'id']);
-    }
+	/**
+	 * Gets query for [[ChatMessages]].
+	 *
+	 * @return \yii\db\ActiveQuery
+	 */
+	public function getChatMessages()
+	{
+		return $this->hasMany(ChatMessages::class, ['writer_id' => 'id']);
+	}
 
-    /**
-     * Gets query for [[Files]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getFiles()
-    {
-        return $this->hasMany(File::class, ['user_id' => 'id']);
-    }
+	/**
+	 * Gets query for [[EmailSettings]].
+	 *
+	 * @return \yii\db\ActiveQuery
+	 */
+	public function getEmailSettings()
+	{
+		return $this->hasMany(EmailSettings::class, ['user_id' => 'id']);
+	}
 
-    /**
-     * Gets query for [[Proposals]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProposals()
-    {
-        return $this->hasMany(Proposal::class, ['user_id' => 'id']);
-    }
+	/**
+	 * Gets query for [[Files]].
+	 *
+	 * @return \yii\db\ActiveQuery
+	 */
+	public function getFiles()
+	{
+		return $this->hasMany(File::class, ['user_id' => 'id']);
+	}
 
-    /**
-     * Gets query for [[CustomerReviews]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-		public function getCustomerReviews()
-		{
-			return $this->hasMany(Reviews::class, ['customer_id' => 'id']);
-		}
+	/**
+	 * Gets query for [[Proposals]].
+	 *
+	 * @return \yii\db\ActiveQuery
+	 */
+	public function getProposals()
+	{
+		return $this->hasMany(Proposal::class, ['user_id' => 'id']);
+	}
 
-    /**
-     * Gets query for [[ExecutorReviews]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-		public function getExecutorReviews()
-		{
-			return $this->hasMany(Reviews::class, ['executor_id' => 'id']);
-		}
+	/**
+	 * Gets query for [[CustomerReviews]].
+	 *
+	 * @return \yii\db\ActiveQuery
+	 */
+	public function getCustomerReviews()
+	{
+		return $this->hasMany(Reviews::class, ['customer_id' => 'id']);
+	}
 
-    /**
-     * Gets query for [[CustomerTasks]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-		public function getCustomerTasks()
-		{
-			return $this->hasMany(Tasks::class, ['customer_id' => 'id']);
-		}
+	/**
+	 * Gets query for [[ExecutorReviews]].
+	 *
+	 * @return \yii\db\ActiveQuery
+	 */
+	public function getExecutorReviews()
+	{
+		return $this->hasMany(Reviews::class, ['executor_id' => 'id']);
+	}
 
-    /**
-     * Gets query for [[ExecutorTasks]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-		public function getExecutorTasks()
-		{
-			return $this->hasMany(Tasks::class, ['executor_id' => 'id']);
-		}
+	/**
+	 * Gets query for [[CustomerTasks]].
+	 *
+	 * @return \yii\db\ActiveQuery
+	 */
+	public function getCustomerTasks()
+	{
+		return $this->hasMany(Tasks::class, ['customer_id' => 'id']);
+	}
 
-    /**
-     * Gets query for [[Location]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getLocation()
-    {
-        return $this->hasOne(Locations::class, ['id' => 'location_id']);
-    }
+	/**
+	 * Gets query for [[ExecutorTasks]].
+	 *
+	 * @return \yii\db\ActiveQuery
+	 */
+	public function getExecutorTasks()
+	{
+		return $this->hasMany(Tasks::class, ['executor_id' => 'id']);
+	}
+
+	/**
+	 * Gets query for [[Location]].
+	 *
+	 * @return \yii\db\ActiveQuery
+	 */
+	public function getLocation()
+	{
+		return $this->hasOne(Locations::class, ['id' => 'location_id']);
+	}
 
 	/**
 	 * Gets query for [[UsersCategories]].

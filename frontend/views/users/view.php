@@ -45,6 +45,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'show_contacts_for_customer',
             'hide_profile',
             'last_visit_time',
+            'rating',
+            'count_orders',
+            'popularity',
+            'now_free',
+            'has_reviews',
+            'is_executor',
+            'count_reviews',
         ],
     ]) ?>
 

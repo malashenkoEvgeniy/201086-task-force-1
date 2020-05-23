@@ -42,6 +42,20 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'last_visit_time')->textInput() ?>
 
+    <?= $form->field($model, 'rating')->textInput() ?>
+
+    <?= $form->field($model, 'count_orders')->textInput() ?>
+
+    <?= $form->field($model, 'popularity')->textInput() ?>
+
+    <?= $form->field($model, 'now_free')->textInput() ?>
+
+    <?= $form->field($model, 'has_reviews')->textInput() ?>
+
+    <?= $form->field($model, 'is_executor')->textInput() ?>
+
+    <?= $form->field($model, 'count_reviews')->textInput() ?>
+
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>

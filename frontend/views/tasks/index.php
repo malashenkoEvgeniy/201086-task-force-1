@@ -12,20 +12,13 @@ use yii\helpers\Html;
 $this->title = 'Tasks';
 $this->params['breadcrumbs'][] = $this->title;
 
-
-//foreach($tasks as $task):
-  //echo $task['status'];
-//debug($tasks);
-  //echo '<hr>';
-//endforeach;
 ?>
 
 <div class="main-container page-container">
     <section class="new-task">
         <div class="new-task__wrapper">
             <h1>Новые задания</h1>
-            <?php foreach($tasks as $task):
-                    if($task['status'] == 0):    ?>
+            <?php foreach($tasks as $task): ?>
             <div class="new-task__card">
                 <div class="new-task__title">
                     <a href="#" class="link-regular"><h2><?= $task['name']?></h2></a>
@@ -37,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <p class="new-task__place"><?= $task['location']['city'];?></p>
                 <span class="new-task__time"><?=  (new TimeAgo($task['creation_time']))->getDate(); ?></span>
             </div>
-            <?php endif; endforeach;?>
+            <?php  endforeach;?>
 
         </div>
        <!--Блок пагинации-->
@@ -49,6 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             'prevPageCssClass' =>'pagination__item',
                                             'activePageCssClass' => 'pagination__item--current',
                                             'hideOnSinglePage'=> true,
+
                                             'maxButtonCount' => 3,
                                             'options' => ['class' => 'new-task__pagination-list'],
                                             'nextPageLabel' => '&#8195',
@@ -87,7 +81,8 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= Html::label('Период' ,count($categories)+3,
                                                          [ 'class'=>'search-task__name']) ?>
             <?= Html::dropDownList('time',
-							'week', [
+							'all-time', [
+							'all-time' => 'за всё время',
 							'month' => 'За месяц',
 							'week' => 'За неделю',
 							'day' => 'За день'],

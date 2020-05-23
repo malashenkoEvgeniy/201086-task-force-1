@@ -19,7 +19,7 @@ use yii\filters\VerbFilter;
  */
 class TasksController extends AppController
 {
-	public $countTask;
+
     /**
      * {@inheritdoc}
      */
@@ -41,12 +41,10 @@ class TasksController extends AppController
      */
     public function actionIndex()
     {
-        $categories = Categories::find()->indexBy('id')->all();
-				$query = Tasks::find()->with('category')->with('location')->with('customer');
+    	  $categories = Categories::find()->indexBy('id')->all();
+				$query = Tasks::find()->where(['like', 'status', 0])->with('category')->with('location')->with('customer');
 				$pages = new Pagination(['totalCount'=>$query->count(), 'pageSize'=> 5, 'forcePageParam'=>false, 'pageSizeParam'=>false]);
 				$tasks = $query->offset($pages->offset)->limit($pages->limit)->asArray()->all();
-
-
 				$model = new SearchForm();
 			return $this->render('index', compact( 'tasks', 'pages', 'model', 'categories'));
     }
@@ -61,11 +59,14 @@ class TasksController extends AppController
 				$i++;
 			}
 			$categories = Categories::find()->indexBy('id')->all();
-			$query = Tasks::find();
+			$query = Tasks::find()->where(['like', 'status', 0]);
 			$arrCat = [];
 			foreach ($arr as $arrItem) {
 				if($arrItem[0]==='time') {
 					switch ($arrItem[1]){
+						case 'all-time':
+							$toDate = '';
+							break;
 						case 'month':
 							$toDate = date('Y-m-d H:i:s', strtotime('1 months ago'));
 							break;
@@ -78,11 +79,13 @@ class TasksController extends AppController
 					}
 				}
 			}
-			$query->andFilterCompare('tasks.creation_time', ">$toDate");
-
-			if(!empty($arrCat)){
-				$query->andWhere(['like', 'category_id', $arrCat]);
+			if($toDate) {
+				$query->andFilterCompare('tasks.creation_time', ">$toDate");
 			}
+
+			/*if(!empty($arrCat)){
+				$query->andWhere(['like', 'category_id', $arrCat]);
+			}*/
 			for ($i=1; $i<count($arr); $i++){
 				foreach ($categories as $category) {
 					if ($arr[$i][0] === $category->title_en) {
@@ -97,29 +100,29 @@ class TasksController extends AppController
 				}
 
 				if($arr[$i][0]==='response') {
-					//foreach ($query->all() as $item){
-						//foreach(Proposal::find()->all() as $valProposal){}
-//}
-					//foreach ($query as $val){
-//						debug($val['proposals']);
-					//}
+					$queryArr = [];
+					$tempArr = [''];
+					$countTask=Tasks::find()->count();
+					$proposalArr = Proposal::find()->asArray()->all();
+					foreach ($proposalArr as $v){
+					array_push($queryArr,$v['task_id']);
+					}
+					for($i=1;$i<$countTask;$i++){
+						if (!in_array($i,  $queryArr)){
+							array_push($tempArr,$i);
+						}
+					}
+					$query->andWhere(['or like', 'id', $tempArr]);
 				}
-
 			}
-
-			//debug($query->all());
 			if(!empty($arrCat)){
 				$query->andWhere(['like', 'category_id', $arrCat]);
 			}
-
 			$query->with('category')->with('location')->with('customer');
-			//$this->countTask = $query->count();
-			//echo $this->countTask;
-			//debug($query);
-			$pages = new Pagination(['totalCount'=>$query->count(), 'pageSize'=> 5, 'forcePageParam'=>false, 'pageSizeParam'=>false]);
+
+			$pages = new Pagination(['totalCount'=>$query->count(), 'pageSize'=> '5', 'forcePageParam'=>false, 'pageSizeParam'=>false]);
 			$tasks = $query->offset($pages->offset)->limit($pages->limit)->asArray()->all();
 			$model = new SearchForm();
-			//debug($tasks);
 			return $this->render('index', compact( 'tasks', 'pages', 'model', 'categories'));
 		}
 

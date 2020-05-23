@@ -4,54 +4,73 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model frontend\models\SearchUsers */
+/* @var $model frontend\models\UsersSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
 <div class="users-search">
 
     <?php $form = ActiveForm::begin([
+        'id'=>'tasks-form',
         'action' => ['index'],
         'method' => 'get',
+        'options' => [
+            'data-pjax' => 1,
+            'class'=>'search-task__form',
+            'name'=>'users',
+        ],
     ]); ?>
+    <fieldset class="search-task__categories">
+        <legend>Категории</legend>
 
-    <?= $form->field($model, 'id') ?>
+	<?php  echo $form->field($model, 'categories')
+		->checkboxList([1 => 'Курьерские услуги',
+			2 =>	'Уборка',
+			3 =>	'Переезды',
+			4 =>	'Компьютерная помощь',
+			5 =>	'Ремонт квартирный',
+			6 =>	'Ремонт техники',
+			7 =>	'Красота',
+			8 =>	'Фото'],
+                        [
+                          'item' => function($index, $label, $name, $checked, $value) {
+							return '<input class="visually-hidden checkbox__input" 
+                                      id="interview-' . $index . '" name="' . $name . '" type="checkbox" ' .
+                                      $checked . ' value="' . $value . '">
+                                    <label for="interview-' . $index . '">' . $label . '</label>';
+		                    }
+                        ])->label('');
+        ?>
 
-    <?= $form->field($model, 'creation_time') ?>
+    </fieldset>
+    <fieldset class="search-task__categories">
+      <legend>Дополнительно</legend>
+      <?php
+      /*
 
-    <?= $form->field($model, 'name') ?>
-
-    <?= $form->field($model, 'email') ?>
-
-    <?= $form->field($model, 'location_id') ?>
-
-    <?php // echo $form->field($model, 'birthday') ?>
-
-    <?php // echo $form->field($model, 'info') ?>
-
-    <?php // echo $form->field($model, 'password') ?>
-
-    <?php // echo $form->field($model, 'phone') ?>
-
-    <?php // echo $form->field($model, 'skype') ?>
-
-    <?php // echo $form->field($model, 'another_messenger') ?>
-
-    <?php // echo $form->field($model, 'avatar') ?>
-
-    <?php // echo $form->field($model, 'task_name') ?>
-
-    <?php // echo $form->field($model, 'show_contacts_for_customer') ?>
-
-    <?php // echo $form->field($model, 'hide_profile') ?>
-
-    <?php // echo $form->field($model, 'last_visit_time') ?>
+        Не нашел как таким образом настраивать чекбокс чтоб не было дива.
+ echo $form->field($model, 'now_free')->checkbox([
+              ['template' => "{input}{label}"],
+				'label' => '123',
+				'class' => 'visually-hidden checkbox__input',
+			])->label('Сейчас свободен');*/?>
+			<?php echo  Html::checkbox('now-free', false,['class'=>'visually-hidden checkbox__input','id'=>15]);
+			echo Html::label('Сейчас свободен',15)?>
+			<?php echo  Html::checkbox('online-now', false,['class'=>'visually-hidden checkbox__input', 'id'=>16]);
+			echo Html::label('Сейчас онлайн' ,16)?>
+			<?php echo  Html::checkbox('there-are-reviews', false,['class'=>'visually-hidden checkbox__input', 'id'=>17]);
+			echo Html::label('Есть отзывы' ,17)?>
+			<?php echo  Html::checkbox('in-favorites', false,['class'=>'visually-hidden checkbox__input', 'id'=>18]);
+			echo Html::label('В избранном' ,18)?>
+    </fieldset>
+                <label class="search-task__name">Поиск по названию</label>
+	<?php echo $form->field($model, 'name')->textInput(['class' => 'input-middle input'])->label('')?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
+        <?= Html::submitButton('Искать', ['class' => 'button']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
 
 </div>
+

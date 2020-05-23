@@ -20,12 +20,13 @@ try {
 		'show_contacts_for_customer'  => $faker->boolean,
   	'hide_profile' => $faker->boolean,
 		'last_visit_time'=>$faker->dateTime()->format('Y-m-d H:i:s'),
-
-
+		'popularity' => $faker->numberBetween(0, 20),
+		'now_free' => $faker->boolean,
+		'is_executor' =>$faker->boolean
 	];
 } catch (\yii\base\Exception $e) {
 }
 
-//php yii fixture/generate users --count=10
+//php yii fixture/generate users --count=50
 
 //php yii fixture/load Users
