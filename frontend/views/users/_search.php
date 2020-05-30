@@ -43,6 +43,7 @@ use yii\widgets\ActiveForm;
         ?>
 
     </fieldset>
+
     <fieldset class="search-task__categories">
       <legend>Дополнительно</legend>
       <?php

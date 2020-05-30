@@ -41,9 +41,40 @@ class UsersSearch extends Users
      */
     public function search($params)
     {
-        $query = Users::find()
-					->joinWith('categories')
-					->where(['is_executor'=>1]);
+      $users = Users::find()->all();
+
+      foreach ($users as $user){
+				$assessments = 0;
+				$user->rating = 0;
+				$user->count_orders = count($user->executorTasks);
+				foreach ($user->executorReviews as $v){
+					$assessments +=  $v['assessment'];
+				}
+				$user->has_reviews = 0;
+				$user->count_reviews = count($user->executorReviews);
+				if($user->count_reviews > 0){
+					$user->rating =  round($assessments / $user->count_reviews * 100, 0);
+					$user->has_reviews = 0;
+				}
+
+				foreach($user->executorTasks as $v){
+					if($v['status']==2){
+						$user->now_free = 0;
+					} else {
+						$user->now_free = 1;
+					}
+				}
+				if(count($user->categories) > 0){
+					$user->is_executor = 1;
+				}
+				$user->save();
+			}
+
+
+
+
+    	$query = Users::find()
+					->joinWith('categories');
 
         // add conditions that should always apply here
 
@@ -51,6 +82,7 @@ class UsersSearch extends Users
             'query' => $query,
 						'Pagination' => [
 							'pageSize' =>5,
+
 						],
 						'sort'=>[
 							'attributes'=>[
@@ -78,7 +110,7 @@ class UsersSearch extends Users
 						]
         ]);
 				$dataProvider->sort->defaultOrder['creation_time']=['date' => SORT_DESC];
-				//$dataProvider->sort->defaultOrder['is_executor'=>1];
+
         $this->load($params);
 
         if (!$this->validate()) {
@@ -86,7 +118,7 @@ class UsersSearch extends Users
             // $query->where('0=1');
             return $dataProvider;
         }
-
+				$this->is_executor = 1;
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
@@ -103,6 +135,8 @@ class UsersSearch extends Users
             'has_reviews' => $this->has_reviews,
             'is_executor' => $this->is_executor,
             'count_reviews' => $this->count_reviews,
+
+					//->where(['is_executor'=>1])
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])

@@ -1,18 +1,16 @@
 <?php
 
-namespace frontend\models;
+namespace frontend;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-//use frontend\models\Tasks;
+use frontend\models\Tasks;
 
 /**
- * TasksSearch represents the model behind the search form of `frontend\models\Tasks`.
+ * modelsTasksSearch represents the model behind the search form of `frontend\models\Tasks`.
  */
-class TasksSearch extends Tasks
+class modelsTasksSearch extends Tasks
 {
-	public $category;
-
     /**
      * {@inheritdoc}
      */
@@ -20,7 +18,7 @@ class TasksSearch extends Tasks
     {
         return [
             [['id', 'category_id', 'location_id', 'budget', 'customer_id', 'executor_id', 'status'], 'integer'],
-            [['creation_time', 'name', 'description', 'deadline' , 'category'], 'safe'],
+            [['creation_time', 'name', 'description', 'deadline'], 'safe'],
         ];
     }
 
@@ -42,19 +40,12 @@ class TasksSearch extends Tasks
      */
     public function search($params)
     {
-        $query = Tasks::find()
-					->joinWith('category')
-					->joinWith('location')
-					->andWhere(['status'=>0]);
+        $query = Tasks::find();
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-						'Pagination' => [
-							'pageSize' =>5,
-
-						],
         ]);
 
         $this->load($params);
@@ -68,7 +59,7 @@ class TasksSearch extends Tasks
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            //'creation_time' => $this->creation_time,
+            'creation_time' => $this->creation_time,
             'category_id' => $this->category_id,
             'location_id' => $this->location_id,
             'budget' => $this->budget,
@@ -79,10 +70,7 @@ class TasksSearch extends Tasks
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'description', $this->description])
-					->andFilterWhere(['and', ['>', 'creation_time', date('Y-m-d H:i:s',$this->creation_time)]])
-
-					->andFilterWhere(['like', 'categories.id', $this->category]);
+            ->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;
     }

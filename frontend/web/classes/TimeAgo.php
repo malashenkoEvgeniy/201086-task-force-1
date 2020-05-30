@@ -54,20 +54,20 @@ class TimeAgo
 	public function getDate():string
 	{
 		if ($this->getYear() > 0){
-			return $this->getYear() .' '. (new NumericFormatter($this->getYear(), 'years'))->getWord().' назад';
+			return $this->getYear() .' '. (new NumericFormatter($this->getYear(), 'years'))->getWord();
 		}
 		if ($this->getMonth() > 0){
-			return $this->getMonth().' '. (new NumericFormatter($this->getMonth(), 'months'))->getWord().' назад';
+			return $this->getMonth().' '. (new NumericFormatter($this->getMonth(), 'months'))->getWord();
 		}
 		if ($this->getWeek() > 0){
-			return $this->getWeek().' '. (new NumericFormatter($this->getWeek(), 'week'))->getWord().' назад';
+			return $this->getWeek().' '. (new NumericFormatter($this->getWeek(), 'week'))->getWord();
 		}
 		if ($this->getDays() > 0){
-			return $this->getDays().' '. (new NumericFormatter($this->getDays(), 'days'))->getWord().' назад';
+			return $this->getDays().' '. (new NumericFormatter($this->getDays(), 'days'))->getWord();
 		}
 		if ($this->getHour() > 0){
-			return $this->getHour().' '. (new NumericFormatter($this->getHour(), 'hours'))->getWord().' назад';
+			return $this->getHour().' '. (new NumericFormatter($this->getHour(), 'hours'))->getWord();
 		}
-		return	$this->getMinute().' '. (new NumericFormatter($this->getMinute(), 'minutes'))->getWord().' назад';
+		return	$this->getMinute().' '. (new NumericFormatter($this->getMinute(), 'minutes'))->getWord();
 	}
 }

@@ -1,10 +1,11 @@
 <?php
 
+use frontend\models\Categories;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\TasksSearch */
+/* @var $model frontend\models\TasksSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -13,35 +14,89 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
+        'options' => [
+            'data-pjax' => 1,
+					'class'=>'search-task__form',
+					'name'=>'tasks',
+        ],
     ]); ?>
+    <fieldset class="search-task__categories">
+        <legend>Категории</legend>
+			<?php
+            /*
+			$itemsCategories = yii\helpers\ArrayHelper::map(Categories::find()->all(), "id", "name");
+			echo $form->field($model, 'categories', [
+				'template' => "{input}\n{label}",
+				'options' => [
+					'tag' => false,
+				],
+			])->checkboxList($itemsCategories, [
+				'item' => function ($index, $label, $name, $checked, $value) {
+					$selected = $checked ? "checked" : "";
+					return "<input class='visually-hidden checkbox__input' type='checkbox' title='{$name}' id='category-{$index}' value='{$value}' {$selected}>\n<label for='category-{$index}'>{$label} </label>";
+				}
+			])->label(false);*/
+			?>
 
-    <?= $form->field($model, 'id') ?>
+			<?php  echo $form->field($model, 'category')
+				->checkboxList([1 => 'Курьерские услуги',
+					2 =>	'Уборка',
+					3 =>	'Переезды',
+					4 =>	'Компьютерная помощь',
+					5 =>	'Ремонт квартирный',
+					6 =>	'Ремонт техники',
+					7 =>	'Красота',
+					8 =>	'Фото'],
+					[
+						'item' => function($index, $label, $name, $checked, $value) {
+							return '<input class="visually-hidden checkbox__input" 
+                                      id="interview-' . $index . '" name="' . $name . '" type="checkbox" ' .
+								$checked . ' value="' . $value . '">
+                                    <label for="interview-' . $index . '">' . $label . '</label>';
+						}
+					])->label('');
+			?>
 
-    <?= $form->field($model, 'creation_time') ?>
+    </fieldset>
+    <fieldset class="search-task__categories">
+        <legend>Дополнительно</legend>
+        <?php echo $form->field($model, 'executor_id', [
+                        'template' => '{input}{label}',
+                        'options' => ['class' => ''],
+                    ])
+                        ->checkbox(['class' => 'visually-hidden checkbox__input',  'uncheck' => false], false)
+                        ->label('Без исполнителя')
+        ?>
+        <?php echo $form->field($model, 'location_id', [
+            'template' => '{input}{label}',
+            'options' => ['class' => ''],
+            ])
+            ->checkbox(['class' => 'visually-hidden checkbox__input', 'uncheck' => false], false)
+            ->label('Удаленная работа')
+        ?>
+    </fieldset>
+	<?php echo  $form->field($model, 'creation_time', [
+		'template' => '{label}{input}',
+		'options' => ['class' => ''],
+		'labelOptions' => ['class' => 'search-task__name']
+	])
+		->dropDownList([
+          (time()-(3600*24)) => 'За день',
+          (time()-(3600*24*7)) => 'За неделю',
+          (time()-(3600*24*30)) => 'За месяц',
+			'4' => 'За все время'
+		], [
+			'class' => 'multiple-select input',
+			'style' => 'width: 100%',
+			'prompt' => 'Выберите период'
+		])->label('Период') ?>
 
-    <?= $form->field($model, 'name') ?>
-
-    <?= $form->field($model, 'category_id') ?>
-
-    <?= $form->field($model, 'description') ?>
-
-    <?php // echo $form->field($model, 'location_id') ?>
-
-    <?php // echo $form->field($model, 'budget') ?>
-
-    <?php // echo $form->field($model, 'deadline') ?>
-
-    <?php // echo $form->field($model, 'customer_id') ?>
-
-    <?php // echo $form->field($model, 'executor_id') ?>
-
-    <?php // echo $form->field($model, 'status') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
-    </div>
-
+	<?php echo  $form->field($model, 'name', [
+            'template' => '{label}{input}',
+            'options' => ['class' => 'input-middle input'],
+            'labelOptions' => ['class' => 'search-task__name']
+        ])->label('Поиск по названию'); ?>
+	<?= Html::submitButton('Искать', ['class' => 'button']) ?>
     <?php ActiveForm::end(); ?>
 
 </div>

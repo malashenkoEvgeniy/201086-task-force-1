@@ -14,6 +14,7 @@ use yii\filters\VerbFilter;
  */
 class UsersController extends Controller
 {
+
     /**
      * {@inheritdoc}
      */
@@ -35,41 +36,6 @@ class UsersController extends Controller
      */
     public function actionIndex()
     {
-			//$q = explode("&", trim(\Yii::$app->request->queryString));
-			//debug($q);
-			//Заполняет табицу users данными со связаных таблиц
-			$model = Users::find()
-				->with('executorReviews')
-				->with('executorTasks')
-				->with('categories')
-				->all();
-			foreach ($model as $item) {
-				$countAssessment = 0;
-				$item->count_orders = count($item->executorTasks);
-				foreach($item->executorTasks as $v){
-					if($v['status']==2){
-						$item->now_free = 1;
-					} else {
-						$item->now_free = 0;
-					}
-				}
-				foreach($item->executorReviews as $v){
-					$countAssessment += $v['assessment'];
-				}
-				if(count($item->categories) > 0){
-					$item->is_executor = 1;
-				}
-				if(count($item->executorReviews) > 0){
-					$item->rating = round($countAssessment / count($item->executorReviews), 2);
-					$item->has_reviews = 1;
-					$item->count_reviews = count($item->executorReviews);
-				} else {
-					$item->rating = 0;
-					$item->has_reviews = 0;
-				}
-				$item->save();
-			}
-
 
 			$searchModel = new UsersSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -88,8 +54,12 @@ class UsersController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+      //$user = Users::find()->where(['id'=>$id])->one();
+      //debug($user);
+
+    	return $this->render('view', [
             'model' => $this->findModel($id),
+						//'user'=>$user
         ]);
     }
 

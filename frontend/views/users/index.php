@@ -1,6 +1,6 @@
 <?php
 
-use yii\helpers\Html;
+//use yii\helpers\Html;
 use yii\widgets\LinkPager;
 use yii\widgets\ListView;
 use yii\widgets\Pjax;
@@ -32,23 +32,20 @@ $this->params['breadcrumbs'][] = $this->title;
             'dataProvider' => $dataProvider,
             'options' => ['class' => 'content-view__feedback-card user__search-wrapper'],
             'itemView' => '_list_item',
+            'pager' => [
+                'pageCssClass' => 'pagination__item',
+                'nextPageCssClass' =>'pagination__item',
+                'prevPageCssClass' =>'pagination__item',
+                'activePageCssClass' => 'pagination__item--current',
+                'hideOnSinglePage'=> true,
+                'maxButtonCount' => 3,
+                'options' => ['class' => 'new-task__pagination-list'],
+                'nextPageLabel' => '&#8195',
+                'prevPageLabel' => '&#8195'
+            ],
+
         ]) ?>
         <?php Pjax::end(); ?>
-
-        <div class="new-task__pagination">
-					<?= LinkPager::widget(['pagination'=>$dataProvider->pagination,
-						'pageCssClass' => 'pagination__item',
-						'nextPageCssClass' =>'pagination__item',
-						'prevPageCssClass' =>'pagination__item',
-						'activePageCssClass' => 'pagination__item--current',
-						'hideOnSinglePage'=> true,
-						'maxButtonCount' => 3,
-						'options' => ['class' => 'new-task__pagination-list'],
-						'nextPageLabel' => '&#8195',
-						'prevPageLabel' => '&#8195'
-					]);
-					?>
-        </div>
     </section>
 
 

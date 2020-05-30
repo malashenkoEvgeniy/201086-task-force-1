@@ -14,12 +14,14 @@ return [
 				'showScriptName' => false,
 				'enableStrictParsing' => false,
 				'rules' => [
-					// ...
+					'users/view/1' => 'users/view',
+					'users'=>'users/index',
+
 				],
 			],
 			'request' => [
 
-				//'baseUrl' => '',
+				'baseUrl' => '',
 			]
     ],
 ];
