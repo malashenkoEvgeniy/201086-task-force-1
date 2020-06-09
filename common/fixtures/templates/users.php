@@ -21,6 +21,9 @@ try {
 		'last_visit_time'=>$faker->dateTime()->format('Y-m-d H:i:s'),
 		'popularity' => $faker->numberBetween(0, 20),
 		'now_free' => $faker->boolean,
+		'auth_key' => 0,
+		'password_hash' => 0,
+		'created_at' => 0,
 		'is_executor' =>$faker->boolean
 	];
 } catch (\yii\base\Exception $e) {
