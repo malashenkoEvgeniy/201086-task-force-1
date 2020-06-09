@@ -737,6 +737,23 @@ footer {
 
 .button:active {
   background-color: #274bdb; }
+  .landing-top a.button {
+  -ms-flex-item-align: end;
+  align-self: flex-end;
+  padding: 15px 38px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.8px;
+  color: #ffffff;
+  background-color: #3742fa;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
 
 .button__big-color {
   -ms-flex-item-align: start;
@@ -2066,6 +2083,9 @@ footer {
   .landing-top p {
     line-height: 23px;
     padding-bottom: 47px; }
+  .landing-top a:hover {
+    text-decoration: none;
+   }
 
 .landing-center {
   background-color: #f1f2f6; }

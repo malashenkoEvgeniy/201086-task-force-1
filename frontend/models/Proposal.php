@@ -50,7 +50,7 @@ class Proposal extends ActiveRecord
             'comment' => 'Comment',
             'task_id' => 'Task ID',
             'budget' => 'Budget',
-            'user_id' => 'User ID',
+            'user_id' => 'Users ID',
         ];
     }
 
@@ -65,7 +65,7 @@ class Proposal extends ActiveRecord
     }
 
     /**
-     * Gets query for [[User]].
+     * Gets query for [[Users]].
      *
      * @return \yii\db\ActiveQuery
      */

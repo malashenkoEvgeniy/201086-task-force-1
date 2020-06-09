@@ -41,7 +41,7 @@ class Favorites extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'user_id' => 'User ID',
+            'user_id' => 'Users ID',
             'favorites_id' => 'Favorites ID',
         ];
     }

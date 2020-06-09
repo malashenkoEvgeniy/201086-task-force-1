@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\Users;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;

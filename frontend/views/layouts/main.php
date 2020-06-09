@@ -55,19 +55,48 @@ AppAsset::register($this);
 			</div>
 			<div class="header__nav">
                 <?php
-                echo Menu::widget([
-                    'options'=> ['class'=>'header-nav__list site-list'],
-                    'activeCssClass'=>'site-list__item--active',
-                    'itemOptions' => ['class'=>'site-list__item'],
-                    'items' => [
-                        ['label' => 'Задания', 'url' => ['tasks/index']],
-                        ['label' => 'Исполнители', 'url' => ['users/index']],
-                        ['label' => 'Создать задание', 'url' => ['site/login']],
-                        ['label' => 'Мой профиль', 'url' => ['site/login']],
-                    ],
-                ]);?>
+                if (Yii::$app->user->isGuest) {
+                    $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
+                    $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+                    echo Menu::widget([
+                        'options'=> ['class'=>'header-nav__list site-list'],
+                        'activeCssClass'=>'site-list__item--active',
+                        'itemOptions' => ['class'=>'site-list__item'],
+                        'items' => [
+                            ['label' => 'Задания', 'url' => ['/tasks/index']],
+                            ['label' => 'Исполнители', 'url' => ['/users/index']],
+                            ['label' => 'Регистрация', 'url' => ['/site/signup']],
+                            ['label' => 'Login', 'url' => ['/site/login']],
+                        ],
+                    ]);
+                } else {
+                    $menuItems[] = '<li>'
+                        . Html::beginForm(['/site/logout'], 'post')
+                        . Html::submitButton(
+                            'Logout (' . Yii::$app->user->identity->username . ')',
+                            ['class' => 'btn btn-link logout']
+                        )
+                        . Html::endForm()
+                        . '</li>';
+                        echo Menu::widget([
+                            'options'=> ['class'=>'header-nav__list site-list'],
+                            'activeCssClass'=>'site-list__item--active',
+                            'itemOptions' => ['class'=>'site-list__item'],
+                            'items' => [
+                                ['label' => 'Задания', 'url' => ['tasks/index']],
+                                ['label' => 'Исполнители', 'url' => ['users/index']],
+                                ['label' => 'Создать задание', 'url' => ['site/login']],
+                                ['label' => 'Мой профиль', 'url' => ['site/login']],
+                            ],
+                        ]);
+
+
+
+
+                ?>
 
 			</div>
+
 			<div class="header__town">
 				<select class="multiple-select input town-select" size="1" name="town[]">
 					<option value="Moscow">Москва</option>
@@ -116,6 +145,7 @@ AppAsset::register($this);
 					</li>
 				</ul>
 			</div>
+            <?php  } ?>
 		</div>
 	</header>
 	<main class="page-main">

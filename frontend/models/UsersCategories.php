@@ -44,7 +44,7 @@ class UsersCategories extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'user_id' => 'User ID',
+            'user_id' => 'Users ID',
             'category_id' => 'Category ID',
         ];
     }
@@ -60,7 +60,7 @@ class UsersCategories extends ActiveRecord
     }
 
     /**
-     * Gets query for [[User]].
+     * Gets query for [[Users]].
      *
      * @return \yii\db\ActiveQuery
      */

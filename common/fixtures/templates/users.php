@@ -11,7 +11,6 @@ try {
 		'location_id' => $faker->numberBetween(1, 500),//нужно число count(location_id)
 		'birthday' => $faker->dateTimeThisCentury->format('Y-m-d H:i:s'),
 		'info' => $faker->text,
-		'password' => Yii::$app->getSecurity()->generatePasswordHash('password_' . $index),
 		'phone' => substr($faker->e164PhoneNumber, 1, 11),
 		'skype' => $faker->userName,
 		'another_messenger' => $faker->text($maxNbChars = 128) ,
@@ -27,6 +26,6 @@ try {
 } catch (\yii\base\Exception $e) {
 }
 
-//php yii fixture/generate users --count=50
+//php yii fixture/generate users --count=10
 
 //php yii fixture/load Users
