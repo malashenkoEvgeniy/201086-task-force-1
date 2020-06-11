@@ -46,7 +46,7 @@ class EmailSettings extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'user_id' => 'User ID',
+            'user_id' => 'Users ID',
             'proposal' => 'Proposal',
             'chat_message' => 'Chat Message',
             'refuse' => 'Refuse',
@@ -56,7 +56,7 @@ class EmailSettings extends ActiveRecord
     }
 
     /**
-     * Gets query for [[User]].
+     * Gets query for [[Users]].
      *
      * @return \yii\db\ActiveQuery
      */

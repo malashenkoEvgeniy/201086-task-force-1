@@ -10,7 +10,6 @@ return [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
-		//'defaultRoute' => '?r=home/index',
 		'language' => 'ru',
 		'name'=>'TaskForce',
     'controllerNamespace' => 'frontend\controllers',
@@ -19,7 +18,7 @@ return [
             'csrfParam' => '_csrf-frontend',
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'common\models\Users',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
         ],
@@ -43,7 +42,12 @@ return [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+						'enableStrictParsing' => false,
             'rules' => [
+							//"users/<id>"=>'users/view',
+							'users/view/1' => 'users/view',
+							'users'=>'users/index',
+
             ],
         ],
 

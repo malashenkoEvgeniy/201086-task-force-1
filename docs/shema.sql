@@ -35,7 +35,18 @@ CREATE DATABASE taskforce
   `task_name` VARCHAR(128) NULL,
   `show_contacts_for_customer`  TINYINT NOT NULL DEFAULT 0,
   `hide_profile`  TINYINT NOT NULL DEFAULT 0,
-  `last_visit_time` TIMESTAMP NOT NULL
+  `last_visit_time` TIMESTAMP NOT NULL,
+  `rating` FLOAT NULL ,
+  `count_orders` INT NULL ,
+  `popularity` INT NULL,
+  `now_free` TINYINT  NULL DEFAULT 0,
+  `has_reviews` TINYINT NOT NULL DEFAULT 0,
+  );
+
+   CREATE TABLE favorites (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NOT NULL,
+  `favorites_id` INT NOT NULL
   );
 
   CREATE TABLE users_categories (

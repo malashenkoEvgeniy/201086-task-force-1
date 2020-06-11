@@ -47,7 +47,7 @@ class File extends ActiveRecord
         return [
             'id' => 'ID',
             'path' => 'Path',
-            'user_id' => 'User ID',
+            'user_id' => 'Users ID',
             'task_id' => 'Task ID',
         ];
     }
@@ -63,7 +63,7 @@ class File extends ActiveRecord
     }
 
     /**
-     * Gets query for [[User]].
+     * Gets query for [[Users]].
      *
      * @return \yii\db\ActiveQuery
      */

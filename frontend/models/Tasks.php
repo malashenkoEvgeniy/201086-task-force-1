@@ -2,8 +2,9 @@
 
 namespace frontend\models;
 
-use yii\db\ActiveRecord;
 
+
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "tasks".
@@ -18,7 +19,7 @@ use yii\db\ActiveRecord;
  * @property string $deadline
  * @property int $customer_id
  * @property int|null $executor_id
- * @property string|null $status
+ * @property int $status
  *
  * @property ChatMessages[] $chatMessages
  * @property File[] $files
@@ -31,7 +32,7 @@ use yii\db\ActiveRecord;
  */
 class Tasks extends ActiveRecord
 {
-		const STATUS = ['Новое', 'Отменено', 'В работе', 'Выполнено', 'Провалено'];
+	const STATUS = ['Новое', 'Отменено', 'В работе', 'Выполнено', 'Провалено'];
     /**
      * {@inheritdoc}
      */
@@ -48,9 +49,9 @@ class Tasks extends ActiveRecord
         return [
             [['creation_time', 'deadline'], 'safe'],
             [['name', 'category_id', 'location_id', 'deadline', 'customer_id'], 'required'],
-            [['category_id', 'location_id', 'budget', 'customer_id', 'executor_id'], 'integer'],
+            [['category_id', 'location_id', 'budget', 'customer_id', 'executor_id', 'status'], 'integer'],
             [['description'], 'string'],
-            [['name', 'status'], 'string', 'max' => 128],
+            [['name'], 'string', 'max' => 128],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Categories::className(), 'targetAttribute' => ['category_id' => 'id']],
             [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['customer_id' => 'id']],
             [['executor_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['executor_id' => 'id']],
@@ -78,83 +79,83 @@ class Tasks extends ActiveRecord
         ];
     }
 
-    /**
-     * Gets query for [[ChatMessages]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getChatMessages()
-    {
-        return $this->hasMany(ChatMessages::class, ['task_id' => 'id']);
-    }
+		/**
+		 * Gets query for [[ChatMessages]].
+		 *
+		 * @return \yii\db\ActiveQuery
+		 */
+		public function getChatMessages()
+		{
+			return $this->hasMany(ChatMessages::class, ['task_id' => 'id']);
+		}
 
-    /**
-     * Gets query for [[Files]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getFiles()
-    {
-        return $this->hasMany(File::class, ['task_id' => 'id']);
-    }
+		/**
+		 * Gets query for [[Files]].
+		 *
+		 * @return \yii\db\ActiveQuery
+		 */
+		public function getFiles()
+		{
+			return $this->hasMany(File::class, ['task_id' => 'id']);
+		}
 
-    /**
-     * Gets query for [[Proposals]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProposals()
-    {
-        return $this->hasMany(Proposal::class, ['task_id' => 'id']);
-    }
+		/**
+		 * Gets query for [[Proposals]].
+		 *
+		 * @return \yii\db\ActiveQuery
+		 */
+		public function getProposals()
+		{
+			return $this->hasMany(Proposal::class, ['task_id' => 'id']);
+		}
 
-    /**
-     * Gets query for [[Reviews]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getReviews()
-    {
-        return $this->hasMany(Reviews::class, ['task_id' => 'id']);
-    }
+		/**
+		 * Gets query for [[Reviews]].
+		 *
+		 * @return \yii\db\ActiveQuery
+		 */
+		public function getReviews()
+		{
+			return $this->hasMany(Reviews::class, ['task_id' => 'id']);
+		}
 
-    /**
-     * Gets query for [[Category]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCategory()
-    {
-        return $this->hasOne(Categories::class, ['id' => 'category_id']);
-    }
+		/**
+		 * Gets query for [[Category]].
+		 *
+		 * @return \yii\db\ActiveQuery
+		 */
+		public function getCategory()
+		{
+			return $this->hasOne(Categories::class, ['id' => 'category_id']);
+		}
 
-    /**
-     * Gets query for [[Customer]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCustomer()
-    {
-        return $this->hasOne(Users::class, ['id' => 'customer_id']);
-    }
+		/**
+		 * Gets query for [[Customer]].
+		 *
+		 * @return \yii\db\ActiveQuery
+		 */
+		public function getCustomer()
+		{
+			return $this->hasOne(Users::class, ['id' => 'customer_id']);
+		}
 
-    /**
-     * Gets query for [[Executor]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getExecutor()
-    {
-        return $this->hasOne(Users::class, ['id' => 'executor_id']);
-    }
+		/**
+		 * Gets query for [[Executor]].
+		 *
+		 * @return \yii\db\ActiveQuery
+		 */
+		public function getExecutor()
+		{
+			return $this->hasOne(Users::class, ['id' => 'executor_id']);
+		}
 
-    /**
-     * Gets query for [[Location]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getLocation()
-    {
-        return $this->hasOne(Locations::class, ['id' => 'location_id']);
-    }
+		/**
+		 * Gets query for [[Location]].
+		 *
+		 * @return \yii\db\ActiveQuery
+		 */
+		public function getLocation()
+		{
+			return $this->hasOne(Locations::class, ['id' => 'location_id']);
+		}
 }

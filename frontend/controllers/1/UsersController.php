@@ -14,6 +14,7 @@ use yii\filters\VerbFilter;
  */
 class UsersController extends Controller
 {
+
     /**
      * {@inheritdoc}
      */
@@ -35,7 +36,8 @@ class UsersController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new UsersSearch();
+
+			$searchModel = new UsersSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -52,8 +54,12 @@ class UsersController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+      //$user = Users::find()->where(['id'=>$id])->one();
+      //debug($user);
+
+    	return $this->render('view', [
             'model' => $this->findModel($id),
+						//'user'=>$user
         ]);
     }
 
