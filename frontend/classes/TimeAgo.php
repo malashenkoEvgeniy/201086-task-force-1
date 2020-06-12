@@ -1,7 +1,7 @@
 <?php
 
 
-namespace frontend\web\classes;
+namespace frontend\classes;
 
 
 class TimeAgo

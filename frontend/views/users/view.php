@@ -1,6 +1,6 @@
 <?php
 
-use frontend\web\classes\TimeAgo;
+use frontend\classes\TimeAgo;
 use yii\helpers\Html;
 use \frontend\models\Tasks;
 use \frontend\models\Users;
