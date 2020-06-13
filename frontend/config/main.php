@@ -1,11 +1,12 @@
 <?php
+use yii\web\Request;
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',
     require __DIR__ . '/../../common/config/params-local.php',
     require __DIR__ . '/params.php',
     require __DIR__ . '/params-local.php'
 );
-
+$baseUrl = str_replace('/frontend/web', '', (new Request)->getBaseUrl());
 return [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
@@ -16,6 +17,7 @@ return [
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
+			'baseUrl' => $baseUrl,
         ],
         'user' => [
             'identityClass' => 'common\models\Users',
@@ -40,13 +42,16 @@ return [
         ],
 
         'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-						'enableStrictParsing' => false,
+            'class' => 'yii\web\UrlManager',
+						'baseUrl' => $baseUrl,
+						'enablePrettyUrl' => true,
+						'showScriptName' => false,
+						'enableStrictParsing' => true,
             'rules' => [
-							//"users/<id>"=>'users/view',
-							'users/view/1' => 'users/view',
-							'users'=>'users/in9dex',
+							'/' => 'site/index',
+							'tasks' => 'tasks/index',
+							'users' => 'users/index',
+							'login' => 'site/login',
 
             ],
         ],
