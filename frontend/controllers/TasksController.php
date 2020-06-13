@@ -6,14 +6,13 @@ use frontend\models\Users;
 use Yii;
 use frontend\models\Tasks;
 use frontend\models\TasksSearch;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * TasksController implements the CRUD actions for Tasks model.
  */
-class TasksController extends Controller
+class TasksController extends AppController
 {
     /**
      * {@inheritdoc}
