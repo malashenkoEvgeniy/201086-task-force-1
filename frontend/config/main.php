@@ -46,7 +46,7 @@ return [
             'rules' => [
 							//"users/<id>"=>'users/view',
 							'users/view/1' => 'users/view',
-							'users'=>'users/index',
+							'users'=>'users/in9dex',
 
             ],
         ],
