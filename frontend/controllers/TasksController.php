@@ -2,7 +2,8 @@
 
 namespace frontend\controllers;
 
-use frontend\models\Users;
+
+use common\models\Users;
 use Yii;
 use frontend\models\Tasks;
 use frontend\models\TasksSearch;

@@ -2,8 +2,9 @@
 
 namespace frontend\controllers;
 
+use common\models\Users;
 use Yii;
-use frontend\models\Users;
+
 use frontend\models\UsersSearch;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

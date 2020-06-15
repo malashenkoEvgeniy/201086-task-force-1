@@ -43,10 +43,10 @@ return [
 
         'urlManager' => [
             'class' => 'yii\web\UrlManager',
-						'baseUrl' => $baseUrl,
-						'enablePrettyUrl' => true,
-						'showScriptName' => false,
-						'enableStrictParsing' => true,
+			'baseUrl' => $baseUrl,
+			'enablePrettyUrl' => true,
+			'showScriptName' => false,
+			'enableStrictParsing' => true,
             'rules' => [
 							'/' => 'site/index',
 							'tasks' => 'tasks/index',

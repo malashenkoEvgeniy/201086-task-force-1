@@ -41,7 +41,7 @@ class SignupForm extends Model
     }
 
     /**
-     * Signs user up.
+     * Signs users up.
      *
      * @return bool whether the creating new account was successful and email was sent
      */
@@ -51,14 +51,22 @@ class SignupForm extends Model
         		echo 'ошибка регистрации';
             return null;
         }
+
 			$user = new Users();
 			$user->name = $this->name;
+
 			$user->location_id = $this->location_id;
+			echo $user->location_id ;
 			$user->email = $this->email;
+
 			$user->setPassword($this->password);
 			$user->generateAuthKey();
 			$user->generateEmailVerificationToken();
+			if(!$user->save()){
+				echo 1;
+			}
 			return $user->save();
+
     }
 
     /**
