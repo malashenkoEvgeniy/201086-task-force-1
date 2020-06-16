@@ -154,11 +154,10 @@ class SiteController extends AppController
 	 */
 	public function actionSignup()
 	{
+		//debug(Yii::$app->request->post());
 		$model = new SignupForm();
 		if ($model->load(Yii::$app->request->post()) && $model->signup()) {
 			Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
-			echo '<pre>'; print_r($model);
-			die;
 			return $this->goHome();
 		}
 

@@ -66,7 +66,7 @@ AppAsset::register($this);
                             ['label' => 'Задания', 'url' => ['/tasks/index']],
                             ['label' => 'Исполнители', 'url' => ['/users/index']],
                             ['label' => 'Регистрация', 'url' => ['/site/signup']],
-                            ['label' => 'Login', 'url' => ['/site/login']],
+                            ['label' => 'Войти', 'url' => ['/site/login']],
                         ],
                     ]);
                 } else {

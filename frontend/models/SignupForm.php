@@ -2,6 +2,7 @@
 namespace frontend\models;
 
 use common\models\Users;
+//use phpDocumentor\Reflection\Types\Integer;
 use Yii;
 use yii\base\Model;
 
@@ -15,7 +16,7 @@ class SignupForm extends Model
    	public $email;
     public $password;
     public $location_id;
-   	public $verification_token;
+   	//public $verification_token;
 
 
     /**
@@ -36,7 +37,9 @@ class SignupForm extends Model
             ['email', 'unique', 'targetClass' => '\common\models\Users', 'message' => 'Необходимо заполнить «email».'],
 
             ['password', 'required', 'message' => 'Необходимо заполнить «ПАРОЛЬ».'],
-            ['password', 'string', 'min' => 8],
+            ['password', 'string', 'min' => 2],
+
+						['location_id', 'integer'],
         ];
     }
 
@@ -52,20 +55,34 @@ class SignupForm extends Model
             return null;
         }
 
+			//debug($this);
 			$user = new Users();
 			$user->name = $this->name;
 
 			$user->location_id = $this->location_id;
-			echo $user->location_id ;
+			//echo $this->location_id;
+			//echo '<hr>';
+			//echo $user->location_id ;
 			$user->email = $this->email;
 
+			//echo $this->password;
+
+			//echo Yii::$app->security->generatePasswordHash($this->password);
+			//echo '<hr>';
+			//$user->setPassword($this->password);
+
 			$user->setPassword($this->password);
+			//echo '<hr>';
+
 			$user->generateAuthKey();
 			$user->generateEmailVerificationToken();
-			if(!$user->save()){
-				echo 1;
+			//debug($user);
+			if($user->save()) {
+
+				return $user->save();
 			}
-			return $user->save();
+			echo '25';
+
 
     }
 

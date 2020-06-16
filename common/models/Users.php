@@ -56,7 +56,8 @@ class Users extends ActiveRecord implements IdentityInterface
 				[
 					'class' => TimestampBehavior::className(),
 					'attributes' => [
-						ActiveRecord::EVENT_BEFORE_INSERT => ['creation_time'],
+						ActiveRecord::EVENT_BEFORE_INSERT => ['creation_time', 'created_at', 'updated_at'],
+						ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
 						'value' => new Expression('NOW()'),
 					],
 					// если вместо метки времени UNIX используется datetime:
