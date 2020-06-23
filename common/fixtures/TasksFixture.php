@@ -2,7 +2,7 @@
 
 namespace common\fixtures;
 
-use common\models\Tasks;
+use frontend\models\Tasks;
 use yii\test\ActiveFixture;
 
 class TasksFixture extends ActiveFixture
