@@ -2,7 +2,6 @@
 namespace frontend\models;
 
 use common\models\Users;
-//use phpDocumentor\Reflection\Types\Integer;
 use Yii;
 use yii\base\Model;
 
@@ -12,10 +11,10 @@ use yii\base\Model;
  */
 class SignupForm extends Model
 {
-    public $name;
-   	public $email;
-    public $password;
-    public $location_id;
+		public $username;
+		public $email;
+		public $password;
+		public $location_id;
    	//public $verification_token;
 
 
@@ -25,19 +24,19 @@ class SignupForm extends Model
     public function rules()
     {
         return [
-						['name', 'trim'],
-            ['name', 'required'],
-            ['name', 'unique', 'targetClass' => '\common\models\Users', 'message' => 'Необходимо заполнить «Имя».'],
-            ['name', 'string', 'min' => 2, 'max' => 255],
+						['username', 'trim'],
+						['username', 'required'],
+						['username', 'unique', 'targetClass' => '\common\models\Users', 'message' => 'This username has already been taken.'],
+						['username', 'string', 'min' => 2, 'max' => 255],
 
-            ['email', 'trim'],
-            ['email', 'required'],
-            ['email', 'email'],
-            ['email', 'string', 'max' => 255],
-            ['email', 'unique', 'targetClass' => '\common\models\Users', 'message' => 'Необходимо заполнить «email».'],
+						['email', 'trim'],
+						['email', 'required'],
+						['email', 'email'],
+						['email', 'string', 'max' => 255],
+						['email', 'unique', 'targetClass' => '\common\models\Users', 'message' => 'This email address has already been taken.'],
 
-            ['password', 'required', 'message' => 'Необходимо заполнить «ПАРОЛЬ».'],
-            ['password', 'string', 'min' => 2],
+						['password', 'required'],
+						['password', 'string', 'min' => 6],
 
 						['location_id', 'integer'],
         ];
@@ -55,34 +54,14 @@ class SignupForm extends Model
             return null;
         }
 
-			//debug($this);
 			$user = new Users();
-			$user->name = $this->name;
-
-			$user->location_id = $this->location_id;
-			//echo $this->location_id;
-			//echo '<hr>';
-			//echo $user->location_id ;
+			$user->username = $this->username;
 			$user->email = $this->email;
-
-			//echo $this->password;
-
-			//echo Yii::$app->security->generatePasswordHash($this->password);
-			//echo '<hr>';
-			//$user->setPassword($this->password);
-
+			$user->location_id = $this->location_id;
 			$user->setPassword($this->password);
-			//echo '<hr>';
-
 			$user->generateAuthKey();
 			$user->generateEmailVerificationToken();
-			//debug($user);
-			if($user->save()) {
-
-				return $user->save();
-			}
-			echo '25';
-
+			return $user->save() && $this->sendEmail($user);
 
     }
 
