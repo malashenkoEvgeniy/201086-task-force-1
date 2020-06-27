@@ -4,6 +4,7 @@ namespace frontend\models;
 
 
 
+use common\models\Users;
 use yii\db\ActiveRecord;
 
 /**

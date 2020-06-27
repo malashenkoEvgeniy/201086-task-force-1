@@ -1,6 +1,6 @@
 <?php
 
-use frontend\web\classes\TimeAgo;
+use frontend\classes\TimeAgo;
 use yii\helpers\Url;
 use \yii\web\YiiAsset;
 
@@ -42,7 +42,7 @@ YiiAsset::register($this);
                     <h3 class="content-view__h3">Расположение</h3>
                     <div class="content-view__location-wrapper">
                         <div class="content-view__map">
-                            <a href="#"><img src="./img/map.jpg" width="361" height="292"
+                            <a href="#"><img src="/img/map.jpg" width="361" height="292"
                                              alt="Москва, Новый арбат, 23 к. 1"></a>
                         </div>
                         <div class="content-view__address">
@@ -108,7 +108,7 @@ YiiAsset::register($this);
                         <p><?=$users[$model->customer_id]['name']?></p>
                     </div>
                 </div>
-                <p class="info-customer"><span><?=$users[$model->customer_id]['count_orders']?> заданий</span><span class="last-"><?=(new TimeAgo($users[$model->customer_id]['creation_time']))->getDate()?> на сайте</span></p>
+                <p class="info-customer"><span><?=$users[$model->customer_id]['count_orders']?> заданий</span><span class="last-"><?=(new TimeAgo($users[$model->customer_id]['created_at']))->getDate()?> на сайте</span></p>
                 <a href="<?=Url::to(['users/view', 'id' => $users[$model->customer_id]['id']]);?>" class="link-regular">Смотреть профиль</a>
             </div>
         </div>

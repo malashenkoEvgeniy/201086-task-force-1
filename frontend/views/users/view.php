@@ -1,12 +1,12 @@
 <?php
 
-use frontend\web\classes\TimeAgo;
+use common\models\Users;
+use frontend\classes\TimeAgo;
 use yii\helpers\Html;
 use \frontend\models\Tasks;
-use \frontend\models\Users;
 use \yii\web\YiiAsset;
 /* @var $this yii\web\View */
-/* @var $model frontend\models\Users */
+/* @var $model common\models\Users */
 
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];

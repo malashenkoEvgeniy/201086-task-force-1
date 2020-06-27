@@ -2,6 +2,7 @@
 
 namespace frontend\models;
 
+use common\models\Users;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
@@ -18,7 +19,7 @@ class UsersSearch extends Users
     {
         return [
             [['id', 'location_id', 'show_contacts_for_customer', 'hide_profile', 'count_orders', 'popularity', 'now_free', 'has_reviews', 'is_executor', 'count_reviews', 'rating', 'status', 'created_at', 'updated_at'], 'integer'],
-            [['creation_time', 'name', 'auth_key', 'password_hash', 'password_reset_token', 'email', 'birthday', 'info', 'phone', 'skype', 'another_messenger', 'avatar', 'task_name', 'last_visit_time'], 'safe'],
+            [[ 'name', 'auth_key', 'password_hash', 'password_reset_token', 'email', 'birthday', 'info', 'phone', 'skype', 'another_messenger', 'avatar', 'task_name', 'last_visit_time'], 'safe'],
         ];
     }
 
@@ -103,12 +104,12 @@ class UsersSearch extends Users
 							'label' => 'Популярности',
 							'class' => 'link-regular'
 						],
-						'creation_time',
+						'created_at',
 						'is_executor'
 					],
 				]
 			]);
-			$dataProvider->sort->defaultOrder['creation_time']=['date' => SORT_DESC];
+			$dataProvider->sort->defaultOrder['created_at']=['date' => SORT_DESC];
 
 			$this->load($params);
 
@@ -121,7 +122,7 @@ class UsersSearch extends Users
 			// grid filtering conditions
 			$query->andFilterWhere([
 				'id' => $this->id,
-				'creation_time' => $this->creation_time,
+				'created_at' => $this->created_at,
 				'location_id' => $this->location_id,
 				'birthday' => $this->birthday,
 				'show_contacts_for_customer' => $this->show_contacts_for_customer,

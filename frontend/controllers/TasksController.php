@@ -2,129 +2,129 @@
 
 namespace frontend\controllers;
 
-use frontend\models\Users;
+
+use common\models\Users;
 use Yii;
 use frontend\models\Tasks;
 use frontend\models\TasksSearch;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * TasksController implements the CRUD actions for Tasks model.
  */
-class TasksController extends Controller
+class TasksController extends AppController
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function behaviors()
+	{
+		return [
+			'verbs' => [
+				'class' => VerbFilter::className(),
+				'actions' => [
+					'delete' => ['POST'],
+				],
+			],
+		];
+	}
 
-    /**
-     * Lists all Tasks models.
-     * @return mixed
-     */
-    public function actionIndex()
-    {
-        $searchModel = new TasksSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+	/**
+	 * Lists all Tasks models.
+	 * @return mixed
+	 */
+	public function actionIndex()
+	{
+		$searchModel = new TasksSearch();
+		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }
+		return $this->render('index', [
+			'searchModel' => $searchModel,
+			'dataProvider' => $dataProvider,
+		]);
+	}
 
-    /**
-     * Displays a single Tasks model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
-		{
-				$users = Users::find()->all();
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-						'users' => $users
-        ]);
-    }
+	/**
+	 * Displays a single Tasks model.
+	 * @param integer $id
+	 * @return mixed
+	 * @throws NotFoundHttpException if the model cannot be found
+	 */
+	public function actionView($id)
+	{
+		$users = Users::find()->all();
+		return $this->render('view', [
+			'model' => $this->findModel($id),
+			'users' => $users
+		]);
+	}
 
-    /**
-     * Creates a new Tasks model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new Tasks();
+	/**
+	 * Creates a new Tasks model.
+	 * If creation is successful, the browser will be redirected to the 'view' page.
+	 * @return mixed
+	 */
+	public function actionCreate()
+	{
+		$model = new Tasks();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
+		if ($model->load(Yii::$app->request->post()) && $model->save()) {
+			return $this->redirect(['view', 'id' => $model->id]);
+		}
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
-    }
+		return $this->render('create', [
+			'model' => $model,
+		]);
+	}
 
-    /**
-     * Updates an existing Tasks model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
+	/**
+	 * Updates an existing Tasks model.
+	 * If update is successful, the browser will be redirected to the 'view' page.
+	 * @param integer $id
+	 * @return mixed
+	 * @throws NotFoundHttpException if the model cannot be found
+	 */
+	public function actionUpdate($id)
+	{
+		$model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
+		if ($model->load(Yii::$app->request->post()) && $model->save()) {
+			return $this->redirect(['view', 'id' => $model->id]);
+		}
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
-    }
+		return $this->render('update', [
+			'model' => $model,
+		]);
+	}
 
-    /**
-     * Deletes an existing Tasks model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
+	/**
+	 * Deletes an existing Tasks model.
+	 * If deletion is successful, the browser will be redirected to the 'index' page.
+	 * @param integer $id
+	 * @return mixed
+	 * @throws NotFoundHttpException if the model cannot be found
+	 */
+	public function actionDelete($id)
+	{
+		$this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
-    }
+		return $this->redirect(['index']);
+	}
 
-    /**
-     * Finds the Tasks model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Tasks the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
-        if (($model = Tasks::findOne($id)) !== null) {
-            return $model;
-        }
+	/**
+	 * Finds the Tasks model based on its primary key value.
+	 * If the model is not found, a 404 HTTP exception will be thrown.
+	 * @param integer $id
+	 * @return Tasks the loaded model
+	 * @throws NotFoundHttpException if the model cannot be found
+	 */
+	protected function findModel($id)
+	{
+		if (($model = Tasks::findOne($id)) !== null) {
+			return $model;
+		}
 
-        throw new NotFoundHttpException('The requested page does not exist.');
-    }
+		throw new NotFoundHttpException('The requested page does not exist.');
+	}
 }
