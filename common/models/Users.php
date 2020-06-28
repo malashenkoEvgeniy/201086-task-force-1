@@ -61,7 +61,7 @@ use yii\db\ActiveRecord;
  * @property Tasks[] $tasks0
  * @property UsersCategories[] $usersCategories
  */
-class Users extends ActiveRecord
+class Users extends ActiveRecord implements \yii\web\IdentityInterface
 {
 		const STATUS_DELETED = 0;
 		const STATUS_INACTIVE = 9;

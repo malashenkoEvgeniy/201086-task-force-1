@@ -29,7 +29,7 @@ class SiteController extends AppController
 		return [
 			'access' => [
 				'class' => AccessControl::className(),
-				'only' => ['logout', 'signup'],
+				'only' => ['login', 'logout', 'signup'],
 				'rules' => [
 					[
 						'actions' => ['signup'],

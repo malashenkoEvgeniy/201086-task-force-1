@@ -21,6 +21,7 @@ return [
 					'users'=>'users/index',
 					'tasks/view/1' => 'tasks/view',
 					'signup' => 'site/signup',
+					'login' => 'site/login',
 
 				],
 			],
