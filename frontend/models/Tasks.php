@@ -4,6 +4,7 @@ namespace frontend\models;
 
 
 
+use common\models\Users;
 use yii\db\ActiveRecord;
 
 /**
@@ -33,6 +34,8 @@ use yii\db\ActiveRecord;
 class Tasks extends ActiveRecord
 {
 	const STATUS = ['Новое', 'Отменено', 'В работе', 'Выполнено', 'Провалено'];
+
+	public $layout = 'main';
     /**
      * {@inheritdoc}
      */

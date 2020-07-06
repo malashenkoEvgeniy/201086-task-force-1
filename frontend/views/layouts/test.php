@@ -3,14 +3,14 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-use frontend\models\Locations;
+use yii\bootstrap\Nav;
+use yii\bootstrap\NavBar;
 use yii\helpers\Html;
 use frontend\assets\AppAsset;
 use yii\helpers\Url;
 use yii\widgets\Menu;
 
 AppAsset::register($this);
-$city = Locations::find()->asArray()->all();
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -57,46 +57,74 @@ $city = Locations::find()->asArray()->all();
 				</a>
 			</div>
 			<div class="header__nav">
+				<?php
+				NavBar::begin([
+					'brandLabel' => false,
+				]);
+				$menuItems = [
+					['label' => 'Задания', 'url' => ['/tasks/index']],
+					['label' => 'Исполнители', 'url' => ['/users/index']],
+				];
+				if (Yii::$app->user->isGuest) {
+					$menuItems[] = ['label' => 'Регистрация', 'url' => ['/site/signup']];
+					$menuItems[] = ['label' => 'Войти', 'url' => ['/site/login']];
+				} else {
+					$menuItems[] = '<li>'
+						. Html::beginForm(['/site/logout'], 'post')
+						. Html::submitButton(
+							'Logout (' . Yii::$app->user->identity->name . ')',
+							['class' => 'btn btn-link logout']
+						)
+						. Html::endForm()
+						. '</li>';
+				}
+				echo Nav::widget([
+					'options' => ['class' => 'navbar-nav navbar-right'],
+					'items' => $menuItems,
+				]);
+				NavBar::end();
+				?>
+				<?php
+				if (Yii::$app->user->isGuest) {
+					$menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
+					$menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+					echo Menu::widget([
+						'options'=> ['class'=>'header-nav__list site-list'],
+						'activeCssClass'=>'site-list__item--active',
+						'itemOptions' => ['class'=>'site-list__item'],
+						'items' =>  $menuItems/*[
 
-                <?php
-                if (Yii::$app->user->isGuest) {
-                    $menuItems[] = ['label' => 'Задания', 'url' => ['/tasks/index']];
-                    $menuItems[] = ['label' => 'Исполнители', 'url' => ['/users/index']];
-                    $menuItems[] = ['label' => 'Регистрация', 'url' => ['/site/signup']];
-                    $menuItems[] = ['label' => 'Вход', 'url' => ['/site/login']];
-                    echo Menu::widget([
-                        'options'=> ['class'=>'header-nav__list site-list'],
-                        'activeCssClass'=>'site-list__item--active',
-                        'itemOptions' => ['class'=>'site-list__item'],
-                        'items' =>  $menuItems,
-                    ]);
-                } else {
-                    $menuItems[] =	['label' => 'Задания', 'url' => ['tasks/index']];
-                    $menuItems[] = ['label' => 'Исполнители', 'url' => ['users/index']];
-                    $menuItems[] = ['label' => 'Создать задание', 'url' => ['site/login']];
-                    $menuItems[] = ['label' => 'Мой профиль', 'url' => ['site/login']];
-                    $menuItems[] = '<li>'
-                        . Html::beginForm(['/site/logout'], 'post')
-                        . Html::submitButton(
-                            'Logout (' . Yii::$app->user->identity->name . ')',
-                            ['class' => 'btn btn-primary logout']
-                        )
-                        . Html::endForm()
-                        . '</li>';
+                        ]*/,
+					]);
+				} else {
+				$menuItems[] = '<li>'
+					. Html::beginForm(['/site/logout'], 'post')
+					. Html::submitButton(
+						'Logout (' . Yii::$app->user->identity->name . ')',
+						['class' => 'btn btn-primary logout']
+					)
+					. Html::endForm()
+					. '</li>';
+				echo Menu::widget([
+					'options'=> ['class'=>'header-nav__list site-list'],
+					'activeCssClass'=>'site-list__item--active',
+					'itemOptions' => ['class'=>'site-list__item'],
+					'items' =>  $menuItems/*[
+                                ['label' => 'Задания', 'url' => ['tasks/index']],
+                                ['label' => 'Исполнители', 'url' => ['users/index']],
+                                ['label' => 'Создать задание', 'url' => ['site/login']],
+                                ['label' => 'Мой профиль', 'url' => ['site/login']],
+                            ]*/,
+				]);
 
-                echo Menu::widget([
-                'options'=> ['class'=>'header-nav__list site-list'],
-                'activeCssClass'=>'site-list__item--active',
-                'itemOptions' => ['class'=>'site-list__item'],
-                'items' =>  $menuItems,
-            ]);
-                ?>
+
+
+
+				?>
 
 			</div>
 
 			<div class="header__town">
-                <?php echo  Html::dropDownList('City', $city,
-                 ['class' => 'multiple-select input town-select' ])?>
 				<select class="multiple-select input town-select" size="1" name="town[]">
 					<option value="Moscow">Москва</option>
 					<option selected value="SPB">Санкт-Петербург</option>
@@ -123,7 +151,7 @@ $city = Locations::find()->asArray()->all();
 			</div>
 			<div class="header__account">
 				<a class="header__account-photo">
-					<img src="<?php //Yii::$app->user->identity->avatar?>"
+					<img src="<?=Yii::$app->user->identity->avatar?>"
 							 width="43" height="44"
 							 alt="Аватар пользователя">
 				</a>
@@ -140,55 +168,55 @@ $city = Locations::find()->asArray()->all();
 						<a href="#">Настройки</a>
 					</li>
 					<li>
-                        <?= Html::a("Выход", ['/site/logout']); ?>
+						<?= Html::a("Выход", ['/site/logout']); ?>
 					</li>
 				</ul>
 			</div>
-            <?php  }?>
+			<?php  } ?>
 		</div>
 	</header>
 	<main class="page-main">
 		<?= $content; ?>
 
-
-	</main>
-	<footer class="page-footer">
-		<div class="main-container page-footer__container">
-			<div class="page-footer__info">
-				<p class="page-footer__info-copyright">
-					© 2019, ООО «ТаскФорс»
-					Все права защищены
-				</p>
-				<p class="page-footer__info-use">
-					«TaskForce» — это сервис для поиска исполнителей на разовые задачи.
-					mail@taskforce.com
-				</p>
-			</div>
-			<div class="page-footer__links">
-				<?php
-				echo Menu::widget([
-					'options'=> ['class'=>'links__list'],
-					'itemOptions' => ['class'=>'links__item'],
-					'items' => [
-						['label' => 'Задания', 'url' => ['tasks/index']],
-						['label' => 'Мой профиль', 'url' => ['tasks/index']],
-						['label' => 'Исполнители', 'url' => ['users/index']],
-						['label' => 'Регистрация', 'url' => ['users/index']],
-						['label' => 'Создать задание', 'url' => ['site/login']],
-						['label' => 'Справка', 'url' => ['site/login']],
-					],
-				]);?>
-			</div>
-			<div class="page-footer__copyright">
-				<a>
-					<img class="copyright-logo"
-							 src="/img/academy-logo.png"
-							 width="185" height="63"
-							 alt="Логотип HTML Academy">
-				</a>
-			</div>
+</div>
+</main>
+<footer class="page-footer">
+	<div class="main-container page-footer__container">
+		<div class="page-footer__info">
+			<p class="page-footer__info-copyright">
+				© 2019, ООО «ТаскФорс»
+				Все права защищены
+			</p>
+			<p class="page-footer__info-use">
+				«TaskForce» — это сервис для поиска исполнителей на разовые задачи.
+				mail@taskforce.com
+			</p>
 		</div>
-	</footer>
+		<div class="page-footer__links">
+			<?php
+			echo Menu::widget([
+				'options'=> ['class'=>'links__list'],
+				'itemOptions' => ['class'=>'links__item'],
+				'items' => [
+					['label' => 'Задания', 'url' => ['tasks/index']],
+					['label' => 'Мой профиль', 'url' => ['tasks/index']],
+					['label' => 'Исполнители', 'url' => ['users/index']],
+					['label' => 'Регистрация', 'url' => ['users/index']],
+					['label' => 'Создать задание', 'url' => ['site/login']],
+					['label' => 'Справка', 'url' => ['site/login']],
+				],
+			]);?>
+		</div>
+		<div class="page-footer__copyright">
+			<a>
+				<img class="copyright-logo"
+						 src="./img/academy-logo.png"
+						 width="185" height="63"
+						 alt="Логотип HTML Academy">
+			</a>
+		</div>
+	</div>
+</footer>
 </div>
 
 <?php $this->endBody() ?>

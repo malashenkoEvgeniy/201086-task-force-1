@@ -21,6 +21,7 @@ use frontend\models\ContactForm;
  */
 class SiteController extends AppController
 {
+	public $layout = 'main';
 	/**
 	 * {@inheritdoc}
 	 */
@@ -109,6 +110,7 @@ class SiteController extends AppController
 	 */
 	public function actionLogout()
 	{
+		//echo 'dsfdsf';
 		Yii::$app->user->logout();
 
 		return $this->goHome();
