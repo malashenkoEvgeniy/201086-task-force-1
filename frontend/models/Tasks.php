@@ -35,7 +35,6 @@ class Tasks extends ActiveRecord
 {
 	const STATUS = ['Новое', 'Отменено', 'В работе', 'Выполнено', 'Провалено'];
 
-	public $layout = 'main.php';
     /**
      * {@inheritdoc}
      */

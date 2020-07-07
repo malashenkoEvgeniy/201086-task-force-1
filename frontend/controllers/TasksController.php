@@ -15,6 +15,7 @@ use yii\filters\VerbFilter;
  */
 class TasksController extends AppController
 {
+		public $layout = 'main';
     /**
      * {@inheritdoc}
      */

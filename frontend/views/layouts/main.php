@@ -75,15 +75,6 @@ $city = Locations::find()->asArray()->all();
                     $menuItems[] = ['label' => 'Исполнители', 'url' => ['users/index']];
                     $menuItems[] = ['label' => 'Создать задание', 'url' => ['site/login']];
                     $menuItems[] = ['label' => 'Мой профиль', 'url' => ['site/login']];
-                    $menuItems[] = '<li>'
-                        . Html::beginForm(['/site/logout'], 'post')
-                        . Html::submitButton(
-                            'Logout (' . Yii::$app->user->identity->name . ')',
-                            ['class' => 'btn btn-primary logout']
-                        )
-                        . Html::endForm()
-                        . '</li>';
-
                 echo Menu::widget([
                 'options'=> ['class'=>'header-nav__list site-list'],
                 'activeCssClass'=>'site-list__item--active',
@@ -95,8 +86,7 @@ $city = Locations::find()->asArray()->all();
 			</div>
 
 			<div class="header__town">
-                <?php echo  Html::dropDownList('City', $city,
-                 ['class' => 'multiple-select input town-select' ])?>
+
 				<select class="multiple-select input town-select" size="1" name="town[]">
 					<option value="Moscow">Москва</option>
 					<option selected value="SPB">Санкт-Петербург</option>
@@ -123,7 +113,7 @@ $city = Locations::find()->asArray()->all();
 			</div>
 			<div class="header__account">
 				<a class="header__account-photo">
-					<img src="<?php //Yii::$app->user->identity->avatar?>"
+					<img src="<?php echo Yii::$app->user->identity->avatar?>"
 							 width="43" height="44"
 							 alt="Аватар пользователя">
 				</a>
@@ -139,8 +129,11 @@ $city = Locations::find()->asArray()->all();
 					<li>
 						<a href="#">Настройки</a>
 					</li>
-					<li>
-                        <?= Html::a("Выход", ['/site/logout']); ?>
+					<li><?php
+                        echo Html::beginForm(['/site/logout'], 'post');
+                        echo Html::submitButton('Выход ', ['class' => 'logout']);
+                        echo Html::endForm();
+                        ?>
 					</li>
 				</ul>
 			</div>

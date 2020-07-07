@@ -65,20 +65,9 @@ AppAsset::register($this);
                     echo Html::a("<span>Регистрация</span>", ['/site/signup'], ['class'=>'header__account-registration']);
 
                 } else {
-                $menuItems[] = '<li>'
-                    . Html::beginForm(['/site/logout'], 'post')
-                    . Html::submitButton(
-                        'Logout (' . Yii::$app->user->identity->name . ')',
-                        ['class' => 'btn btn-primary logout']
-                    )
-                    . Html::endForm()
-                    . '</li>';
-                echo Menu::widget([
-                    'options'=> ['class'=>'header__account-registration'],
-                    'activeCssClass'=>'site-list__item--active',
-                    'itemOptions' => ['class'=>'site-list__item'],
-                    'items' =>  $menuItems,
-                ]);
+									echo Html::beginForm(['/site/logout'], 'post');
+									echo Html::submitButton('Выход ', ['class' => 'logout']);
+									echo Html::endForm();
             } ?>
 
             </div>
@@ -293,6 +282,7 @@ AppAsset::register($this);
 	<section class="modal form-modal enter-form "  >
 		<h2>Вход на сайт</h2>
 			<?php $form = ActiveForm::begin(['id' => 'login-form',
+                                             'enableAjaxValidation' => true,
                                              'method' => 'post']); ?>
 			<p>
               <?= $form->field($model, 'email', [

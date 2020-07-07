@@ -217,7 +217,10 @@ footer {
   background-color: #b8dbff;
   border-radius: 8px;
   width: 160px; }
-
+.logout {
+  border: none;
+  background: transparent;
+}
 .account__pop-up-list {
   display: block;
   position: relative;
@@ -233,7 +236,8 @@ footer {
       background-color: #cee6ff;
       border-radius: 8px;
       cursor: pointer; }
-    .account__pop-up-list li a {
+    .account__pop-up-list li a,
+    .logout{
       font-family: "Roboto", sans-serif;
       color: #1e90ff;
       text-decoration: none; }
