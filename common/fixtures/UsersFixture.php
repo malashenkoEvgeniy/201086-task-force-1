@@ -2,7 +2,8 @@
 namespace common\fixtures;
 
 
-use frontend\models\Users;
+
+use common\models\Users;
 use yii\test\ActiveFixture;
 
 class UsersFixture extends ActiveFixture
