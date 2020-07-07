@@ -84,6 +84,7 @@ AppAsset::register($this);
 					Быстро, безопасно и с гарантией. Просто, как раз, два, три. </p>
 				<button class="button">Создать аккаунт</button>
 			</div>
+            
 			<div class="landing-center">
 				<div class="landing-instruction">
 					<div class="landing-instruction-step">
