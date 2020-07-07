@@ -18,7 +18,6 @@ use yii\web\Response;
 use yii\widgets\ActiveForm;
 
 
-
 /**
  * Site controller
  */
@@ -33,7 +32,7 @@ class SiteController extends AppController
 		return [
 			'access' => [
 				'class' => AccessControl::className(),
-				'only' => ['login', 'logout', 'signup'],
+				'only' => ['logout', 'signup'],
 				'rules' => [
 					[
 						'actions' => ['signup'],
@@ -108,7 +107,7 @@ class SiteController extends AppController
 			}
 		}
 
-		return $this->render('logi2n', [
+		return $this->render('login', [
 			'model' => $model,
 		]);
 	}
