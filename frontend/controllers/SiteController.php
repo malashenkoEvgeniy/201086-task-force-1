@@ -108,7 +108,7 @@ class SiteController extends AppController
 			}
 		}
 
-		return $this->render('login', [
+		return $this->render('logi2n', [
 			'model' => $model,
 		]);
 	}
