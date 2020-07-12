@@ -2,20 +2,19 @@
 
 namespace frontend\controllers;
 
-
-use common\models\Users;
 use Yii;
-use frontend\models\Tasks;
-use frontend\models\TasksSearch;
+use frontend\models\Users;
+use frontend\models\UsersSearch;
+use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * TasksController implements the CRUD actions for Tasks model.
+ * UsersController implements the CRUD actions for Users model.
  */
-class TasksController extends AppController
+class UsersController extends Controller
 {
-		public $layout = 'main';
+
     /**
      * {@inheritdoc}
      */
@@ -32,12 +31,13 @@ class TasksController extends AppController
     }
 
     /**
-     * Lists all Tasks models.
+     * Lists all Users models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new TasksSearch();
+
+			$searchModel = new UsersSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -47,28 +47,30 @@ class TasksController extends AppController
     }
 
     /**
-     * Displays a single Tasks model.
+     * Displays a single Users model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
-		{
-				$users = Users::find()->all();
-        return $this->render('view', [
+    {
+      //$user = Users::find()->where(['id'=>$id])->one();
+      //debug($user);
+
+    	return $this->render('view', [
             'model' => $this->findModel($id),
-						'users' => $users
+						//'user'=>$user
         ]);
     }
 
     /**
-     * Creates a new Tasks model.
+     * Creates a new Users model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Tasks();
+        $model = new Users();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -80,7 +82,7 @@ class TasksController extends AppController
     }
 
     /**
-     * Updates an existing Tasks model.
+     * Updates an existing Users model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -100,7 +102,7 @@ class TasksController extends AppController
     }
 
     /**
-     * Deletes an existing Tasks model.
+     * Deletes an existing Users model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -114,15 +116,15 @@ class TasksController extends AppController
     }
 
     /**
-     * Finds the Tasks model based on its primary key value.
+     * Finds the Users model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Tasks the loaded model
+     * @return Users the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Tasks::findOne($id)) !== null) {
+        if (($model = Users::findOne($id)) !== null) {
             return $model;
         }
 

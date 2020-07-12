@@ -14,6 +14,8 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use yii\web\Response;
+use yii\widgets\ActiveForm;
 
 
 /**
@@ -21,6 +23,7 @@ use frontend\models\ContactForm;
  */
 class SiteController extends AppController
 {
+	public $layout = 'main';
 	/**
 	 * {@inheritdoc}
 	 */
@@ -91,15 +94,22 @@ class SiteController extends AppController
 		}
 
 		$model = new LoginForm();
-		if ($model->load(Yii::$app->request->post()) && $model->login()) {
-			return $this->goBack();
-		} else {
-			$model->password = '';
-
-			return $this->render('login', [
-				'model' => $model,
-			]);
+		if (Yii::$app->request->getIsPost()) {
+			$model->load(Yii::$app->request->post());
+			if (Yii::$app->request->isAjax) {
+				Yii::$app->response->format = Response::FORMAT_JSON;
+				return ActiveForm::validate($model);
+			}
+			if ($model->validate()) {
+				$user = $model->getUser();
+				Yii::$app->user->login($user);
+				return Yii::$app->response->redirect(['/tasks']);;
+			}
 		}
+
+		return $this->render('login', [
+			'model' => $model,
+		]);
 	}
 
 	/**

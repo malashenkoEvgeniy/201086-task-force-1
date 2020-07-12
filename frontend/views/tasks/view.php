@@ -34,15 +34,15 @@ YiiAsset::register($this);
                 </div>
                 <div class="content-view__attach">
                     <h3 class="content-view__h3">Вложения</h3>
-                    <?php foreach($model->files as $file): ?>
-                    <a href="#"><?= $file->path?></a>
-                    <?php endforeach;?>
+									<?php foreach($model->files as $file): ?>
+                      <a href="#"><?= $file->path?></a>
+									<?php endforeach;?>
                 </div>
                 <div class="content-view__location">
                     <h3 class="content-view__h3">Расположение</h3>
                     <div class="content-view__location-wrapper">
                         <div class="content-view__map">
-                            <a href="#"><img src="./img/map.jpg" width="361" height="292"
+                            <a href="#"><img src="/img/map.jpg" width="361" height="292"
                                              alt="Москва, Новый арбат, 23 к. 1"></a>
                         </div>
                         <div class="content-view__address">
@@ -65,36 +65,36 @@ YiiAsset::register($this);
         <div class="content-view__feedback">
             <h2>Отклики <span>(<?= count($model->proposals)?>)</span></h2>
             <div class="content-view__feedback-wrapper">
-                <?php foreach ($model->proposals as $proposal):?>
-                        <div class="content-view__feedback-card">
-                    <div class="feedback-card__top">
-                        <a href="#"><img src="../<?= $users[$proposal->user_id]['avatar']?>" width="55" height="55" alt=""></a>
-                        <div class="feedback-card__top--name">
-                            <p><a href="#" class="link-regular"><?= $users[$proposal->user_id]['name']?></a></p>
-                            <? for($i = 0;$i < 5; $i++):
-                                if($i < round($users[$proposal->user_id]['rating'] / 100, 0)):
-                                    echo '<span></span>';
-                                else:
-                                    echo "<span class='star-disabled'></span>";
-                                endif;
-                            endfor;?>
-                            <b><?= round($users[$proposal->user_id]['rating'] / 100, 2);?></b>
-                        </div>
-                        <span class="new-task__time"> <?=0//(new TimeAgo($model->last_visit_time))->getDate()." назад";?></span>
-                    </div>
-                    <div class="feedback-card__content">
-                        <p> <?=$proposal->comment?></p>
-                        <span><?=$proposal->budget?> ₽</span>
-                    </div>
-                    <div class="feedback-card__actions">
-                        <a class="button__small-color request-button button"
-                           type="button">Подтвердить</a>
-                        <a class="button__small-color refusal-button button"
-                           type="button">Отказать</a>
-                    </div>
-                </div>
+							<?php foreach ($model->proposals as $proposal):?>
+                  <div class="content-view__feedback-card">
+                      <div class="feedback-card__top">
+                          <a href="#"><img src="../<?= $users[$proposal->user_id]['avatar']?>" width="55" height="55" alt=""></a>
+                          <div class="feedback-card__top--name">
+                              <p><a href="#" class="link-regular"><?= $users[$proposal->user_id]['name']?></a></p>
+														<? for($i = 0;$i < 5; $i++):
+															if($i < round($users[$proposal->user_id]['rating'] / 100, 0)):
+																echo '<span></span>';
+															else:
+																echo "<span class='star-disabled'></span>";
+															endif;
+														endfor;?>
+                              <b><?= round($users[$proposal->user_id]['rating'] / 100, 2);?></b>
+                          </div>
+                          <span class="new-task__time"> <?=0//(new TimeAgo($model->last_visit_time))->getDate()." назад";?></span>
+                      </div>
+                      <div class="feedback-card__content">
+                          <p> <?=$proposal->comment?></p>
+                          <span><?=$proposal->budget?> ₽</span>
+                      </div>
+                      <div class="feedback-card__actions">
+                          <a class="button__small-color request-button button"
+                             type="button">Подтвердить</a>
+                          <a class="button__small-color refusal-button button"
+                             type="button">Отказать</a>
+                      </div>
+                  </div>
 
-                <?php endforeach;?>
+							<?php endforeach;?>
             </div>
         </div>
     </section>
@@ -103,12 +103,12 @@ YiiAsset::register($this);
             <div class="profile-mini__wrapper">
                 <h3>Заказчик</h3>
                 <div class="profile-mini__top">
-                    <img src="../<?=$users[$model->customer_id]['avatar']?>" width="62" height="62" alt="Аватар заказчика">
+                    <img src="<?=$users[$model->customer_id]['avatar']?>" width="62" height="62" alt="Аватар заказчика">
                     <div class="profile-mini__name five-stars__rate">
                         <p><?=$users[$model->customer_id]['name']?></p>
                     </div>
                 </div>
-                <p class="info-customer"><span><?=$users[$model->customer_id]['count_orders']?> заданий</span><span class="last-"><?=(new TimeAgo($users[$model->customer_id]['creation_time']))->getDate()?> на сайте</span></p>
+                <p class="info-customer"><span><?=$users[$model->customer_id]['count_orders']?> заданий</span><span class="last-"><?=(new TimeAgo($users[$model->customer_id]['created_at']))->getDate()?> на сайте</span></p>
                 <a href="<?=Url::to(['users/view', 'id' => $users[$model->customer_id]['id']]);?>" class="link-regular">Смотреть профиль</a>
             </div>
         </div>

@@ -11,6 +11,7 @@ return [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+		'layout'=> 'main-guest',
 		'language' => 'ru',
 		'name'=>'TaskForce',
     'controllerNamespace' => 'frontend\controllers',
@@ -48,7 +49,7 @@ return [
 			'showScriptName' => false,
 			'enableStrictParsing' => true,
             'rules' => [
-							'/' => 'site/index',
+							'/' => 'home/index',
 							'tasks' => 'tasks/index',
 							'users' => 'users/index',
 							'login' => 'site/login',

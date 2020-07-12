@@ -14,8 +14,7 @@ class m130524_201442_init extends Migration
 
         $this->createTable('{{%users}}', [
             'id' => $this->primaryKey(),
-						'creation_time' => $this->dateTime()->defaultValue(0)->notNull(),
-            'name' => $this->string(128)->notNull()->unique(),
+						'name' => $this->string(128)->notNull()->unique(),
             'auth_key' => $this->string(32)->notNull(),
             'password_hash' => $this->string()->notNull(),
             'password_reset_token' => $this->string()->unique(),
@@ -43,6 +42,7 @@ class m130524_201442_init extends Migration
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
 						'verification_token' => $this->string()->defaultValue(null),
+
         ], $tableOptions);
     }
 

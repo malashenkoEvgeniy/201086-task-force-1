@@ -19,7 +19,10 @@ return [
 				'rules' => [
 					'users/view/1' => 'users/view',
 					'users'=>'users/index',
-
+					'tasks/view/1' => 'tasks/view',
+					'signup' => 'site/signup',
+					'login' => 'site/login',
+					'logout' => 'site/logout',
 				],
 			],
 			'request' => [
