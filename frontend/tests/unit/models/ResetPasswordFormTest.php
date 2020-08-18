@@ -2,7 +2,7 @@
 
 namespace frontend\tests\unit\models;
 
-use common\fixtures\UsersFixture;
+use common\fixtures\UserFixture;
 use frontend\models\ResetPasswordForm;
 
 class ResetPasswordFormTest extends \Codeception\Test\Unit
@@ -17,7 +17,7 @@ class ResetPasswordFormTest extends \Codeception\Test\Unit
     {
         $this->tester->haveFixtures([
             'user' => [
-                'class' => UsersFixture::className(),
+                'class' => UserFixture::className(),
                 'dataFile' => codecept_data_dir() . 'user.php'
             ],
         ]);
