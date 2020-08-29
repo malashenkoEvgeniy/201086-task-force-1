@@ -1,9 +1,8 @@
 <?php
 
-
 namespace frontend\models\forms;
 
-
+use RuntimeException;
 use yii\base\Model;
 
 class UploadForm extends Model
@@ -22,7 +21,7 @@ class UploadForm extends Model
       $this->file->saveAs('img/uploads/' . $this->file->baseName . '.' . $this->file->extension);
       return true;
     } else {
-      throw new \RuntimeException('Не получилось загрузить файл');
+        throw new RuntimeException('Не получилось загрузить файл');
     }
   }
 }
