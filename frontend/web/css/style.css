@@ -470,6 +470,8 @@ footer {
   padding-left: 19px;
   margin-top: 0; }
 
+
+
 .new-task__place::before {
   position: absolute;
   content: "";
@@ -597,7 +599,8 @@ footer {
   background-position: 230px 20px;
   background-repeat: no-repeat; }
 
-.input-navigation {
+.input-navigation,
+.form-group >.input-navigation{
   background-image: url("../img/navigation.png");
   background-position: 480px 10px;
   background-repeat: no-repeat;
@@ -1271,6 +1274,10 @@ footer {
       -ms-flex-direction: column;
           flex-direction: column;
   margin-right: 100px; }
+
+.create__task-form >.form-group {
+  display: flex;
+  flex-direction: column; }
 
 .form-create label {
   margin-top: 29px;
@@ -2457,3 +2464,4 @@ footer {
   background-image: url("../img/star.png"); }
 
 /*# sourceMappingURL=style.css.map */
+

@@ -81,7 +81,7 @@ if (!Yii::$app->user->isGuest) {
               } else {
               $menuItems[] =	['label' => 'Задания', 'url' => ['task/index']];
               $menuItems[] = ['label' => 'Исполнители', 'url' => ['user/index']];
-              $menuItems[] = ['label' => 'Создать задание', 'url' => ['site/login']];
+              $menuItems[] = ['label' => 'Создать задание', 'url' => ['task/create']];
               $menuItems[] = ['label' => 'Мой профиль', 'url' => ['site/login']];
               echo Menu::widget([
                 'options'=> ['class'=>'header-nav__list site-list'],

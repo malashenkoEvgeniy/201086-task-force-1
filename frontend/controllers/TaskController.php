@@ -2,12 +2,17 @@
 
 namespace frontend\controllers;
 
+use frontend\models\File;
+use frontend\models\forms\UploadForm;
+use frontend\models\TaskCreateModel;
+use frontend\services\TaskService;
 use Yii;
 use frontend\models\Task;
 use frontend\models\TaskSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * TaskController implements the CRUD actions for Task model.
@@ -66,15 +71,28 @@ class TaskController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Task();
+      $task = new TaskCreateModel();
+      $file = new File();
+      $fileModel = new UploadForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+      if ($task->load(Yii::$app->request->post())) {
+        $post = Yii::$app->request->post();
+        //debug($post);
+        $taskModel = new Task();
+        $taskModel::create(Yii::$app->user->id, $post)->save();
+        $fileModel->file = UploadedFile::getInstance($fileModel, 'file');
+        if((!empty($fileModel->file))&&($fileModel->upload())){
+          $file::create(Yii::$app->user->id, count(Task::find()->all()),"/img/upload/".$fileModel->file->name)->save();
         }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        return $this->redirect('index');
+      }
+
+
+      return $this->render('create', [
+        'task' => $task,
+        'fileModel'=>$fileModel
+      ]);
     }
 
     /**
