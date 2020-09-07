@@ -1,26 +1,27 @@
 <?php
+use yii\web\Request;
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',
     require __DIR__ . '/../../common/config/params-local.php',
     require __DIR__ . '/params.php',
     require __DIR__ . '/params-local.php'
 );
-
+$baseUrl = str_replace('/frontend/web', '', (new Request)->getBaseUrl());
 return [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
-    'layout' => 'layout',
-    'modules' => [
-      'gii'
-    ],
+		'layout'=> 'main-guest',
+		'language' => 'ru',
+		'name'=>'TaskForce',
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
+			'baseUrl' => $baseUrl,
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'common\models\Users',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
         ],
@@ -42,15 +43,16 @@ return [
         ],
 
         'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
+            'class' => 'yii\web\UrlManager',
+			'baseUrl' => $baseUrl,
+			'enablePrettyUrl' => true,
+			'showScriptName' => false,
+			'enableStrictParsing' => true,
             'rules' => [
-              ''=>'site/index',
-              '<_a:login|logout>'=>'site/<_a>',
-              '<_c:[\w\-]+>' => '<_c>/index',
-              '<_c:[\w\-]+>/<id:\d+>' => '<_c>/view',
-              '<_c:[\w\-]+>/<_a:[\w-]+>' => '<_c>/<_a>',
-              '<_c:[\w\-]+>/<id:\d+>/<_a:[\w-]+>' => '<_c>/<_a>',
+							'/' => 'home/index',
+							'tasks' => 'tasks/index',
+							'users' => 'users/index',
+							'login' => 'site/login',
 
             ],
         ],

@@ -2,8 +2,6 @@
 
 namespace frontend\models;
 
-
-
 use yii\db\ActiveRecord;
 
 /**
@@ -12,6 +10,9 @@ use yii\db\ActiveRecord;
  * @property int $id
  * @property int $user_id
  * @property int $category_id
+ *
+ * @property Categories $category
+ * @property Users $user
  */
 class UsersCategories extends ActiveRecord
 {
@@ -31,6 +32,8 @@ class UsersCategories extends ActiveRecord
         return [
             [['user_id', 'category_id'], 'required'],
             [['user_id', 'category_id'], 'integer'],
+            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Categories::className(), 'targetAttribute' => ['category_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -41,8 +44,28 @@ class UsersCategories extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'user_id' => 'User ID',
-            'category_id' => 'Categories ID',
+            'user_id' => 'Users ID',
+            'category_id' => 'Category ID',
         ];
+    }
+
+    /**
+     * Gets query for [[Category]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCategory()
+    {
+        return $this->hasOne(Categories::className(), ['id' => 'category_id']);
+    }
+
+    /**
+     * Gets query for [[Users]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(Users::className(), ['id' => 'user_id']);
     }
 }

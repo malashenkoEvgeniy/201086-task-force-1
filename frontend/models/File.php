@@ -2,7 +2,7 @@
 
 namespace frontend\models;
 
-use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "file".
@@ -12,10 +12,10 @@ use Yii;
  * @property int $user_id
  * @property int|null $task_id
  *
- * @property Task $task
- * @property User $user
+ * @property Tasks $task
+ * @property Users $user
  */
-class File extends \yii\db\ActiveRecord
+class File extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -34,8 +34,8 @@ class File extends \yii\db\ActiveRecord
             [['path', 'user_id'], 'required'],
             [['user_id', 'task_id'], 'integer'],
             [['path'], 'string', 'max' => 128],
-            [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['task_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Tasks::className(), 'targetAttribute' => ['task_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -47,7 +47,7 @@ class File extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'path' => 'Path',
-            'user_id' => 'User ID',
+            'user_id' => 'Users ID',
             'task_id' => 'Task ID',
         ];
     }
@@ -59,16 +59,16 @@ class File extends \yii\db\ActiveRecord
      */
     public function getTask()
     {
-        return $this->hasOne(Task::className(), ['id' => 'task_id']);
+        return $this->hasOne(Tasks::className(), ['id' => 'task_id']);
     }
 
     /**
-     * Gets query for [[User]].
+     * Gets query for [[Users]].
      *
      * @return \yii\db\ActiveQuery
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(Users::className(), ['id' => 'user_id']);
     }
 }

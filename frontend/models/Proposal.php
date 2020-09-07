@@ -2,7 +2,7 @@
 
 namespace frontend\models;
 
-use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "proposal".
@@ -13,10 +13,10 @@ use Yii;
  * @property int|null $budget
  * @property int $user_id
  *
- * @property Task $task
- * @property User $user
+ * @property Tasks $task
+ * @property Users $user
  */
-class Proposal extends \yii\db\ActiveRecord
+class Proposal extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -35,8 +35,8 @@ class Proposal extends \yii\db\ActiveRecord
             [['comment', 'task_id', 'user_id'], 'required'],
             [['task_id', 'budget', 'user_id'], 'integer'],
             [['comment'], 'string', 'max' => 128],
-            [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['task_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Tasks::className(), 'targetAttribute' => ['task_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -50,7 +50,7 @@ class Proposal extends \yii\db\ActiveRecord
             'comment' => 'Comment',
             'task_id' => 'Task ID',
             'budget' => 'Budget',
-            'user_id' => 'User ID',
+            'user_id' => 'Users ID',
         ];
     }
 
@@ -61,16 +61,16 @@ class Proposal extends \yii\db\ActiveRecord
      */
     public function getTask()
     {
-        return $this->hasOne(Task::className(), ['id' => 'task_id']);
+        return $this->hasOne(Tasks::className(), ['id' => 'task_id']);
     }
 
     /**
-     * Gets query for [[User]].
+     * Gets query for [[Users]].
      *
      * @return \yii\db\ActiveQuery
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(Users::className(), ['id' => 'user_id']);
     }
 }
