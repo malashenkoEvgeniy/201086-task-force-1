@@ -59,6 +59,6 @@ class TaskCreateModel extends Model
     $task->category_id = $this->category_id;
     $task->files->task_id = $task->id;
     $task->files->path = $path;
-    return $user->save() && $this->sendEmail($user);
+    return $task->save();
   }
 }

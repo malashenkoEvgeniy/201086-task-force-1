@@ -4,14 +4,14 @@ namespace frontend\controllers;
 
 use frontend\models\File;
 use frontend\models\forms\UploadForm;
-use frontend\models\TaskCreateModel;
-use frontend\services\TaskService;
-use Yii;
 use frontend\models\Task;
+use frontend\models\TaskCreateModel;
 use frontend\models\TaskSearch;
+use Yii;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 
 /**
@@ -26,12 +26,29 @@ class TaskController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
+          'verbs' => [
+            'class' => VerbFilter::className(),
+            'actions' => [
+              'delete' => ['POST'],
             ],
+          ],
+          'access' => [
+            'class' => AccessControl::className(),
+            'rules' => [
+              [
+                'allow' => true,
+                'actions' => ['index'],
+                'roles' => ['@'],
+              ],
+              [
+                'allow' => true,
+                'actions' => ['create'],
+                'roles' => ['createTask'],
+              ],
+
+
+            ],
+          ],
         ];
     }
 
@@ -77,7 +94,6 @@ class TaskController extends Controller
 
       if ($task->load(Yii::$app->request->post())) {
         $post = Yii::$app->request->post();
-        //debug($post);
         $taskModel = new Task();
         $taskModel::create(Yii::$app->user->id, $post)->save();
         $fileModel->file = UploadedFile::getInstance($fileModel, 'file');

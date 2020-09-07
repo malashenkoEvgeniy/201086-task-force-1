@@ -1,13 +1,15 @@
 <?php
 
-/* @var $this \yii\web\View */
+/* @var $this View */
+
 /* @var $content string */
 
 use common\models\LoginForm;
-use yii\helpers\Html;
 use frontend\assets\AppAsset;
+use yii\helpers\Html;
+use yii\web\View;
 use yii\widgets\ActiveForm;
-use yii\widgets\Menu;
+
 $model = new LoginForm();
 AppAsset::register($this);
 ?>
@@ -15,7 +17,7 @@ AppAsset::register($this);
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
 <head>
-  <meta charset="<?= Yii::$app->charset ?>">
+    <meta charset="<?= Yii::$app->charset ?>">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <?php $this->registerCsrfMetaTags() ?>
@@ -243,33 +245,33 @@ AppAsset::register($this);
       <div class="page-footer__info">
         <p class="page-footer__info-copyright">
           © 2019, ООО «ТаскФорс»
-          Все права защищены
+            Все права защищены
         </p>
-        <p class="page-footer__info-use">
-          «TaskForce» — это сервис для поиска исполнителей на разовые задачи.
-          mail@taskforce.com
-        </p>
+          <p class="page-footer__info-use">
+              «TaskForce» — это сервис для поиска исполнителей на разовые задачи.
+              mail@taskforce.com
+          </p>
       </div>
-      <div class="page-footer__links">
-        <ul class="links__list">
-          <li class="links__item">
-            <a href="">Задания</a>
-          </li>
-          <li class="links__item">
-            <a href="">Мой профиль</a>
-          </li>
-          <li class="links__item">
-            <a href="">Исполнители</a>
-          </li>
-          <li class="links__item">
-            <a href="">Регистрация</a>
-          </li>
-          <li class="links__item">
-            <a href="">Создать задание</a>
-          </li>
-          <li class="links__item">
-            <a href="">Справка</a>
-          </li>
+        <div class="page-footer__links">
+            <ul class="links__list">
+                <li class="links__item">
+                    <?= Html::a("Задания", ['task/index']); ?>
+                </li>
+                <li class="links__item">
+                    <a href="">Мой профиль</a>
+                </li>
+                <li class="links__item">
+                    <?= Html::a("Исполнители", ['user/index']); ?>
+                </li>
+                <li class="links__item">
+                    <a href="">Регистрация</a>
+                </li>
+                <li class="links__item">
+                    <a href="">Создать задание</a>
+                </li>
+                <li class="links__item">
+                    <a href="">Справка</a>
+                </li>
         </ul>
       </div>
       <div class="page-footer__copyright">
