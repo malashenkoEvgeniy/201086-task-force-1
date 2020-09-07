@@ -2,7 +2,7 @@
 
 namespace frontend\models;
 
-use yii\db\ActiveRecord;
+use Yii;
 
 /**
  * This is the model class for table "file".
@@ -12,10 +12,10 @@ use yii\db\ActiveRecord;
  * @property int $user_id
  * @property int|null $task_id
  *
- * @property Tasks $task
- * @property Users $user
+ * @property Task $task
+ * @property User $user
  */
-class File extends ActiveRecord
+class File extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -34,8 +34,8 @@ class File extends ActiveRecord
             [['path', 'user_id'], 'required'],
             [['user_id', 'task_id'], 'integer'],
             [['path'], 'string', 'max' => 128],
-            [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Tasks::className(), 'targetAttribute' => ['task_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['task_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -47,7 +47,7 @@ class File extends ActiveRecord
         return [
             'id' => 'ID',
             'path' => 'Path',
-            'user_id' => 'Users ID',
+            'user_id' => 'User ID',
             'task_id' => 'Task ID',
         ];
     }
@@ -59,16 +59,16 @@ class File extends ActiveRecord
      */
     public function getTask()
     {
-        return $this->hasOne(Tasks::className(), ['id' => 'task_id']);
+        return $this->hasOne(Task::className(), ['id' => 'task_id']);
     }
 
     /**
-     * Gets query for [[Users]].
+     * Gets query for [[User]].
      *
      * @return \yii\db\ActiveQuery
      */
     public function getUser()
     {
-        return $this->hasOne(Users::className(), ['id' => 'user_id']);
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 }

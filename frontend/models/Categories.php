@@ -2,19 +2,16 @@
 
 namespace frontend\models;
 
-use yii\db\ActiveRecord;
+use Yii;
 
 /**
- * This is the model class for table "categories".
+ * This is the model class for table "category".
  *
  * @property int $id
  * @property string $title
  * @property string $title_en
- *
- * @property Tasks[] $tasks
- * @property UsersCategories[] $usersCategories
  */
-class Categories extends ActiveRecord
+class Categories extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -47,26 +44,4 @@ class Categories extends ActiveRecord
             'title_en' => 'Title En',
         ];
     }
-
-    /**
-     * Gets query for [[Tasks]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTasks()
-    {
-        return $this->hasMany(Tasks::className(), ['category_id' => 'id']);
-    }
-
-	/**
-	 * Gets query for [[UsersCategories]].
-	 *
-	 * @return \yii\db\ActiveQuery
-	 * @throws \yii\base\InvalidConfigException
-	 */
-	public function getUsers()
-	{
-		return $this->hasMany(Users::className(), ['id' => 'user_id'])
-			->viaTable('users_categories', ['category_id' => 'id']);
-	}
 }
