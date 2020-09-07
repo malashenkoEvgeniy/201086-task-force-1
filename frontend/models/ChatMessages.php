@@ -2,7 +2,7 @@
 
 namespace frontend\models;
 
-use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "chat_messages".
@@ -14,10 +14,10 @@ use Yii;
  * @property string $creation_time
  * @property int $viewed
  *
- * @property Task $task
- * @property User $writer
+ * @property Tasks $task
+ * @property Users $writer
  */
-class ChatMessages extends \yii\db\ActiveRecord
+class ChatMessages extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -37,8 +37,8 @@ class ChatMessages extends \yii\db\ActiveRecord
             [['task_id', 'writer_id', 'viewed'], 'integer'],
             [['comment'], 'string'],
             [['creation_time'], 'safe'],
-            [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['task_id' => 'id']],
-            [['writer_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['writer_id' => 'id']],
+            [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Tasks::className(), 'targetAttribute' => ['task_id' => 'id']],
+            [['writer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['writer_id' => 'id']],
         ];
     }
 
@@ -64,7 +64,7 @@ class ChatMessages extends \yii\db\ActiveRecord
      */
     public function getTask()
     {
-        return $this->hasOne(Task::className(), ['id' => 'task_id']);
+        return $this->hasOne(Tasks::className(), ['id' => 'task_id']);
     }
 
     /**
@@ -74,6 +74,6 @@ class ChatMessages extends \yii\db\ActiveRecord
      */
     public function getWriter()
     {
-        return $this->hasOne(User::className(), ['id' => 'writer_id']);
+        return $this->hasOne(Users::className(), ['id' => 'writer_id']);
     }
 }

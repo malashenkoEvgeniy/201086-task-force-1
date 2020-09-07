@@ -2,17 +2,18 @@
 
 namespace frontend\models;
 
-use common\models\User;
-use Yii;
 use yii\db\ActiveRecord;
 
 /**
- * This is the model class for table "location".
+ * This is the model class for table "locations".
  *
  * @property int $id
  * @property string $city
- * @property int|null $lat
- * @property int|null $long
+ * @property string $lat
+ * @property string $long
+ *
+ * @property Tasks[] $tasks
+ * @property Users[] $users
  */
 class Locations extends ActiveRecord
 {
@@ -30,9 +31,8 @@ class Locations extends ActiveRecord
     public function rules()
     {
         return [
-            [['city'], 'required'],
-            [['lat', 'long'], 'integer'],
-            [['city'], 'string', 'max' => 128],
+            [['city', 'lat', 'long'], 'required'],
+            [['city', 'lat', 'long'], 'string', 'max' => 128],
             [['city'], 'unique'],
         ];
     }
@@ -51,13 +51,13 @@ class Locations extends ActiveRecord
     }
 
     /**
-     * Gets query for [[Task]].
+     * Gets query for [[Tasks]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getTask()
+    public function getTasks()
     {
-      return $this->hasMany(Task::className(), ['location_id' => 'id']);
+        return $this->hasMany(Tasks::className(), ['location_id' => 'id']);
     }
 
     /**
@@ -65,8 +65,8 @@ class Locations extends ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getUser()
+    public function getUsers()
     {
-      return $this->hasMany(User::className(), ['location_id' => 'id']);
+        return $this->hasMany(Users::className(), ['location_id' => 'id']);
     }
 }

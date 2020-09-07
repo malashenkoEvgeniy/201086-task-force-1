@@ -3,26 +3,27 @@
     yii migrate/create create_locations_table --fields="city:string(128):notNull:unique,lat:string(128):notNull,long:string(128):notNull"
 2.Создаем миграцию categories:
       yii migrate/create create_categories_table --fields="title:string(128):notNull:unique,title_en:string(128):notNull"
-
+3.Создаем миграцию users:
+    yii migrate/create create_users_table --fields="creation_time:dateTime:defaultValue(0):notNull, name:string(128):notNull, email:string(128):notNull,location_id:integer:notNull:foreignKey(locations), birthday:dateTime, info:text, password:string(128):notNull, phone:string(128), skype:string(128),  another_messenger:string(128), avatar:string(128), task_name:string(128), show_contacts_for_customer:tinyInteger, hide_profile:tinyInteger"
 4.Создаем миграцию tasks:
-    yii migrate/create create_task_table --fields="creation_time:dateTime:defaultValue(0):notNull, name:string(128):notNull, category_id:integer:notNull:foreignKey(categories), description:text, location_id:integer:notNull:foreignKey(locations), budget:integer,deadline:dateTime:notNull, customer_id:integer:notNull:foreignKey(user), executor_id:integer:foreignKey(user), status:string(128)"
+    yii migrate/create create_tasks_table --fields="creation_time:dateTime:defaultValue(0):notNull, name:string(128):notNull, category_id:integer:notNull:foreignKey(categories), description:text, location_id:integer:notNull:foreignKey(locations), budget:integer,deadline:dateTime:notNull, customer_id:integer:notNull:foreignKey(users), executor_id:integer:foreignKey(users), status:string(128)"
 5. Создаем миграцию file:
-    yii migrate/create create_file_table --fields="path:string(128):notNull, user_id:integer:notNull:foreignKey(user), task_id:integer:foreignKey(task)"
+    yii migrate/create create_file_table --fields="path:string(128):notNull, user_id:integer:notNull:foreignKey(users), task_id:integer:foreignKey(tasks)"
 6.Создаем миграцию chat_messages:
-    yii migrate/create create_chat_messages_table --fields="task_id:integer:notNull:foreignKey(task), writer_id:integer:notNull:foreignKey(user), comment:text, creation_time:dateTime:defaultValue(0):notNull,viewed:tinyInteger:notNull"
+    yii migrate/create create_chat_messages_table --fields="task_id:integer:notNull:foreignKey(tasks), writer_id:integer:notNull:foreignKey(users), comment:text, creation_time:dateTime:defaultValue(0):notNull,viewed:tinyInteger:notNull"
 7.Создаем миграцию reviews:
-    yii migrate/create create_review_table --fields="creation_time:dateTime:defaultValue(0):notNull,  customer_id:integer:foreignKey(user), executor_id:integer:foreignKey(user), assessment:integer,task_id:integer:foreignKey(task), comment:text"
+    yii migrate/create create_reviews_table --fields="creation_time:dateTime:defaultValue(0):notNull,  customer_id:integer:foreignKey(users), executor_id:integer:foreignKey(users), assessment:integer,task_id:integer:foreignKey(tasks), comment:text"
 8.Создаем миграцию email_settings:
-    yii migrate/create create_email_settings_table --fields="user_id:integer:notNull:foreignKey(user), proposal:tinyInteger:notNull, chat_message:tinyInteger:notNull, refuse:tinyInteger:notNull,start_task:tinyInteger:notNull,completion_task:tinyInteger:notNull"
+    yii migrate/create create_email_settings_table --fields="user_id:integer:notNull:foreignKey(users), proposal:tinyInteger:notNull, chat_message:tinyInteger:notNull, refuse:tinyInteger:notNull,start_task:tinyInteger:notNull,completion_task:tinyInteger:notNull"
 9.Создаем миграцию users_categories:
-    yii migrate/create create_users_categories_table --fields="user_id:integer:notNull:foreignKey(user), category_id:integer:notNull:foreignKey(categories)"
+    yii migrate/create create_users_categories_table --fields="user_id:integer:notNull:foreignKey(users), category_id:integer:notNull:foreignKey(categories)"
 10.Создаем миграцию proposal:
     yii migrate/create create_proposal_table --fields="comment:string(128):notNull, task_id:integer:notNull:foreignKey(tasks), budget:integer, user_id:integer:notNull:foreignKey(users)"
 
 
 **********************************
 1   yii migrate/create create_locations_table --fields="city:string(128):notNull:unique,lat:string(128):notNull,long:string(128):notNull"
-2
+2   yii migrate/create create_users_table --fields="user_id:integer:notNull:foreignKey(user),birthday:dateTime,info:text,phone:string(128),scype:string(128),another_messenger:string(128),avatar:string(128),task_name:string(128),show_contacts_for_customer:tinyInteger,hide_profile:tinyInteger,last_visit_time:dateTime:defaultValue(0),count_orders:integer:defaultValue(0):notNull,popularity:integer:defaultValue(0):notNull,now_free:tinyInteger:defaultValue(0),has_reviews:tinyInteger:defaultValue(0),is_executor:tinyInteger:defaultValue(0),count_reviews:integer:defaultValue(0),rating:integer(11):defaultValue(0)"
 3   yii migrate/create add_position_column_to_user_table --fields=location_id:integer:notNull:foreignKey(location)
 4   yii migrate/create create_categories_table --fields="title:string(128):notNull:unique,title_en:string(128):notNull"
 5   yii migrate/create create_users_categories_table --fields="user_id:integer:notNull:foreignKey(user),category_id:integer:notNull:foreignKey(categories)"
