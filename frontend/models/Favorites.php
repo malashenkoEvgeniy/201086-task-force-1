@@ -1,10 +1,8 @@
 <?php
 
-namespace app\models;
+namespace frontend\models;
 
-use frontend\models\Users;
-use yii\db\ActiveRecord;
-use yii\db\ActiveQuery;
+use Yii;
 
 /**
  * This is the model class for table "favorites".
@@ -12,8 +10,11 @@ use yii\db\ActiveQuery;
  * @property int $id
  * @property int $user_id
  * @property int $favorites_id
+ *
+ * @property User $favorites
+ * @property User $user
  */
-class Favorites extends ActiveRecord
+class Favorites extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -31,6 +32,8 @@ class Favorites extends ActiveRecord
         return [
             [['user_id', 'favorites_id'], 'required'],
             [['user_id', 'favorites_id'], 'integer'],
+            [['favorites_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['favorites_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -41,18 +44,28 @@ class Favorites extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'user_id' => 'Users ID',
+            'user_id' => 'User ID',
             'favorites_id' => 'Favorites ID',
         ];
     }
 
-	/**
-	 * Gets query for [[Users]].
-	 *
-	 * @return ActiveQuery
-	 */
-	public function getUsers()
-	{
-		return $this->hasOne(Users::class, ['id' => 'user_id']);
-	}
+    /**
+     * Gets query for [[Favorites]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFavorites()
+    {
+        return $this->hasOne(User::className(), ['id' => 'favorites_id']);
+    }
+
+    /**
+     * Gets query for [[User]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
 }
