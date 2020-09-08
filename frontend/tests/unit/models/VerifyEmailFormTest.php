@@ -2,13 +2,16 @@
 
 namespace frontend\tests\unit\models;
 
-use common\fixtures\UserFixture;
+use Codeception\Test\Unit;
+use common\_fixtures\UserFixture;
+use common\models\User;
 use frontend\models\VerifyEmailForm;
+use frontend\tests\UnitTester;
 
-class VerifyEmailFormTest extends \Codeception\Test\Unit
+class VerifyEmailFormTest extends Unit
 {
     /**
-     * @var \frontend\tests\UnitTester
+     * @var UnitTester
      */
     protected $tester;
 
@@ -49,7 +52,7 @@ class VerifyEmailFormTest extends \Codeception\Test\Unit
 
         expect($user->username)->equals('test.test');
         expect($user->email)->equals('test@mail.com');
-        expect($user->status)->equals(\common\models\User::STATUS_ACTIVE);
+        expect($user->status)->equals(User::STATUS_ACTIVE);
         expect($user->validatePassword('Test1234'))->true();
     }
 }

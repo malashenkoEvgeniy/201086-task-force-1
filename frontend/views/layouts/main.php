@@ -198,6 +198,7 @@ if (!Yii::$app->user->isGuest) {
             </div>
         </div>
     </footer>
+
 </div>
 
 <?php $this->endBody() ?>

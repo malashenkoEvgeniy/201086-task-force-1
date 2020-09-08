@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <main class="page-main">
     <div class="main-container page-container">
         <section class="create__task">
-            <h1><?= $this->title ?></h1>
+            <h1>Публикация нового задания</h1>
             <div class="create__task-main">
                 <?php
                 $form = ActiveForm::begin([
@@ -99,26 +99,27 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                 </div>
                 <?php ActiveForm::end() ?>
-                <hr>
-            </div>
-            <div class="create__warnings">
-                <div class="warning-item warning-item--advice">
-                    <h2>Правила хорошего описания</h2>
-                    <h3>Подробности</h3>
-                    <p>Друзья, не используйте случайный<br>
-                        контент – ни наш, ни чей-либо еще. Заполняйте свои
-                        макеты, вайрфреймы, мокапы и прототипы реальным
-                        содержимым.</p>
-                    <h3>Файлы</h3>
-                    <p>Если загружаете фотографии объекта, то убедитесь,
-                        что всё в фокусе, а фото показывает объект со всех
-                        ракурсов.</p>
-                </div>
-                <div class="warning-item warning-item--error">
-                    <h2>Ошибки заполнения формы</h2>
-                    <h3>Категория</h3>
-                    <p>Это поле должно быть выбрано.<br>
-                        Задание должно принадлежать одной из категорий</p>
+                <div class="create__warnings">
+                    <div class="warning-item warning-item--advice">
+                        <h2>Правила хорошего описания</h2>
+                        <h3>Подробности</h3>
+                        <p>Друзья, не используйте случайный<br>
+                            контент – ни наш, ни чей-либо еще. Заполняйте свои
+                            макеты, вайрфреймы, мокапы и прототипы реальным
+                            содержимым.</p>
+                        <h3>Файлы</h3>
+                        <p>Если загружаете фотографии объекта, то убедитесь,
+                            что всё в фокусе, а фото показывает объект со всех
+                            ракурсов.</p>
+                    </div>
+                    <div class="warning-item warning-item--error">
+                        <h2>Ошибки заполнения формы</h2>
+                        <?php debug($taskErrors); ?>
+
+                        <h3>Категория</h3>
+                        <p>Это поле должно быть выбрано.<br>
+                            Задание должно принадлежать одной из категорий</p>
+                    </div>
                 </div>
             </div>
             <button form="task-form" class="button" type="submit">Опубликовать</button>

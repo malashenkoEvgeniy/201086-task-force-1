@@ -19,7 +19,7 @@ use yii\web\UploadedFile;
  */
 class TaskController extends Controller
 {
-    public $layout = 'main';
+    public $layout = 'main.php';
     /**
      * {@inheritdoc}
      */
@@ -37,7 +37,7 @@ class TaskController extends Controller
             'rules' => [
               [
                 'allow' => true,
-                'actions' => ['index'],
+                'actions' => ['index', 'view'],
                 'roles' => ['@'],
               ],
               [
@@ -103,11 +103,12 @@ class TaskController extends Controller
 
         return $this->redirect('index');
       }
-
+        $taskErrors = $task->getErrors();
 
       return $this->render('create', [
         'task' => $task,
-        'fileModel'=>$fileModel
+        'fileModel' => $fileModel,
+        'taskErrors' => $taskErrors
       ]);
     }
 
