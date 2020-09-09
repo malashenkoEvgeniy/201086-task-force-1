@@ -1,19 +1,18 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\LoginForm;
+use frontend\models\ContactForm;
+use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResendVerificationEmailForm;
+use frontend\models\ResetPasswordForm;
+use frontend\models\SignupForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
 use yii\base\InvalidArgumentException;
+use yii\filters\AccessControl;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use common\models\LoginForm;
-use frontend\models\PasswordResetRequestForm;
-use frontend\models\ResetPasswordForm;
-use frontend\models\SignupForm;
-use frontend\models\ContactForm;
 
 /**
  * Site controller
@@ -26,28 +25,22 @@ class SiteController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
-                'rules' => [
-                    [
-                        'actions' => ['signup'],
-                        'allow' => true,
-                        'roles' => ['?'],
-                    ],
-                    [
-                        'actions' => ['logout'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
+          'access' => [
+            'class' => AccessControl::className(),
+            'only' => ['logout', 'signup'],
+            'rules' => [
+              [
+                'actions' => ['signup'],
+                'allow' => true,
+                'roles' => ['?'],
+              ],
+              [
+                'actions' => ['logout'],
+                'allow' => true,
+                'roles' => ['@'],
+              ],
             ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
+          ],
         ];
     }
 
@@ -57,13 +50,13 @@ class SiteController extends Controller
     public function actions()
     {
         return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ],
-            'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
-                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-            ],
+          'error' => [
+            'class' => 'yii\web\ErrorAction',
+          ],
+          'captcha' => [
+            'class' => 'yii\captcha\CaptchaAction',
+            'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+          ],
         ];
     }
 
@@ -95,7 +88,7 @@ class SiteController extends Controller
             $model->password = '';
 
             return $this->render('login', [
-                'model' => $model,
+              'model' => $model,
             ]);
         }
     }
@@ -130,7 +123,7 @@ class SiteController extends Controller
             return $this->refresh();
         } else {
             return $this->render('contact', [
-                'model' => $model,
+              'model' => $model,
             ]);
         }
     }
@@ -152,14 +145,16 @@ class SiteController extends Controller
      */
     public function actionSignup()
     {
+        $this->layout = 'main';
         $model = new SignupForm();
+
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
             Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
             return $this->goHome();
         }
 
         return $this->render('signup', [
-            'model' => $model,
+          'model' => $model,
         ]);
     }
 
@@ -182,7 +177,7 @@ class SiteController extends Controller
         }
 
         return $this->render('requestPasswordResetToken', [
-            'model' => $model,
+          'model' => $model,
         ]);
     }
 
@@ -208,7 +203,7 @@ class SiteController extends Controller
         }
 
         return $this->render('resetPassword', [
-            'model' => $model,
+          'model' => $model,
         ]);
     }
 
@@ -254,7 +249,7 @@ class SiteController extends Controller
         }
 
         return $this->render('resendVerificationEmail', [
-            'model' => $model
+          'model' => $model
         ]);
     }
 }

@@ -4,6 +4,7 @@ namespace frontend\models;
 
 
 use common\models\User;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
 /**
@@ -34,6 +35,8 @@ use yii\db\ActiveRecord;
 class Task extends ActiveRecord
 {
     const STATUS = ['Новое', 'Отменено', 'В работе', 'Выполнено', 'Провалено'];
+
+
     /**
      * {@inheritdoc}
      */
@@ -84,7 +87,7 @@ class Task extends ActiveRecord
     /**
      * Gets query for [[ChatMessages]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getChatMessages()
     {
@@ -94,7 +97,7 @@ class Task extends ActiveRecord
     /**
      * Gets query for [[Files]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getFiles()
     {
@@ -104,7 +107,7 @@ class Task extends ActiveRecord
     /**
      * Gets query for [[Proposals]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getProposals()
     {
@@ -114,7 +117,7 @@ class Task extends ActiveRecord
     /**
      * Gets query for [[Reviews]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getReviews()
     {
@@ -124,7 +127,7 @@ class Task extends ActiveRecord
     /**
      * Gets query for [[Category]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getCategory()
     {
@@ -134,7 +137,7 @@ class Task extends ActiveRecord
     /**
      * Gets query for [[Customer]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getCustomer()
     {
@@ -144,7 +147,7 @@ class Task extends ActiveRecord
     /**
      * Gets query for [[Executor]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getExecutor()
     {
@@ -154,10 +157,28 @@ class Task extends ActiveRecord
     /**
      * Gets query for [[Location]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getLocation()
     {
         return $this->hasOne(Locations::className(), ['id' => 'location_id']);
+    }
+
+    public static function create($user, $array)
+    {
+        $task = new static;
+        $task->name = $array['TaskCreateModel']['name'];
+        $task->budget = $array['TaskCreateModel']['budget'];
+        $task->description = $array['TaskCreateModel']['description'];
+        $task->category_id = $array['category'][0];
+        $task->location_id = 1;
+        $task->deadline = $array['TaskCreateModel']['deadline'];
+        $task->customer_id = $user;
+        $task->created_at = time();
+        $task->updated_at = time();
+
+        $task->status = self::STATUS[0];
+
+        return $task;
     }
 }

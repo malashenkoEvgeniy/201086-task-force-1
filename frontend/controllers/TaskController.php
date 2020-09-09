@@ -2,31 +2,53 @@
 
 namespace frontend\controllers;
 
-use Yii;
+use frontend\models\File;
+use frontend\models\forms\UploadForm;
 use frontend\models\Task;
+use frontend\models\TaskCreateModel;
 use frontend\models\TaskSearch;
+use Yii;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * TaskController implements the CRUD actions for Task model.
  */
 class TaskController extends Controller
 {
-    public $layout = 'main';
+    public $layout = 'main.php';
     /**
      * {@inheritdoc}
      */
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
+          'verbs' => [
+            'class' => VerbFilter::className(),
+            'actions' => [
+              'delete' => ['POST'],
             ],
+          ],
+          'access' => [
+            'class' => AccessControl::className(),
+            'rules' => [
+              [
+                'allow' => true,
+                'actions' => ['index', 'view'],
+                'roles' => ['@'],
+              ],
+              [
+                'allow' => true,
+                'actions' => ['create'],
+                'roles' => ['createTask'],
+              ],
+
+
+            ],
+          ],
         ];
     }
 
@@ -66,15 +88,28 @@ class TaskController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Task();
+      $task = new TaskCreateModel();
+      $file = new File();
+      $fileModel = new UploadForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+      if ($task->load(Yii::$app->request->post())) {
+        $post = Yii::$app->request->post();
+        $taskModel = new Task();
+        $taskModel::create(Yii::$app->user->id, $post)->save();
+        $fileModel->file = UploadedFile::getInstance($fileModel, 'file');
+        if((!empty($fileModel->file))&&($fileModel->upload())){
+          $file::create(Yii::$app->user->id, count(Task::find()->all()),"/img/upload/".$fileModel->file->name)->save();
         }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        return $this->redirect('index');
+      }
+        $taskErrors = $task->getErrors();
+
+      return $this->render('create', [
+        'task' => $task,
+        'fileModel' => $fileModel,
+        'taskErrors' => $taskErrors
+      ]);
     }
 
     /**

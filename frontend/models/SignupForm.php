@@ -1,9 +1,9 @@
 <?php
 namespace frontend\models;
 
+use common\models\User;
 use Yii;
 use yii\base\Model;
-use common\models\User;
 
 /**
  * Signup form
@@ -22,21 +22,21 @@ class SignupForm extends Model
     public function rules()
     {
         return [
-            ['username', 'trim'],
-            ['username', 'required'],
-            ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.'],
-            ['username', 'string', 'min' => 2, 'max' => 255],
+          ['username', 'trim'],
+          ['username', 'required'],
+          ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.'],
+          ['username', 'string', 'min' => 2, 'max' => 255],
 
-            ['email', 'trim'],
-            ['email', 'required'],
-            ['email', 'email'],
-            ['email', 'string', 'max' => 255],
-            ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.'],
+          ['email', 'trim'],
+          ['email', 'required'],
+          ['email', 'email'],
+          ['email', 'string', 'max' => 255],
+          ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.'],
 
-            ['password', 'required'],
-            ['password', 'string', 'min' => 1],
+          ['password', 'required'],
+          ['password', 'string', 'min' => 1],
 
-            ['location_id', 'integer'],
+          ['location_id', 'integer'],
         ];
     }
 
@@ -50,7 +50,6 @@ class SignupForm extends Model
         if (!$this->validate()) {
             return null;
         }
-        
         $user = new User();
         $user->username = $this->username;
         $user->email = $this->email;
@@ -58,6 +57,13 @@ class SignupForm extends Model
         $user->setPassword($this->password);
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
+
+        $user->save(false);
+
+        $auth = Yii::$app->authManager;
+        $authorRole = $auth->getRole('customer');
+        $auth->assign($authorRole, $user->getId());
+
         return $user->save() && $this->sendEmail($user);
 
     }
@@ -70,14 +76,14 @@ class SignupForm extends Model
     protected function sendEmail($user)
     {
         return Yii::$app
-            ->mailer
-            ->compose(
-                ['html' => 'emailVerify-html', 'text' => 'emailVerify-text'],
-                ['user' => $user]
-            )
-            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
-            ->setTo($this->email)
-            ->setSubject('Account registration at ' . Yii::$app->name)
-            ->send();
+          ->mailer
+          ->compose(
+            ['html' => 'emailVerify-html', 'text' => 'emailVerify-text'],
+            ['user' => $user]
+          )
+          ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
+          ->setTo($this->email)
+          ->setSubject('Account registration at ' . Yii::$app->name)
+          ->send();
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
-/* @var $this \yii\web\View */
+/* @var $this View */
+
 /* @var $content string */
 
 
@@ -9,6 +10,7 @@ use frontend\assets\AppAsset;
 use frontend\models\Locations;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\web\View;
 use yii\widgets\Menu;
 
 AppAsset::register($this);
@@ -79,15 +81,18 @@ if (!Yii::$app->user->isGuest) {
                   'items' =>  $menuItems,
                 ]);
               } else {
-              $menuItems[] =	['label' => 'Задания', 'url' => ['task/index']];
+              $menuItems[] = ['label' => 'Задания', 'url' => ['task/index']];
               $menuItems[] = ['label' => 'Исполнители', 'url' => ['user/index']];
-              $menuItems[] = ['label' => 'Создать задание', 'url' => ['site/login']];
+              if (Yii::$app->user->can('createTask')) {
+                  $menuItems[] = ['label' => 'Создать задание', 'url' => ['task/create']];
+              }
+
               $menuItems[] = ['label' => 'Мой профиль', 'url' => ['site/login']];
               echo Menu::widget([
-                'options'=> ['class'=>'header-nav__list site-list'],
-                'activeCssClass'=>'site-list__item--active',
-                'itemOptions' => ['class'=>'site-list__item'],
-                'items' =>  $menuItems,
+                'options' => ['class' => 'header-nav__list site-list'],
+                'activeCssClass' => 'site-list__item--active',
+                'itemOptions' => ['class' => 'site-list__item'],
+                'items' => $menuItems,
               ]);
               ?>
 
@@ -193,6 +198,7 @@ if (!Yii::$app->user->isGuest) {
             </div>
         </div>
     </footer>
+
 </div>
 
 <?php $this->endBody() ?>
