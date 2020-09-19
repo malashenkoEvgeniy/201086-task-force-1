@@ -11,9 +11,9 @@ class TimeAgo
 
 	public function __construct($date)
 	{
-		$this->date = $date;
-		$this->time = time() - strtotime($this->date);
-	}
+      $this->date = $date;
+      $this->time = time() - strtotime($this->date);
+  }
 
 	private function getMinute():int
 	{

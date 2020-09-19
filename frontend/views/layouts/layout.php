@@ -6,6 +6,7 @@
 
 use common\models\LoginForm;
 use frontend\assets\AppAsset;
+use yii\bootstrap\Modal;
 use yii\helpers\Html;
 use yii\web\View;
 use yii\widgets\ActiveForm;
@@ -49,30 +50,80 @@ AppAsset::register($this);
                 <path d="M597.15,650.47V619.54H616.5V488.46H597.15V457.53h57.56V579.38L696,541.86H670.59V516.2h72.58v27.19h-12L696,576.9l32,42.64h16.63v30.93H707.81l-53.1-71.09v41.68h14.52v29.41Z" transform="translate(-5.5 -7.17)"/>
                 <path d="M781.14,650.47v-32.6h24.69V490.13H781.14v-32.6H935.6V517h-33V490.13H850.74v44.66h37.34v32.59H850.74v50.49h26.55v32.6Z" transform="translate(-5.5 -7.17)"/>
                 <path d="M1006.82,653.52q-26.55,0-44.85-18.8t-18.3-51.52q0-32.73,18.3-51.53t44.85-18.79q26.67,0,44.91,18.79T1070,583.2q0,32.31-18,51.32T1006.82,653.52Zm-.13-33.29q10.66,0,17.31-9.15t6.64-28.72q0-17.19-6.46-26.83t-17.49-9.64q-23.7,0-23.69,38.28,0,15.68,5.89,25.87T1006.69,620.23Z" transform="translate(-5.5 -7.17)"/>
-                <path d="M1192.3,619.54v30.93h-84.49V619.54H1130V547.13h-20.85V516.2h56v34.12a48.51,48.51,0,0,1,14.7-25.45,38.35,38.35,0,0,1,27.11-10.75q2.6,0,6.2.14v40.5q-14.52,0-23.7,3.61t-15.13,15.81q-6,12.21-6,28.85v16.51Z" transform="translate(-5.5 -7.17)"/>
-                <path d="M1369.34,516.2v54.51h-27.29q-9.32-22.47-29.16-22.47-12.66,0-20.16,9.37t-7.51,25q0,19,7.94,28.09t19.48,9.08a29.23,29.23,0,0,0,17.37-5.89,42.89,42.89,0,0,0,13.15-15.6L1372.94,613q-16.64,40.57-58.31,40.57-31.39,0-50.06-19.14T1245.9,583.2q0-32,18.3-50.56t42.61-18.52q19.47,0,36.35,13.18V516.2Z" transform="translate(-5.5 -7.17)"/>
-                <path d="M1506.43,610l29.78,10.68q-18.74,32.86-58.56,32.87-31.76,0-49.56-18.73t-17.81-49.24q0-31.06,18.37-51.87t46.77-20.8q20.6,0,35.6,11.65a60.5,60.5,0,0,1,20.85,29q5.82,17.34,5.83,38.7h-89.45q.87,18.31,10.36,25.94t20,7.63Q1492.41,625.78,1506.43,610Zm-7.32-41.61a36.09,36.09,0,0,0-7.86-19.15q-6.52-7.9-17.82-7.9-21.09,0-24.56,27.05Z" transform="translate(-5.5 -7.17)"/>
+                  <path d="M1192.3,619.54v30.93h-84.49V619.54H1130V547.13h-20.85V516.2h56v34.12a48.51,48.51,0,0,1,14.7-25.45,38.35,38.35,0,0,1,27.11-10.75q2.6,0,6.2.14v40.5q-14.52,0-23.7,3.61t-15.13,15.81q-6,12.21-6,28.85v16.51Z"
+                        transform="translate(-5.5 -7.17)"/>
+                  <path d="M1369.34,516.2v54.51h-27.29q-9.32-22.47-29.16-22.47-12.66,0-20.16,9.37t-7.51,25q0,19,7.94,28.09t19.48,9.08a29.23,29.23,0,0,0,17.37-5.89,42.89,42.89,0,0,0,13.15-15.6L1372.94,613q-16.64,40.57-58.31,40.57-31.39,0-50.06-19.14T1245.9,583.2q0-32,18.3-50.56t42.61-18.52q19.47,0,36.35,13.18V516.2Z"
+                        transform="translate(-5.5 -7.17)"/>
+                  <path d="M1506.43,610l29.78,10.68q-18.74,32.86-58.56,32.87-31.76,0-49.56-18.73t-17.81-49.24q0-31.06,18.37-51.87t46.77-20.8q20.6,0,35.6,11.65a60.5,60.5,0,0,1,20.85,29q5.82,17.34,5.83,38.7h-89.45q.87,18.31,10.36,25.94t20,7.63Q1492.41,625.78,1506.43,610Zm-7.32-41.61a36.09,36.09,0,0,0-7.86-19.15q-6.52-7.9-17.82-7.9-21.09,0-24.56,27.05Z"
+                        transform="translate(-5.5 -7.17)"/>
               </g>
             </g>
           </svg>
         </a>
-        <p>Работа там, где ты!</p>
+          <p>Работа там, где ты!</p>
       </div>
-      <div class="header__account--index">
-        <?php
-        if (Yii::$app->user->isGuest) {
-          echo Html::a("<span>Вход</span>", [''], ['class'=>'header__account-enter open-modal',
-            'data-for'=>' form-modal']);
-          echo ' или ';
-          echo Html::a("<span>Регистрация</span>", ['/site/signup'], ['class'=>'header__account-registration']);
+        <div class="header__account--index">
+            <?php if (Yii::$app->user->isGuest) { ?>
+                <?php Modal::begin([
+                  'header' => '<h2>Вход на сайт</h2>',
+                  'toggleButton' => [
+                    'label' => 'Вход',
+                    'tag' => 'span',
+                    'class' => 'header__account-enter open-modal',
+                  ],
+                  'closeButton' => [
+                    'label' => 'Закрыть',
+                    'tag' => 'button',
+                    'class' => 'form-modal-close',
+                    'id' => 'close-modal'
+                  ],
+                  'options' => [
+                    'tag' => 'section',
+                    'class' => 'form-modal-login'
 
-        } else {
-          echo Html::beginForm(['/site/logout'], 'post');
-          echo Html::submitButton('Выход ', ['class' => 'logout',
-                                                    'style'=>'    color: #fff;
-    text-transform: uppercase;']);
-          echo Html::endForm();
-        } ?>
+                  ],
+                  'footer' => "",
+                ]); ?>
+                <?php $form = ActiveForm::begin([
+                  'action' => 'login',
+                  'id' => 'login-form',
+                  'method' => 'post'
+                ]); ?>
+                <p>
+                    <?= $form->field($model, 'email', [
+                      'inputOptions' => [
+                        'class' => 'enter-form-email input input-middle',
+                        'id' => 'enter-email',
+                        'name' => 'email'
+                      ],
+                    ])->textInput(['autofocus' => true]) ?>
+                </p>
+                <p>
+                    <?= $form->field($model, 'password', [
+                      'inputOptions' => [
+                        'class' => 'enter-form-email input input-middle',
+                        'id' => 'enter-password',
+                        'name' => 'password'
+                      ]
+                    ])->passwordInput() ?>
+
+                </p>
+                <button class="button" type="submit">Войти</button>
+                <?php ActiveForm::end(); ?>
+                <?php Modal::end() ?>
+                <?php
+                echo ' или ';
+                echo Html::a("<span>Регистрация</span>", ['/site/signup'], ['class' => 'header__account-registration']);
+
+            } else {
+                echo Html::beginForm(['/site/logout'], 'post');
+                echo Html::submitButton('Выход ', [
+                  'class' => 'logout',
+                  'style' => '    color: #fff;
+    text-transform: uppercase;'
+                ]);
+                echo Html::endForm();
+            } ?>
 
       </div>
     </div>
@@ -284,41 +335,6 @@ AppAsset::register($this);
       </div>
     </div>
   </footer>
-
-
-
-  <section class="modal form-modal enter-form "  id="form-modal">
-    <h2>Вход на сайт</h2>
-    <?php $form = ActiveForm::begin([   'action'=>'login',
-      'id' => 'login-form',
-      //'enableAjaxValidation' => true,
-      'method' => 'post']); ?>
-    <p>
-      <?= $form->field($model, 'email', [
-        'inputOptions' => ['class' =>'enter-form-email input input-middle',
-          'id'=>'enter-email',
-          'name'=>'email'],
-      ])->textInput(['autofocus' => true]) ?>
-    </p>
-    <p>
-      <?= $form->field($model, 'password', [
-        'inputOptions' => ['class' =>'enter-form-email input input-middle',
-          'id'=>'enter-password',
-          'name'=>'password']])->passwordInput() ?>
-
-    </p>
-    <button class="button" type="submit">Войти</button>
-    <?php ActiveForm::end();
-
-    ?>
-    <button class="form-modal-close" id="close-modal" type="button">Закрыть</button>
-  </section>
-
-
-
-  <!-- Modal -->
-
-
 </div>
 <div class="overlay"></div>
 

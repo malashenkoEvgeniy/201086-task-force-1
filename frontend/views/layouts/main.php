@@ -200,7 +200,7 @@ if (!Yii::$app->user->isGuest) {
     </footer>
 
 </div>
-
+<div class="overlay"></div>
 <?php $this->endBody() ?>
 </body>
 </html>
