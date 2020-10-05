@@ -11,7 +11,7 @@
             "version": "v3.4.1",
             "source": {
               "type": "git",
-              "url": "https://github.com/twbs/bootstrap.git",
+              "url": "git@github.com:twbs/bootstrap.git",
               "reference": "68b0d231a13201eb14acd3dc84e51543d16e5f7e"
             },
             "dist": {
@@ -52,9 +52,9 @@
             "name": "bower-asset/jquery",
             "version": "3.5.1",
             "source": {
-                "type": "git",
-                "url": "https://github.com/jquery/jquery-dist.git",
-                "reference": "4c0e4becb8263bb5b3e6dadc448d8e7305ef8215"
+              "type": "git",
+              "url": "git@github.com:jquery/jquery-dist.git",
+              "reference": "4c0e4becb8263bb5b3e6dadc448d8e7305ef8215"
             },
             "dist": {
                 "type": "zip",
@@ -2526,16 +2526,16 @@
                     "src/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-              {
-                "name": "Sebastian Bergmann",
-                "email": "sebastian@phpunit.de"
-              }
-            ],
+          "notification-url": "https://packagist.org/downloads/",
+          "license": [
+            "BSD-3-Clause"
+          ],
+          "authors": [
+            {
+              "name": "Sebastian Bergmann",
+              "email": "sebastian@phpunit.de"
+            }
+          ],
           "description": "Wrapper around PHP's tokenizer extension.",
           "homepage": "https://github.com/sebastianbergmann/php-token-stream/",
           "keywords": [

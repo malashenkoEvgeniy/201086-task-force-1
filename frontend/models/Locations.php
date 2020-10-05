@@ -3,7 +3,7 @@
 namespace frontend\models;
 
 use common\models\User;
-use Yii;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
 /**
@@ -51,9 +51,9 @@ class Locations extends ActiveRecord
     }
 
     /**
-     * Gets query for [[Task]].
+     * Gets query for [[AvailableActions]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getTask()
     {
@@ -63,7 +63,7 @@ class Locations extends ActiveRecord
     /**
      * Gets query for [[Users]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getUser()
     {

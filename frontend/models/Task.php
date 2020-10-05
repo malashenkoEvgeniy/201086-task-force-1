@@ -19,7 +19,7 @@ use yii\db\ActiveRecord;
  * @property string $deadline
  * @property int $customer_id
  * @property int|null $executor_id
- * @property string|null $status
+ * @property int|null $status
  * @property int $created_at
  * @property int $updated_at
  *
@@ -36,6 +36,8 @@ class Task extends ActiveRecord
 {
     const STATUS = ['Новое', 'Отменено', 'В работе', 'Выполнено', 'Провалено'];
 
+    public $completion;
+    public $completion_comment;
 
     /**
      * {@inheritdoc}
@@ -51,15 +53,51 @@ class Task extends ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'category_id', 'location_id', 'deadline', 'customer_id', 'created_at', 'updated_at'], 'required'],
-            [['category_id', 'location_id', 'budget', 'customer_id', 'executor_id', 'created_at', 'updated_at'], 'integer'],
-            [['description'], 'string'],
-            [['deadline'], 'safe'],
-            [['name', 'status'], 'string', 'max' => 128],
-            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Categories::className(), 'targetAttribute' => ['category_id' => 'id']],
-            [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['customer_id' => 'id']],
-            [['executor_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['executor_id' => 'id']],
-            [['location_id'], 'exist', 'skipOnError' => true, 'targetClass' => Locations::className(), 'targetAttribute' => ['location_id' => 'id']],
+          [['name', 'category_id', 'location_id', 'deadline', 'customer_id', 'created_at', 'updated_at'], 'required'],
+          [
+            [
+              'category_id',
+              'location_id',
+              'budget',
+              'customer_id',
+              'executor_id',
+              'created_at',
+              'updated_at',
+              'status'
+            ],
+            'integer'
+          ],
+          [['description'], 'string'],
+          [['deadline'], 'safe'],
+          [['name'], 'string', 'max' => 128],
+          [
+            ['category_id'],
+            'exist',
+            'skipOnError' => true,
+            'targetClass' => Categories::className(),
+            'targetAttribute' => ['category_id' => 'id']
+          ],
+          [
+            ['customer_id'],
+            'exist',
+            'skipOnError' => true,
+            'targetClass' => User::className(),
+            'targetAttribute' => ['customer_id' => 'id']
+          ],
+          [
+            ['executor_id'],
+            'exist',
+            'skipOnError' => true,
+            'targetClass' => User::className(),
+            'targetAttribute' => ['executor_id' => 'id']
+          ],
+          [
+            ['location_id'],
+            'exist',
+            'skipOnError' => true,
+            'targetClass' => Locations::className(),
+            'targetAttribute' => ['location_id' => 'id']
+          ],
         ];
     }
 
@@ -176,9 +214,7 @@ class Task extends ActiveRecord
         $task->customer_id = $user;
         $task->created_at = time();
         $task->updated_at = time();
-
         $task->status = self::STATUS[0];
-
         return $task;
     }
 }

@@ -2530,6 +2530,11 @@ footer {
     cursor: pointer; }
 
 .completion-form-star .star-disabled:hover {
-  background-image: url("../img/star.png"); }
+    background-image: url("../img/star.png");
+}
+
+.completion-form .modal-content {
+    padding-bottom: 35px;
+}
 
 /*# sourceMappingURL=style.css.map */

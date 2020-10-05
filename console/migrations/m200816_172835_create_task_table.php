@@ -19,18 +19,18 @@ class m200816_172835_create_task_table extends Migration
     public function safeUp()
     {
         $this->createTable('{{%task}}', [
-            'id' => $this->primaryKey(),
-            'name' => $this->string(128)->notNull(),
-            'category_id' => $this->integer()->notNull(),
-            'description' => $this->text(),
-            'location_id' => $this->integer()->notNull(),
-            'budget' => $this->integer(),
-            'deadline' => $this->dateTime()->notNull(),
-            'customer_id' => $this->integer()->notNull(),
-            'executor_id' => $this->integer(),
-            'status' => $this->string(128),
-            'created_at' => $this->integer()->notNull(),
-            'updated_at' => $this->integer()->notNull(),
+          'id' => $this->primaryKey(),
+          'name' => $this->string(128)->notNull(),
+          'category_id' => $this->integer()->notNull(),
+          'description' => $this->text(),
+          'location_id' => $this->integer()->notNull(),
+          'budget' => $this->integer(),
+          'deadline' => $this->dateTime()->notNull(),
+          'customer_id' => $this->integer()->notNull(),
+          'executor_id' => $this->integer(),
+          'status' => $this->integer(),
+          'created_at' => $this->integer()->notNull(),
+          'updated_at' => $this->integer()->notNull(),
         ]);
 
         // creates index for column `category_id`

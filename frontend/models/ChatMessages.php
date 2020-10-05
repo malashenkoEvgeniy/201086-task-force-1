@@ -2,7 +2,8 @@
 
 namespace frontend\models;
 
-use Yii;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "chat_messages".
@@ -17,7 +18,7 @@ use Yii;
  * @property Task $task
  * @property User $writer
  */
-class ChatMessages extends \yii\db\ActiveRecord
+class ChatMessages extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -48,19 +49,19 @@ class ChatMessages extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'task_id' => 'Task ID',
-            'writer_id' => 'Writer ID',
-            'comment' => 'Comment',
-            'creation_time' => 'Creation Time',
-            'viewed' => 'Viewed',
+          'id' => 'ID',
+          'task_id' => 'AvailableActions ID',
+          'writer_id' => 'Writer ID',
+          'comment' => 'Comment',
+          'creation_time' => 'Creation Time',
+          'viewed' => 'Viewed',
         ];
     }
 
     /**
-     * Gets query for [[Task]].
+     * Gets query for [[AvailableActions]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getTask()
     {
@@ -70,7 +71,7 @@ class ChatMessages extends \yii\db\ActiveRecord
     /**
      * Gets query for [[Writer]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getWriter()
     {

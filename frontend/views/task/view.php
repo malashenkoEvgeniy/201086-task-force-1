@@ -1,9 +1,12 @@
 <?php
 
 use common\models\User;
+use frontend\classes\AvailableActions;
 use frontend\classes\TimeAgo;
+use frontend\models\Proposal;
 use yii\bootstrap\Modal;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\web\YiiAsset;
 use yii\widgets\ActiveForm;
 
@@ -11,6 +14,7 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model frontend\models\Task */
 /* @var $user User */
+/* @var $proposal frontend\models\Proposal */
 
 
 $this->title = $model->name;
@@ -58,190 +62,229 @@ YiiAsset::register($this);
                 </div>
             </div>
             <div class="content-view__action-buttons">
-                <?php Modal::begin([
-                  'header' => '<h2>Отклик на задание</h2>',
-                  'toggleButton' => [
-                    'label' => 'Откликнуться',
-                    'tag' => 'button',
-                    'type' => 'button',
-                    'class' => 'button button__big-color response-button',
-                  ],
-                  'closeButton' => [
-                    'label' => 'Закрыть',
-                    'tag' => 'button',
-                    'class' => 'form-modal-close',
-                    'id' => 'close-modal'
-                  ],
-                  'options' => [
-                    'tag' => 'section',
-                    'class' => 'modal response-form form-modal'
+                <?= AvailableActions::getActions(Yii::$app->user->identity->id, $model); ?>
+                <?php if (AvailableActions::getActions(Yii::$app->user->identity->id, $model) == 'respond') { ?>
+                    <?php Modal::begin([
+                      'header' => '<h2>Отклик на задание</h2>',
+                      'toggleButton' => [
+                        'label' => 'Откликнуться',
+                        'tag' => 'button',
+                        'type' => 'button',
+                        'class' => 'button button__big-color response-button',
+                      ],
+                      'closeButton' => [
+                        'label' => 'Закрыть',
+                        'tag' => 'button',
+                        'class' => 'form-modal-close',
+                        'id' => 'close-modal'
+                      ],
+                      'options' => [
+                        'tag' => 'section',
+                        'class' => 'modal response-form form-modal'
+                      ],
+                    ]); ?>
+                    <?php $form = ActiveForm::begin([
+                      'method' => 'get',
+                      'action' => Url::to([
+                        'task/proposal',
+                        'task' => $model->id,
+                        'us' => Yii::$app->user->identity->id
+                      ])
+                    ]); ?>
+                    <?= $form->field($model, 'budget')->textInput([
+                      'class' => 'response-form-payment input input-middle input-money',
+                      'id' => 'response-payment',
+                      'name' => 'response-payment',
+                    ])->label('Ваша цена', ['class' => 'form-modal-description']); ?>
 
-                  ],
-                ]); ?>
-                <?php $form = ActiveForm::begin(['method' => 'post']); ?>
+                    <?= $form->field($model, 'name')->textarea([
+                      'class' => 'input textarea',
+                      'id' => "response-comment",
+                      'placeholder' => 'Place your text',
+                      'name' => 'response-comment',
+                      'rows' => 4
+                    ])->label('Комментарий', ['class' => 'form-modal-description']); ?>
+                    <?= Html::submitButton('Отправить', ['class' => 'button modal-button']) ?>
+                    <?php ActiveForm::end(); ?>
+                    <?php Modal::end() ?>
+                <?php } ?>
+                <?php if (AvailableActions::getActions(Yii::$app->user->identity->id, $model) == 'cancel') { ?>
+                    <?php Modal::begin([
+                      'header' => '<h2>Отменить задание</h2>',
+                      'toggleButton' => [
+                        'label' => 'Отменить',
+                        'tag' => 'button',
+                        'type' => 'button',
+                        'class' => 'button button__big-color refusal-button',
+                      ],
+                      'closeButton' => [
+                        'label' => 'Закрыть',
+                        'tag' => 'button',
+                        'class' => 'form-modal-close',
+                        'id' => 'close-modal'
+                      ],
+                      'options' => [
+                        'tag' => 'section',
+                        'class' => 'modal form-modal refusal-form'
+                      ],
+                    ]); ?>
+                    <p class="refusal-form-p">
+                        Вы собираетесь отменить задание.
+                        Вы уверены?</p>
+                    <?= Html::a('Отменить', Url::to(['task/cancel', 'task' => $model->id]),
+                      ['class' => 'button__form-modal button']) ?>
+                    <?= Html::a('Отказаться', Url::to([Yii::$app->request->referrer]),
+                      ['class' => 'button__form-modal refusal-button button']) ?>
+                    <?php Modal::end() ?>
+                <?php } ?>
+                <?php if (AvailableActions::getActions(Yii::$app->user->identity->id, $model) == 'refuse') { ?>
+                    <?php Modal::begin([
+                      'header' => '<h2>Отказ от задания</h2>',
+                      'toggleButton' => [
+                        'label' => 'Отказаться',
+                        'tag' => 'button',
+                        'type' => 'button',
+                        'class' => 'button button__big-color refusal-button',
+                      ],
+                      'closeButton' => [
+                        'label' => 'Закрыть',
+                        'tag' => 'button',
+                        'class' => 'form-modal-close',
+                        'id' => 'close-modal'
+                      ],
+                      'options' => [
+                        'tag' => 'section',
+                        'class' => 'modal form-modal refusal-form'
+                      ],
+                    ]); ?>
+                    <p class="refusal-form-p">
+                        Вы собираетесь отказаться от выполнения задания.
+                        Это действие приведёт к снижению вашего рейтинга.
+                        Вы уверены?</p>
+                    <?= Html::a('Отказаться', Url::to(['task/refus', 'task' => $model->id]),
+                      ['class' => 'button__form-modal button']) ?>
+                    <?= Html::a('Отменить', Url::to([Yii::$app->request->referrer]),
+                      ['class' => 'button__form-modal refusal-button button']) ?>
 
-                <?= $form->field($model, 'budget')->textInput([
-                  'class' => 'response-form-payment input input-middle input-money',
-                  'id' => 'response-payment',
-                  'name' => 'response-payment',
-                ])->label('Ваша цена', ['class' => 'form-modal-description']); ?>
+                    <?php Modal::end() ?>
+                <?php } ?>
+                <?php if (AvailableActions::getActions(Yii::$app->user->identity->id, $model) == 'done') { ?>
+                    <?php Modal::begin([
+                      'header' => '<h2>Завершение задания</h2>',
+                      'toggleButton' => [
+                        'label' => 'Завершить',
+                        'tag' => 'button',
+                        'type' => 'button',
+                        'class' => 'button button__big-color request-button',
+                      ],
+                      'closeButton' => [
+                        'label' => 'Закрыть',
+                        'tag' => 'button',
+                        'class' => 'form-modal-close',
+                        'id' => 'close-modal'
+                      ],
+                      'options' => [
+                        'tag' => 'section',
+                        'class' => 'modal completion-form form-modal'
+                      ],
+                    ]); ?>
+                    <p class="form-modal-description">Задание выполнено?</p>
+                    <?php $form = ActiveForm::begin([
+                      'method' => 'get',
+                      'action' => Url::to(['task/completion', 'task' => $model->id])
+                    ]); ?>
+                    <div class="completion-group" style="display: flex">
+                        <?= $form->field($model, 'completion')->radio([
+                          'class' => 'visually-hidden completion-input completion-input--yes',
+                          'id' => 'completion-radio--yes',
+                          'label' => 'Да',
+                          'labelOptions' => ['class' => 'completion-label completion-label--yes']
+                        ]); ?>
+                        <?= $form->field($model, 'completion')->radio([
+                          'class' => 'visually-hidden completion-input completion-input--difficult',
+                          'id' => 'completion-radio--yet',
+                          'label' => 'Возникли проблемы',
+                          'labelOptions' => [
+                            'class' => 'completion-label completion-label--difficult',
+                            'style' => 'margin-left:5px;'
+                          ]
+                        ]); ?>
+                    </div>
+                    <p><?= $form->field($model, 'completion_comment')->textarea([
+                          'class' => 'input textarea',
+                          'rows' => 4,
+                          'placeholder' => 'Place your text',
+                          'id' => 'completion-comment'
+                        ])->label('Комментарий', ['class' => 'form-modal-description']); ?></p>
 
-                <?= $form->field($model, 'name')->textarea([
-                  'class' => 'input textarea',
-                  'id' => "response-comment",
-                  'placeholder' => 'Place your text',
-                  'name' => 'response-comment',
-                  'rows' => 4
-                ])->label('Комментарий', ['class' => 'form-modal-description']); ?>
-                <?= Html::submitButton('Отправить', ['class' => 'button modal-button']) ?>
-                <?php ActiveForm::end(); ?>
-                <?php Modal::end() ?>
-                <?php Modal::begin([
-                  'header' => '<h2>Отказ от задания</h2>',
-                  'toggleButton' => [
-                    'label' => 'Отказаться',
-                    'tag' => 'button',
-                    'type' => 'button',
-                    'class' => 'button button__big-color refusal-button',
-                  ],
-                  'closeButton' => [
-                    'label' => 'Закрыть',
-                    'tag' => 'button',
-                    'class' => 'form-modal-close',
-                    'id' => 'close-modal'
-                  ],
-                  'options' => [
-                    'tag' => 'section',
-                    'class' => 'modal form-modal refusal-form'
-
-                  ],
-                ]); ?>
-                <p class="refusal-form-p">
-                    Вы собираетесь отказаться от выполнения задания.
-                    Это действие приведёт к снижению вашего рейтинга.
-                    Вы уверены?
-                </p>
-                <button class="button__form-modal button"
-                        type="button">Отмена
-                </button>
-                <button class="button__form-modal refusal-button button"
-                        type="button">Отказаться
-                </button>
-                <?php Modal::end() ?>
-                <?php Modal::begin([
-                  'header' => '<h2>Завершение задания</h2>',
-                  'toggleButton' => [
-                    'label' => 'Завершить',
-                    'tag' => 'button',
-                    'type' => 'button',
-                    'class' => 'button button__big-color request-button',
-                  ],
-                  'closeButton' => [
-                    'label' => 'Закрыть',
-                    'tag' => 'button',
-                    'class' => 'form-modal-close',
-                    'id' => 'close-modal'
-                  ],
-                  'options' => [
-                    'tag' => 'section',
-                    'class' => 'modal completion-form form-modal'
-
-                  ],
-                ]); ?>
-                <p class="form-modal-description">Задание выполнено?</p>
-                <?php $form = ActiveForm::begin(['method' => 'post']); ?>
-                <input class="visually-hidden completion-input completion-input--yes" type="radio"
-                       id="completion-radio--yes" name="completion" value="yes">
-                <label class="completion-label completion-label--yes" for="completion-radio--yes">Да</label>
-                <input class="visually-hidden completion-input completion-input--difficult" type="radio"
-                       id="completion-radio--yet" name="completion" value="difficulties">
-                <label class="completion-label completion-label--difficult" for="completion-radio--yet">Возникли
-                    проблемы</label>
-                <p>
-                    <label class="form-modal-description" for="completion-comment">Комментарий</label>
-                    <textarea class="input textarea" rows="4" id="completion-comment" name="completion-comment"
-                              placeholder="Place your text"></textarea>
-                </p>
-                <p class="form-modal-description">
-                    Оценка
-                <div class="feedback-card__top--name completion-form-star">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span class="star-disabled"></span>
-                </div>
-                </p>
-                <button class="button modal-button" type="submit">Отправить</button>
-                <?php ActiveForm::end(); ?>
-                <?php Modal::end() ?>
-
+                    <p class="form-modal-description"> Оценка
+                    <div class="feedback-card__top--name completion-form-star">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span class="star-disabled"></span>
+                    </div>
+                    </p>
+                    <?= Html::submitButton('Отправить', ['class' => 'button modal-button']); ?>
+                    <?php ActiveForm::end(); ?>
+                    <?php Modal::end() ?>
+                <?php } ?>
                 <button class="button button__big-color connection-button"
                         type="button">Написать сообщение
                 </button>
             </div>
         </div>
-        <div class="content-view__feedback">
-            <h2>Отклики <span>(2)</span></h2>
-            <div class="content-view__feedback-wrapper">
-                <div class="content-view__feedback-card">
-                    <div class="feedback-card__top">
-                        <a href="#"><img src="<?= $user->ava ?>" width="55" height="55"></a>
-                        <div class="feedback-card__top--name">
-                            <p><a href="#" class="link-regular">Астахов Павел</a></p>
-                            <span></span><span></span><span></span><span></span><span class="star-disabled"></span>
-                            <b>4.25</b>
-                        </div>
-                        <span class="new-task__time">25 минут назад</span>
-                    </div>
-                    <div class="feedback-card__content">
-                        <p>
-                            Могу сделать всё в лучшем виде. У меня есть необходимый опыт и инструменты.
-                        </p>
-                        <span>1500 ₽</span>
-                    </div>
-                    <div class="feedback-card__actions">
 
-                        <button class="button__small-color response-button button"
-                                type="button">Откликнуться
-                        </button>
-
-                        <button class="button__small-color refusal-button button"
-                                type="button">Отказаться
-                        </button>
-                        <button class="button__chat button"
-                                type="button"></button>
-                    </div>
-                </div>
-                <div class="content-view__feedback-card">
-                    <div class="feedback-card__top">
-                        <a href="#"><img src="./img/man-blond.jpg" width="55" height="55"></a>
-                        <div class="feedback-card__top--name">
-                            <p class="link-name"><a href="#" class="link-regular">Богатырев Дмитрий</a></p>
-                            <span></span><span></span><span></span><span></span><span class="star-disabled"></span>
-                            <b>4.25</b>
-                        </div>
-                        <span class="new-task__time">25 минут назад</span>
-                    </div>
-                    <div class="feedback-card__content">
-                        <p>
-                            Примусь за выполнение задания в течение часа, сделаю быстро и качественно.
-                        </p>
-                        <span>1500 ₽</span>
-                    </div>
-                    <div class="feedback-card__actions">
-                        <button class="button__small-color response-button button"
-                                type="button">Откликнуться
-                        </button>
-                        <button class="button__small-color refusal-button button"
-                                type="button">Отказаться
-                        </button>
-                        <button class="button__chat button"
-                                type="button"></button>
-                    </div>
+        <?php
+        if (Proposal::isProposal(Yii::$app->user->identity->id) || Yii::$app->user->identity->id == $user->id) {
+            ?>
+            <div class="content-view__feedback">
+                <h2>Отклики <span>(<?= count($proposal) ?>)</span></h2>
+                <div class="content-view__feedback-wrapper">
+                    <?php foreach ($proposal as $proposalItem) { ?>
+                        <?php if (Yii::$app->user->identity->id == $user->id || (Yii::$app->user->identity->id == $proposalItem->user_id && $model->id == $proposalItem->task_id)) { ?>
+                            <div class="content-view__feedback-card">
+                                <div class="feedback-card__top">
+                                    <a href="user/1"><img src="/img/<?= $proposalItem->user->ava ?>" width="55"
+                                                          height="55"></a>
+                                    <div class="feedback-card__top--name">
+                                        <p><a href="#" class="link-regular"><?= $proposalItem->user->username ?></a></p>
+                                        <span></span><span></span><span></span><span></span><span
+                                                class="star-disabled"></span>
+                                        <b>4.25</b>
+                                    </div>
+                                    <span class="new-task__time"><?= (new TimeAgo($proposal->created_at))->getDate(); ?> назад</span>
+                                </div>
+                                <div class="feedback-card__content">
+                                    <p><?= $proposalItem->comment ?></p>
+                                    <span><?= $proposalItem->budget ?> ₽</span>
+                                </div>
+                                <?php if ((Yii::$app->user->identity->id == $user->id) && ($proposalItem->response == 0) && ($model->status == 0)) { ?>
+                                    <div class="feedback-card__actions">
+                                        <?= Html::a('Откликнуться', Url::to([
+                                          'task/respond',
+                                          'task' => $proposalItem->task_id,
+                                          'us' => $proposalItem->user->id
+                                        ]), ['class' => 'button__small-color response-button button']) ?>
+                                        <?= Html::a('Отказаться', Url::to([
+                                          'task/denied',
+                                          'task' => $proposalItem->task_id,
+                                          'us' => $proposalItem->user->id
+                                        ]), ['class' => 'button__small-color refusal-button button']) ?>
+                                        <button class="button__chat button"
+                                                type="button"></button>
+                                    </div>
+                                <?php } elseif ($proposalItem->response == 2) { ?>
+                                    <h2 style="text-align: right; color: gold; background-color: transparent">
+                                        Исполнитель</h2>
+                                <?php } ?>
+                            </div>
+                        <?php } ?>
+                    <?php } ?>
                 </div>
             </div>
-        </div>
+        <?php } ?>
     </section>
     <section class="connect-desk">
         <div class="connect-desk__profile-mini">
@@ -292,33 +335,3 @@ YiiAsset::register($this);
         </div>
     </section>
 </div>
-
-<section class="modal completion-form form-modal">
-    <h2>Завершение задания</h2>
-    <p class="form-modal-description">Задание выполнено?</p>
-    <?php $form = ActiveForm::begin(['method' => 'post']); ?>
-    <input class="visually-hidden completion-input completion-input--yes" type="radio" id="completion-radio--yes"
-           name="completion" value="yes">
-    <label class="completion-label completion-label--yes" for="completion-radio--yes">Да</label>
-    <input class="visually-hidden completion-input completion-input--difficult" type="radio" id="completion-radio--yet"
-           name="completion" value="difficulties">
-    <label class="completion-label completion-label--difficult" for="completion-radio--yet">Возникли проблемы</label>
-    <p>
-        <label class="form-modal-description" for="completion-comment">Комментарий</label>
-        <textarea class="input textarea" rows="4" id="completion-comment" name="completion-comment"
-                  placeholder="Place your text"></textarea>
-    </p>
-    <p class="form-modal-description">
-        Оценка
-    <div class="feedback-card__top--name completion-form-star">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span class="star-disabled"></span>
-    </div>
-        </p>
-        <button class="button modal-button" type="submit">Отправить</button>
-    </form>
-    <button class="form-modal-close" type="button">Закрыть</button>
-</section>

@@ -180,10 +180,10 @@ if (!Yii::$app->user->isGuest) {
                 'itemOptions' => ['class'=>'links__item'],
                 'items' => [
                   ['label' => 'Задания', 'url' => ['tasks/index']],
-                  ['label' => 'Мой профиль', 'url' => ['tasks/index']],
-                  ['label' => 'Исполнители', 'url' => ['users/index']],
-                  ['label' => 'Регистрация', 'url' => ['users/index']],
-                  ['label' => 'Создать задание', 'url' => ['site/login']],
+                  ['label' => 'Мой профиль', 'url' => ['task']],
+                  ['label' => 'Исполнители', 'url' => ['user']],
+                  ['label' => 'Регистрация', 'url' => ['signup']],
+                  ['label' => 'Создать задание', 'url' => ['create']],
                   ['label' => 'Справка', 'url' => ['site/login']],
                 ],
               ]);?>

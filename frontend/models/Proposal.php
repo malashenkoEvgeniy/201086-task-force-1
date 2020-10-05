@@ -2,7 +2,10 @@
 
 namespace frontend\models;
 
+use common\models\User;
 use Yii;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "proposal".
@@ -16,7 +19,7 @@ use Yii;
  * @property Task $task
  * @property User $user
  */
-class Proposal extends \yii\db\ActiveRecord
+class Proposal extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -32,11 +35,11 @@ class Proposal extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['comment', 'task_id', 'user_id'], 'required'],
-            [['task_id', 'budget', 'user_id'], 'integer'],
-            [['comment'], 'string', 'max' => 128],
-            [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['task_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+          [['comment', 'task_id', 'user_id'], 'required'],
+          [['task_id', 'budget', 'user_id'], 'integer'],
+          [['comment'], 'string', 'max' => 128],
+          [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['task_id' => 'id']],
+          [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -46,18 +49,18 @@ class Proposal extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'comment' => 'Comment',
-            'task_id' => 'Task ID',
-            'budget' => 'Budget',
-            'user_id' => 'User ID',
+          'id' => 'ID',
+          'comment' => 'Comment',
+          'task_id' => 'AvailableActions ID',
+          'budget' => 'Budget',
+          'user_id' => 'User ID',
         ];
     }
 
     /**
-     * Gets query for [[Task]].
+     * Gets query for [[AvailableActions]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getTask()
     {
@@ -67,10 +70,33 @@ class Proposal extends \yii\db\ActiveRecord
     /**
      * Gets query for [[User]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    public static function create($task_id, $comment, $budget)
+    {
+        $proposal = new static();
+        $proposal->task_id = $task_id;
+        $proposal->comment = $comment;
+        $proposal->budget = $budget;
+        $proposal->created_at = time();
+        $proposal->user_id = Yii::$app->user->identity->id;
+        $proposal->save();
+        return $proposal;
+    }
+
+    public static function isProposal($id)
+    {
+        $proposal = self::find()->all();
+        foreach ($proposal as $item) {
+            if ($item->user_id == $id) {
+                return true;
+            }
+        }
+        return false;
     }
 }

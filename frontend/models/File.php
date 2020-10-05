@@ -48,15 +48,15 @@ class File extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'path' => 'Path',
-            'user_id' => 'User ID',
-            'task_id' => 'Task ID',
+          'id' => 'ID',
+          'path' => 'Path',
+          'user_id' => 'User ID',
+          'task_id' => 'AvailableActions ID',
         ];
     }
 
     /**
-     * Gets query for [[Task]].
+     * Gets query for [[AvailableActions]].
      *
      * @return ActiveQuery
      */

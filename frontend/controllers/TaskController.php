@@ -5,6 +5,8 @@ namespace frontend\controllers;
 use common\models\User;
 use frontend\models\File;
 use frontend\models\forms\UploadForm;
+use frontend\models\Proposal;
+use frontend\models\Review;
 use frontend\models\Task;
 use frontend\models\TaskCreateModel;
 use frontend\models\TaskSearch;
@@ -16,11 +18,11 @@ use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 
 /**
- * TaskController implements the CRUD actions for Task model.
+ * TaskController implements the CRUD actions for AvailableActions model.
  */
 class TaskController extends Controller
 {
-    public $layout = 'main.php';
+    public $layout = 'main';
 
     /**
      * {@inheritdoc}
@@ -39,12 +41,17 @@ class TaskController extends Controller
             'rules' => [
               [
                 'allow' => true,
-                'actions' => ['index', 'view'],
+                'actions' => ['index', 'view', 'proposal', 'refus'],
                 'roles' => ['@'],
               ],
               [
                 'allow' => true,
                 'actions' => ['create'],
+                'roles' => ['createTask'],
+              ],
+              [
+                'allow' => true,
+                'actions' => ['denied', 'respond', 'cancel', 'completion'],
                 'roles' => ['createTask'],
               ],
 
@@ -55,7 +62,7 @@ class TaskController extends Controller
     }
 
     /**
-     * Lists all Task models.
+     * Lists all AvailableActions models.
      * @return mixed
      */
     public function actionIndex()
@@ -69,8 +76,77 @@ class TaskController extends Controller
         ]);
     }
 
+    public function actionCompletion()
+    {
+        $get = Yii::$app->request->get();
+        $task = Task::find()->where(['id' => $get['task']])->one();
+        if ($get['Task']['completion'] == 0) {
+            $task->status = 3;
+        } else {
+            $task->status = 4;
+        }
+        $task->save();
+
+        if (!$get['Task']['assessment']) {
+            $assessment = 5;
+        } else {
+            $assessment = $get['Task']['assessment'];
+        }
+        Review::create($task->customer_id, $task->executor_id, $get['task'], $get['Task']['completion_comment'],
+          $assessment);
+
+        $this->redirect(Yii::$app->request->referrer);
+    }
+
+    public function actionDenied()
+    {
+        $get = Yii::$app->request->get();
+        $proposal = Proposal::find()->where(['task_id' => $get['task'], 'user_id' => $get['us']])->one();
+        $proposal->response = 1;
+        $proposal->save();
+        $this->redirect(Yii::$app->request->referrer);
+    }
+
+    public function actionRefus()
+    {
+        $get = Yii::$app->request->get();
+        $task = Task::find()->where(['id' => $get['task']])->one();
+        $task->status = 4;
+        $task->save();
+        $this->redirect(Yii::$app->request->referrer);
+    }
+
+    public function actionCancel()
+    {
+        $get = Yii::$app->request->get();
+        $task = Task::find()->where(['id' => $get['task']])->one();
+        $task->status = 1;
+        $task->save();
+        $this->redirect(Yii::$app->request->referrer);
+    }
+
+    public function actionRespond()
+    {
+        $get = Yii::$app->request->get();
+        $proposal = Proposal::find()->where(['task_id' => $get['task'], 'user_id' => $get['us']])->one();
+        $task = Task::find()->where(['id' => $get['task']])->one();
+        $task->executor_id = $get['us'];
+        $proposal->response = 2;
+        $proposal->save();
+        $task->status = 2;
+        $task->save();
+        $this->redirect(Yii::$app->request->referrer);
+    }
+
+    public function actionProposal()
+    {
+        $get = Yii::$app->request->get();
+        Proposal::create($get['task'], $get['response-comment'], $get['response-payment']);
+        $this->redirect(Yii::$app->request->referrer);
+    }
+
     /**
-     * Displays a single Task model.
+     * Displays a single AvailableActions model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -79,15 +155,19 @@ class TaskController extends Controller
     {
         $model = Task::find()->where(['id' => $id])->one();
         $user = User::find()->where(['id' => $model->customer_id])->one();
-        //debug($user->ava);
+        $proposal = Proposal::find()
+          ->joinWith('user')
+          ->joinWith('task')
+          ->all();
         return $this->render('view', [
           'model' => $model,
+          'proposal' => $proposal,
           'user' => $user
         ]);
     }
 
     /**
-     * Creates a new Task model.
+     * Creates a new AvailableActions model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
@@ -118,7 +198,7 @@ class TaskController extends Controller
     }
 
     /**
-     * Updates an existing Task model.
+     * Updates an existing AvailableActions model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -138,7 +218,7 @@ class TaskController extends Controller
     }
 
     /**
-     * Deletes an existing Task model.
+     * Deletes an existing AvailableActions model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -152,7 +232,7 @@ class TaskController extends Controller
     }
 
     /**
-     * Finds the Task model based on its primary key value.
+     * Finds the AvailableActions model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
      * @return Task the loaded model
