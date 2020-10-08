@@ -2,7 +2,8 @@
 
 namespace frontend\models;
 
-use Yii;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "email_setting".
@@ -17,7 +18,7 @@ use Yii;
  *
  * @property User $user
  */
-class EmailSetting extends \yii\db\ActiveRecord
+class EmailSetting extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -45,20 +46,20 @@ class EmailSetting extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'user_id' => 'User ID',
-            'proposal' => 'Proposal',
-            'chat_message' => 'Chat Message',
-            'refuse' => 'Refuse',
-            'start_task' => 'Start Task',
-            'completion_task' => 'Completion Task',
+          'id' => 'ID',
+          'user_id' => 'User ID',
+          'proposal' => 'Proposal',
+          'chat_message' => 'Chat Message',
+          'refuse' => 'Refuse',
+          'start_task' => 'Start AvailableActions',
+          'completion_task' => 'Completion AvailableActions',
         ];
     }
 
     /**
      * Gets query for [[User]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getUser()
     {

@@ -21,7 +21,6 @@ class LoginForm extends Model
     public function rules()
     {
         return [
-            // email and password are both required
             [['email', 'password'], 'required'],
         ];
     }

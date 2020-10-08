@@ -2,7 +2,9 @@
 
 namespace frontend\models;
 
-use Yii;
+use common\models\User;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "review".
@@ -19,7 +21,7 @@ use Yii;
  * @property User $executor
  * @property Task $task
  */
-class Review extends \yii\db\ActiveRecord
+class Review extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -50,20 +52,20 @@ class Review extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'creation_time' => 'Creation Time',
-            'customer_id' => 'Customer ID',
-            'executor_id' => 'Executor ID',
-            'assessment' => 'Assessment',
-            'task_id' => 'Task ID',
-            'comment' => 'Comment',
+          'id' => 'ID',
+          'creation_time' => 'Creation Time',
+          'customer_id' => 'Customer ID',
+          'executor_id' => 'Executor ID',
+          'assessment' => 'Assessment',
+          'task_id' => 'AvailableActions ID',
+          'comment' => 'Comment',
         ];
     }
 
     /**
      * Gets query for [[Customer]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getCustomer()
     {
@@ -73,7 +75,7 @@ class Review extends \yii\db\ActiveRecord
     /**
      * Gets query for [[Executor]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getExecutor()
     {
@@ -81,12 +83,25 @@ class Review extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Task]].
+     * Gets query for [[AvailableActions]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getTask()
     {
         return $this->hasOne(Task::className(), ['id' => 'task_id']);
+    }
+
+    public static function create($customer_id, $executor_id, $task_id, $comment, $assessment = 5)
+    {
+        $review = new static();
+        $review->creation_time = date('Y-m-d H:s:i', time());
+        $review->customer_id = $customer_id;
+        $review->executor_id = $executor_id;
+        $review->task_id = $task_id;
+        $review->comment = $comment;
+        $review->assessment = $assessment;
+        $review->save();
+        return $review;
     }
 }

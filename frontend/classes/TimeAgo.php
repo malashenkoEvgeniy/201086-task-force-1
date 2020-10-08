@@ -6,16 +6,20 @@ namespace frontend\classes;
 
 class TimeAgo
 {
-	public $date;
-	public $time;
+    public $date;
+    public $time;
 
-	public function __construct($date)
-	{
-		$this->date = $date;
-		$this->time = time() - strtotime($this->date);
-	}
+    public function __construct($date, $ts = true)
+    {
+        $this->date = $date;
+        if ($ts) {
+            $this->time = time() - $this->date;
+        } else {
+            $this->time = time() - strtotime($this->date);
+        }
+    }
 
-	private function getMinute():int
+    private function getMinute(): int
 	{
 		$date = floor($this->time / 60) % 60;
 		return $date;

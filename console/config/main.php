@@ -7,31 +7,31 @@ $params = array_merge(
 );
 
 return [
-    'id' => 'app-console',
-    'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
-    'controllerNamespace' => 'console\controllers',
-    'aliases' => [
-        '@bower' => '@vendor/bower-asset',
-        '@npm'   => '@vendor/npm-asset',
+  'id' => 'app-console',
+  'basePath' => dirname(__DIR__),
+  'bootstrap' => ['log'],
+  'controllerNamespace' => 'console\controllers',
+  'aliases' => [
+    '@bower' => '@vendor/bower-asset',
+    '@npm' => '@vendor/npm-asset',
+  ],
+  'controllerMap' => [
+    'fixture' => [
+      'class' => 'yii\faker\FixtureController',
+      'templatePath' => '@common/fixtures/templates',
+      'fixtureDataPath' => '@common/fixtures/data',
+      'namespace' => 'common\fixtures',
     ],
-    'controllerMap' => [
-      'fixture' => [
-        'class' => 'yii\faker\FixtureController',
-        'templatePath' => '@common/fixtures/templates',
-        'fixtureDataPath' => '@common/fixtures/data',
-        'namespace' => 'common\fixtures',
+  ],
+  'components' => [
+    'log' => [
+      'targets' => [
+        [
+          'class' => 'yii\log\FileTarget',
+          'levels' => ['error', 'warning'],
+        ],
       ],
     ],
-    'components' => [
-        'log' => [
-            'targets' => [
-                [
-                    'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
-                ],
-            ],
-        ],
 
     ],
     'params' => $params,
