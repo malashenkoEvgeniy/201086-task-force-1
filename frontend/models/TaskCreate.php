@@ -7,17 +7,17 @@ namespace frontend\models;
 use common\models\User;
 use yii\base\Model;
 
-class TaskCreateModel extends Model
+class TaskCreate extends Model
 {
-  public $name;
-  public $description;
-  public $category_id;
-  public $location_id;
-  public $budget;
-  public $deadline;
+    public $name;
+    public $description;
+    public $category_id;
+    public $location;
+    public $budget;
+    public $deadline;
 
-  public function attributeLabels()
-  {
+    public function attributeLabels()
+    {
     return [
       'id' => 'ID',
       'name' => 'Name',
@@ -66,21 +66,15 @@ class TaskCreateModel extends Model
       ],
 
       ['deadlineTime', 'date', 'format' => 'php:Y-m-d', 'min' => date('Y-m-d')],
-        //нужно найти правильный валидатор
+
 
       [['deadline'], 'required', 'message' => "Это поле должно быть выбрано."],
 
       [['customer_id', 'created_at'], 'required'],
       [['customer_id', 'created_at'], 'integer'],
 
-      [['location_id'], 'integer'],
-      [
-        ['location_id'],
-        'exist',
-        'skipOnError' => true,
-        'targetClass' => Locations::class,
-        'targetAttribute' => ['location_id' => 'id']
-      ],
+      [['location'], 'string'],
+
 
       [
         ['budget'],
@@ -95,22 +89,5 @@ class TaskCreateModel extends Model
 
       [['file'], 'file', 'skipOnEmpty' => true]
     ];
-
-  }
-
-  public function creatTask($path)
-  {
-    if (!$this->validate()) {
-      return null;
-    }
-
-    $task = new Task();
-    $task->name = $this->name;
-    $task->description = $this->description;
-    $task->location_id = $this->location_id;
-    $task->category_id = $this->category_id;
-    $task->files->task_id = $task->id;
-    $task->files->path = $path;
-    return $task->save();
   }
 }

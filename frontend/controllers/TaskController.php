@@ -8,8 +8,9 @@ use frontend\models\forms\UploadForm;
 use frontend\models\Proposal;
 use frontend\models\Review;
 use frontend\models\Task;
-use frontend\models\TaskCreateModel;
+use frontend\models\TaskCreate;
 use frontend\models\TaskSearch;
+use frontend\services\LocationService;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -153,7 +154,10 @@ class TaskController extends Controller
      */
     public function actionView($id)
     {
-        $model = Task::find()->where(['id' => $id])->one();
+        $model = Task::find()
+          ->joinWith('location')
+          ->where(['task.id' => $id])
+          ->one();
         $user = User::find()->where(['id' => $model->customer_id])->one();
         $proposal = Proposal::find()
           ->joinWith('user')
@@ -165,45 +169,28 @@ class TaskController extends Controller
           'user' => $user
         ]);
     }
-
-    /**
-     * Creates a new AvailableActions model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
     public function actionCreate()
     {
-        $task = new TaskCreateModel();
+        $task = new TaskCreate();
         $file = new File();
         $fileModel = new UploadForm();
 
         if ($task->load(Yii::$app->request->post())) {
             $post = Yii::$app->request->post();
-            $taskModel = new Task();
-            $taskModel::create(Yii::$app->user->id, $post)->save();
+            Task::create(Yii::$app->user->id, $post, LocationService::create($post['TaskCreate']['location']));
             $fileModel->file = UploadedFile::getInstance($fileModel, 'file');
             if((!empty($fileModel->file))&&($fileModel->upload())){
                 $file::create(Yii::$app->user->id, count(Task::find()->all()),"/img/upload/".$fileModel->file->name)->save();
             }
-
             return $this->redirect('index');
         }
-        $taskErrors = $task->getErrors();
 
         return $this->render('create', [
           'task' => $task,
           'fileModel' => $fileModel,
-          'taskErrors' => $taskErrors
         ]);
     }
 
-    /**
-     * Updates an existing AvailableActions model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);

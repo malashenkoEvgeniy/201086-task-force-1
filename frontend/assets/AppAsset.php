@@ -18,7 +18,10 @@ class AppAsset extends AssetBundle
   ];
   public $js = [
     'js/dropzone.js',
-    'js/main.js'
+    'js/main.js',
+      //'https://api-maps.yandex.ru/2.1/?apikey=37dcfea9-daf6-4b98-970f-208966a12141&lang=ru_RU',
+    'https://api-maps.yandex.ru/2.1/?apikey=37dcfea9-daf6-4b98-970f-208966a12141&load=package.full&lang=ru-RU',
+    'js/map.js',
   ];
   public $depends = [
     'yii\web\YiiAsset',

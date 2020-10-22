@@ -38,6 +38,7 @@ class Task extends ActiveRecord
 
     public $completion;
     public $completion_comment;
+    public $locations;
 
     /**
      * {@inheritdoc}
@@ -53,7 +54,7 @@ class Task extends ActiveRecord
     public function rules()
     {
         return [
-          [['name', 'category_id', 'location_id', 'deadline', 'customer_id', 'created_at', 'updated_at'], 'required'],
+          [['name', 'category_id', 'deadline', 'customer_id', 'created_at', 'updated_at'], 'required'],
           [
             [
               'category_id',
@@ -67,35 +68,35 @@ class Task extends ActiveRecord
             ],
             'integer'
           ],
-          [['description'], 'string'],
+          [['description', 'locations'], 'string'],
           [['deadline'], 'safe'],
           [['name'], 'string', 'max' => 128],
           [
             ['category_id'],
             'exist',
             'skipOnError' => true,
-            'targetClass' => Categories::className(),
+            'targetClass' => Categories::class,
             'targetAttribute' => ['category_id' => 'id']
           ],
           [
             ['customer_id'],
             'exist',
             'skipOnError' => true,
-            'targetClass' => User::className(),
+            'targetClass' => User::class,
             'targetAttribute' => ['customer_id' => 'id']
           ],
           [
             ['executor_id'],
             'exist',
             'skipOnError' => true,
-            'targetClass' => User::className(),
+            'targetClass' => User::class,
             'targetAttribute' => ['executor_id' => 'id']
           ],
           [
             ['location_id'],
             'exist',
             'skipOnError' => true,
-            'targetClass' => Locations::className(),
+            'targetClass' => Locations::class,
             'targetAttribute' => ['location_id' => 'id']
           ],
         ];
@@ -199,22 +200,24 @@ class Task extends ActiveRecord
      */
     public function getLocation()
     {
-        return $this->hasOne(Locations::className(), ['id' => 'location_id']);
+        return $this->hasOne(Locations::class, ['id' => 'location_id']);
     }
 
-    public static function create($user, $array)
+    public static function create($user, $array, $location_id)
     {
+
         $task = new static;
-        $task->name = $array['TaskCreateModel']['name'];
-        $task->budget = $array['TaskCreateModel']['budget'];
-        $task->description = $array['TaskCreateModel']['description'];
-        $task->category_id = $array['category'][0];
-        $task->location_id = 1;
-        $task->deadline = $array['TaskCreateModel']['deadline'];
+        $task->name = $array['TaskCreate']['name'];
+        $task->budget = $array['TaskCreate']['budget'];
+        $task->description = $array['TaskCreate']['description'];
+        $task->category_id = $array['TaskCreate']['category_id'];
+        $task->location_id = $location_id;
+        $task->deadline = $array['TaskCreate']['deadline'];
         $task->customer_id = $user;
         $task->created_at = time();
         $task->updated_at = time();
-        $task->status = self::STATUS[0];
+        $task->status = 0;
+        $task->save();
         return $task;
     }
 }

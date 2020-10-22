@@ -1,4 +1,4 @@
-var openModalLinks = document.getElementsByClassName("open-modal");
+/*var openModalLinks = document.getElementsByClassName("open-modal");
 var closeModalLinks = document.getElementsByClassName("form-modal-close");
 var overlay = document.getElementsByClassName("overlay")[0];
 
@@ -56,3 +56,4 @@ if (starRating.length) {
     inputField.value = rating;
   });
 }
+*/

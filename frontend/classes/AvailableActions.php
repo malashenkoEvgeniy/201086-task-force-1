@@ -11,6 +11,7 @@ class AvailableActions
     public static function getActions($user, Task $task)
     {
         $userModel = User::find()->where(['id' => $user])->one();
+        $availableActions = '';
         switch ($task->status) {
             case 0:
                 if ($userModel->is_executor == 1) {

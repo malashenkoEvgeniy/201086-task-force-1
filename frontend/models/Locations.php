@@ -30,10 +30,10 @@ class Locations extends ActiveRecord
     public function rules()
     {
         return [
-            [['city'], 'required'],
-            [['lat', 'long'], 'integer'],
-            [['city'], 'string', 'max' => 128],
-            [['city'], 'unique'],
+          [['city'], 'required'],
+          [['lat', 'long'], 'number'],
+          [['city'], 'string', 'max' => 128],
+          [['city'], 'unique'],
         ];
     }
 
@@ -67,6 +67,20 @@ class Locations extends ActiveRecord
      */
     public function getUser()
     {
-      return $this->hasMany(User::className(), ['location_id' => 'id']);
+        return $this->hasMany(User::className(), ['location_id' => 'id']);
+    }
+
+    public static function create($city, $lat, $long)
+    {
+        $loc = Locations::find()->where(['city' => $city])->one();
+        if (isset($loc)) {
+            return $loc;
+        }
+        $location = new static();
+        $location->city = $city;
+        $location->lat = $lat;
+        $location->long = $long;
+        $location->save();
+        return $location;
     }
 }
