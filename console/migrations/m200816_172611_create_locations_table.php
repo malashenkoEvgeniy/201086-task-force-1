@@ -13,11 +13,13 @@ class m200816_172611_create_locations_table extends Migration
     public function safeUp()
     {
         $this->createTable('{{%locations}}', [
-            'id' => $this->primaryKey(),
-            'city' => $this->string(128)->notNull()->unique(),
-            'lat' => $this->string(128)->notNull(),
-            'long' => $this->string(128)->notNull(),
+          'id' => $this->primaryKey(),
+          'city' => $this->string(128)->notNull()->unique(),
+          'lat' => $this->string(128)->notNull(),
+          'long' => $this->string(128)->notNull(),
         ]);
+
+        $this->insert('locations', ['city' => 'test', 'lat' => 0, 'long' => 0]);
     }
 
     /**

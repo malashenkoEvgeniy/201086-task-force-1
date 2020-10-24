@@ -4,7 +4,7 @@
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $task frontend\models\TaskCreateModel */
+/* @var $task frontend\models\Task */
 /* @var $fileModel frontend\models\forms\UploadForm */
 
 $this->title = 'Публикация нового задания';
@@ -55,7 +55,6 @@ $this->params['breadcrumbs'][] = $this->title;
                       'class' => 'multiple-select input multiple-select-big',
                       'id' => 12,
                       'size' => 1,
-                      'name' => 'category[]',
                       'prompt' => 'Выберите категорию'
                     ])->label('Категория'); ?>
                 <span>Выберите категорию</span>
@@ -64,12 +63,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     "<p>{label}</p><span>Загрузите файлы, которые помогут исполнителю лучше выполнить или оценить работу</span><div class='create__file dz-clickable'>{input}</div>"
                 ])
                   ->input('file', ['multiple' => 'true'])->label('Файлы'); ?>
-                <?= $form->field($task, 'location_id', ['template' => "<p>{label}</p>{input}",])
-                  ->input('search', [
+                <?= $form->field($task, 'location', ['template' => "<p>{label}</p>{input}",])
+                  ->input('locations', [
                     'id' => 13,
                     'class' => 'input-navigation input-middle input',
                     'placeholder' => 'Санкт-Петербург, Калининский район',
-                    'name' => 'search',
                   ])->label('Локация'); ?>
                 <span>Укажите адрес исполнения, если задание требует присутствия</span>
                 <div class="create__price-time">
@@ -114,7 +112,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                     <div class="warning-item warning-item--error">
                         <h2>Ошибки заполнения формы</h2>
-                        <?php debug($taskErrors); ?>
+                        <?php debug($task->getErrors()); ?>
 
                         <h3>Категория</h3>
                         <p>Это поле должно быть выбрано.<br>

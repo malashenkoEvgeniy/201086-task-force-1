@@ -49,20 +49,23 @@ YiiAsset::register($this);
                 <div class="content-view__location">
                     <h3 class="content-view__h3">Расположение</h3>
                     <div class="content-view__location-wrapper">
-                        <div class="content-view__map">
-                            <a href="#"><img src="/img/map.jpg" width="361" height="292"
-                                             alt="Москва, Новый арбат, 23 к. 1"></a>
-                        </div>
+                        <div class="content-view__map" id="map" style="width: 361px; height: 292px;"
+                             data-lat="<?= $model->location->lat ?>" data-long="<?= $model->location->long ?>"></div>
                         <div class="content-view__address">
-                            <span class="address__town">Москва</span><br>
+                            <span class="address__town"><?= $model->location->city ?></span><br>
+
+                            <!--<span class="address__town">Москва</span><br>
                             <span>Новый арбат, 23 к. 1</span>
-                            <p>Вход под арку, код домофона 1122</p>
+                            <p>Вход под арку, код домофона 1122</p>-->
                         </div>
                     </div>
                 </div>
+                <script>
+
+
+                </script>
             </div>
             <div class="content-view__action-buttons">
-                <?= AvailableActions::getActions(Yii::$app->user->identity->id, $model); ?>
                 <?php if (AvailableActions::getActions(Yii::$app->user->identity->id, $model) == 'respond') { ?>
                     <?php Modal::begin([
                       'header' => '<h2>Отклик на задание</h2>',
@@ -217,7 +220,7 @@ YiiAsset::register($this);
                           'id' => 'completion-comment'
                         ])->label('Комментарий', ['class' => 'form-modal-description']); ?></p>
 
-                    <p class="form-modal-description"> Оценка
+                    <p class="form-modal-description"> Оценка</p>
                     <div class="feedback-card__top--name completion-form-star">
                         <span></span>
                         <span></span>
@@ -225,7 +228,7 @@ YiiAsset::register($this);
                         <span></span>
                         <span class="star-disabled"></span>
                     </div>
-                    </p>
+
                     <?= Html::submitButton('Отправить', ['class' => 'button modal-button']); ?>
                     <?php ActiveForm::end(); ?>
                     <?php Modal::end() ?>
