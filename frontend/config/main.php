@@ -12,7 +12,10 @@ return [
     'bootstrap' => ['log'],
     'layout' => 'layout',
     'modules' => [
-      'gii'
+      'gii',
+      'api' => [
+        'class' => 'frontend\modules\api\Module'
+      ]
     ],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
