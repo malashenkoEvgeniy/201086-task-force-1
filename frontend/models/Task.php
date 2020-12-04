@@ -23,7 +23,7 @@ use yii\db\ActiveRecord;
  * @property int $created_at
  * @property int $updated_at
  *
- * @property ChatMessages[] $chatMessages
+ * @property Messages[] $chatMessages
  * @property File[] $files
  * @property Proposal[] $proposals
  * @property Review[] $reviews
@@ -124,13 +124,13 @@ class Task extends ActiveRecord
     }
 
     /**
-     * Gets query for [[ChatMessages]].
+     * Gets query for [[Messages]].
      *
      * @return ActiveQuery
      */
     public function getChatMessages()
     {
-        return $this->hasMany(ChatMessages::className(), ['task_id' => 'id']);
+        return $this->hasMany(Messages::className(), ['task_id' => 'id']);
     }
 
     /**

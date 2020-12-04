@@ -17,12 +17,12 @@ class m200816_173015_create_chat_messages_table extends Migration
     public function safeUp()
     {
         $this->createTable('{{%chat_messages}}', [
-            'id' => $this->primaryKey(),
-            'task_id' => $this->integer()->notNull(),
-            'writer_id' => $this->integer()->notNull(),
-            'comment' => $this->text(),
-            'creation_time' => $this->dateTime()->defaultValue(0)->notNull(),
-            'viewed' => $this->tinyInteger()->notNull(),
+          'id' => $this->primaryKey(),
+          'task_id' => $this->integer()->notNull(),
+          'writer_id' => $this->integer()->notNull(),
+          'comment' => $this->text(),
+          'creation_time' => $this->integer()->notNull(),
+          'viewed' => $this->tinyInteger()->notNull(),
         ]);
 
         // creates index for column `task_id`

@@ -13,9 +13,6 @@ return [
     'layout' => 'layout',
     'modules' => [
       'gii',
-      'api' => [
-        'class' => 'frontend\modules\api\Module'
-      ]
     ],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
