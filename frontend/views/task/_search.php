@@ -15,24 +15,26 @@ use yii\widgets\ActiveForm;
     'method' => 'get',
     'options' => [
       'data-pjax' => 1,
-      'class'=>'search-task__form',
-      'name'=>'tasks',
+      'class' => 'search-task__form',
+      'name' => 'tasks',
     ],
   ]); ?>
     <fieldset class="search-task__categories">
         <legend>Категории</legend>
 
-      <?php  echo $form->field($model, 'category')
-        ->checkboxList([1 => 'Курьерские услуги',
-          2 =>	'Уборка',
-          3 =>	'Переезды',
-          4 =>	'Компьютерная помощь',
-          5 =>	'Ремонт квартирный',
-          6 =>	'Ремонт техники',
-          7 =>	'Красота',
-          8 =>	'Фото'],
+      <?php echo $form->field($model, 'category_id')
+        ->checkboxList([
+          1 => 'Курьерские услуги',
+          2 => 'Уборка',
+          3 => 'Переезды',
+          4 => 'Компьютерная помощь',
+          5 => 'Ремонт квартирный',
+          6 => 'Ремонт техники',
+          7 => 'Красота',
+          8 => 'Фото'
+        ],
           [
-            'item' => function($index, $label, $name, $checked, $value) {
+            'item' => function ($index, $label, $name, $checked, $value) {
               return '<input class="visually-hidden checkbox__input" 
                                       id="interview-' . $index . '" name="' . $name . '" type="checkbox" ' .
                 $checked . ' value="' . $value . '">

@@ -7,13 +7,43 @@ $params = array_merge(
 );
 
 return [
-    'id' => 'app-frontend',
-    'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
-    'layout' => 'layout',
-    'modules' => [
-      'gii',
+  'id' => 'app-frontend',
+  'basePath' => dirname(__DIR__),
+  'bootstrap' => [
+    'log',
+
+  ],
+  'layout' => 'layout',
+  'modules' => [
+    'gii',
+    'messages' => [
+      'class' => 'frontend\modules\messages\Module',
+      'components' => [
+        'urlManager' => [
+          'class' => 'yii\rest\UrlRule',
+          'enablePrettyUrl' => true,
+          'enableStrictParsing' => true,
+          'showScriptName' => false,
+          'rules' => [
+            /*[        'class' => 'yii\rest\UrlRule',
+              'controller' => [
+                'messages'
+              ],
+
+            ],*/
+            [
+              'class' => 'yii\rest\UrlRule',
+              'controller' => 'User',
+              'pluralize' => false,
+              'tokens' => [
+                '{id}' => '<id:\\w+>'
+              ]
+            ],
+          ]
+        ]
+      ]
     ],
+  ],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
         'request' => [

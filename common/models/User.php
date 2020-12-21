@@ -10,6 +10,7 @@ use frontend\models\Messages;
 use frontend\models\Proposal;
 use frontend\models\Review;
 use frontend\models\Task;
+use frontend\models\UsersCategories;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\base\NotSupportedException;
@@ -54,7 +55,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function behaviors()
     {
         return [
-            TimestampBehavior::className(),
+          TimestampBehavior::class,
         ];
     }
 
@@ -354,14 +355,16 @@ class User extends ActiveRecord implements IdentityInterface
 
     public static function create($name, $email, $location_id, $password)
     {
-        $user = new static();
-        $user->username = $name;
-        $user->email = $email;
-        $user->location_id = $location_id;
-        $user->setPassword($password);
-        $user->generateAuthKey();
-        $user->generateEmailVerificationToken();
-        $user->save();
-        return $user;
+      $user = new static();
+      $user->username = $name;
+      $user->email = $email;
+      $user->location_id = $location_id;
+      $user->setPassword($password);
+      $user->generateAuthKey();
+      $user->generateEmailVerificationToken();
+      $user->save();
+      UsersCategories::fill($user->id);
+
+      return $user;
     }
 }

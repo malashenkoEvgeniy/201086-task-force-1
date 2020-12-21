@@ -67,7 +67,8 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+
+      return $this->render('index');
     }
 
     /**
@@ -77,7 +78,8 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
-        if (!Yii::$app->user->isGuest) {
+
+      if (!Yii::$app->user->isGuest) {
             return $this->redirect('task/index');
         }
 

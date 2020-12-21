@@ -3468,7 +3468,7 @@ Vue.component('chat', {
         if (typeof this.task === "undefined") {
             console.error("Не передан идентификатор задания (атрибут task) в теге 'chat'")
         } else {
-            this.api_url = '/index.php?r=api/messages&id=' + this.task;
+            this.api_url = '/view.php?r=api/messages&id=' + this.task;
             this.getMessages();
         }
     },

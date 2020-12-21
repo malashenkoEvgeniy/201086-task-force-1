@@ -41,7 +41,7 @@ return [
       'showScriptName' => false,
       'rules' => [
         '' => 'site/index',
-        ['class' => 'yii\rest\UrlRule', 'controller' => 'user', 'pluralize' => false],
+        ['class' => 'yii\rest\UrlRule', 'controller' => 'User', 'pluralize' => false],
         ['class' => 'yii\rest\UrlRule', 'controller' => 'Messages', 'pluralize' => false],
       ],
     ]

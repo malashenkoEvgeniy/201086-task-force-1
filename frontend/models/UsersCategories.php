@@ -12,6 +12,7 @@ use yii\db\ActiveRecord;
  * @property int $id
  * @property int $user_id
  * @property int $category_id
+ * @property int $status
  */
 class UsersCategories extends ActiveRecord
 {
@@ -29,20 +30,41 @@ class UsersCategories extends ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'category_id'], 'required'],
-            [['user_id', 'category_id'], 'integer'],
+          [['user_id', 'category_id'], 'required'],
+          [['user_id', 'category_id', 'status'], 'integer'],
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
-    {
-        return [
-            'id' => 'ID',
-            'user_id' => 'User ID',
-            'category_id' => 'Categories ID',
-        ];
+  public function attributeLabels()
+  {
+    return [
+      'id' => 'ID',
+      'user_id' => 'User ID',
+      'category_id' => 'Categories ID',
+      'status' => 'status'
+    ];
+  }
+
+  public static function create($user_id, $category_id)
+  {
+    $user_category = new static();
+    $user_category->user_id = $user_id;
+    $user_category->category_id = $category_id;
+    $user_category->save();
+  }
+
+  public static function fill($id)
+  {
+    for ($i = 0; $i < 8; $i++) {
+      self::create($id, $i + 1);
     }
+  }
+
+  public function getCategory()
+  {
+    return $this->hasOne(Categories::class, ['id' => 'category_id']);
+  }
 }

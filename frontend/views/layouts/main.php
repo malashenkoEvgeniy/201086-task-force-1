@@ -92,7 +92,7 @@ if (!Yii::$app->user->isGuest) {
                   $menuItems[] = ['label' => 'Создать задание', 'url' => ['task/create']];
               }
 
-              $menuItems[] = ['label' => 'Мой профиль', 'url' => ['site/login']];
+              $menuItems[] = ['label' => 'Мой профиль', 'url' => ['account/' . Yii::$app->user->id]];
               echo Menu::widget([
                 'options' => ['class' => 'header-nav__list site-list'],
                 'activeCssClass' => 'site-list__item--active',

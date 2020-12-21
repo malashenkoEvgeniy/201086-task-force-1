@@ -2538,3 +2538,7 @@ footer {
 }
 
 /*# sourceMappingURL=style.css.map */
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
