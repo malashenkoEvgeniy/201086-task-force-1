@@ -18,13 +18,13 @@ class m200816_173105_create_review_table extends Migration
     public function safeUp()
     {
         $this->createTable('{{%review}}', [
-            'id' => $this->primaryKey(),
-            'creation_time' => $this->dateTime()->defaultValue(0)->notNull(),
-            'customer_id' => $this->integer(),
-            'executor_id' => $this->integer(),
-            'assessment' => $this->integer(),
-            'task_id' => $this->integer(),
-            'comment' => $this->text(),
+          'id' => $this->primaryKey(),
+          'creation_time' => $this->dateTime()->notNull(),
+          'customer_id' => $this->integer(),
+          'executor_id' => $this->integer(),
+          'assessment' => $this->integer(),
+          'task_id' => $this->integer(),
+          'comment' => $this->text(),
         ]);
 
         // creates index for column `customer_id`

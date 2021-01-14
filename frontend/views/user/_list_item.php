@@ -3,6 +3,7 @@
 use common\models\User;
 use frontend\classes\TimeAgo;
 use yii\helpers\Url;
+
 $users = User::find()->indexBy('id')->all();
 
 ?>

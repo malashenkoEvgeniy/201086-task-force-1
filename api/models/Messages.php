@@ -1,7 +1,7 @@
 <?php
 
-namespace modules\api\models;
-
+namespace api\models;
+/*
 use frontend\models\ChatMessages;
 
 class Messages extends ChatMessages
@@ -32,4 +32,24 @@ class Messages extends ChatMessages
     {
         return ['task', 'writer'];
     }
+}*/
+
+use yii\db\ActiveRecord;
+use yii\helpers\Url;
+use yii\web\Link;
+use yii\web\Linkable;
+
+class Messages extends ActiveRecord implements Linkable
+{
+  public static function tableName()
+  {
+    return 'chat_messages';
+  }
+
+  public function getLinks() {
+    return [
+      Link::REL_SELF => Url::to(['messages/', 'id' => $this->id], true),
+    ];
+  }
+
 }

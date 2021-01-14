@@ -2,13 +2,15 @@
 
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
-/* @var $model \frontend\models\SignupForm */
+
+/* @var $model SignupForm */
 
 
 use frontend\models\Locations;
+use frontend\models\SignupForm;
+use yii\bootstrap\ActiveForm;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-use yii\bootstrap\ActiveForm;
 
 $this->title = 'Регистрация аккаунта';
 $this->params['breadcrumbs'][] = $this->title;
