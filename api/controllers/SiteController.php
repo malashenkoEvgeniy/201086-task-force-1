@@ -3,13 +3,15 @@
 namespace api\controllers;
 
 
-use common\models\User;
-use yii\rest\ActiveController;
+use yii\rest\Controller;
 
 /**
  * Site controller
  */
-class SiteController extends ActiveController
+class SiteController extends Controller
 {
-    public $modelClass = User::class;
+    public function actionIndex()
+    {
+        return 'api';
+    }
 }

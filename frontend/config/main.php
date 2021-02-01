@@ -11,38 +11,13 @@ return [
   'basePath' => dirname(__DIR__),
   'bootstrap' => [
     'log',
-
   ],
   'layout' => 'layout',
   'modules' => [
-    'gii',
-    'messages' => [
-      'class' => 'frontend\modules\messages\Module',
-      'components' => [
-        'urlManager' => [
-          'class' => 'yii\rest\UrlRule',
-          'enablePrettyUrl' => true,
-          'enableStrictParsing' => true,
-          'showScriptName' => false,
-          'rules' => [
-            /*[        'class' => 'yii\rest\UrlRule',
-              'controller' => [
-                'messages'
-              ],
-
-            ],*/
-            [
-              'class' => 'yii\rest\UrlRule',
-              'controller' => 'User',
-              'pluralize' => false,
-              'tokens' => [
-                '{id}' => '<id:\\w+>'
-              ]
-            ],
-          ]
-        ]
-      ]
-    ],
+      'gii',
+      'api' => [
+          'class' => 'frontend\modules\api\Module',
+      ],
   ],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
@@ -87,7 +62,6 @@ return [
 
             ],
         ],
-
     ],
     'params' => $params,
 ];

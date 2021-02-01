@@ -12,7 +12,6 @@ use yii\db\ActiveRecord;
  * @property int $id
  * @property int $user_id
  * @property int $category_id
- * @property int $status
  */
 class UsersCategories extends ActiveRecord
 {
@@ -30,8 +29,8 @@ class UsersCategories extends ActiveRecord
     public function rules()
     {
         return [
-          [['user_id', 'category_id'], 'required'],
-          [['user_id', 'category_id', 'status'], 'integer'],
+            [['user_id', 'category_id'], 'required'],
+            [['user_id', 'category_id'], 'integer'],
         ];
     }
 
@@ -44,7 +43,6 @@ class UsersCategories extends ActiveRecord
       'id' => 'ID',
       'user_id' => 'User ID',
       'category_id' => 'Categories ID',
-      'status' => 'status'
     ];
   }
 
