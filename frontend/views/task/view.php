@@ -298,12 +298,12 @@ YiiAsset::register($this);
                     <img src="/img/<?= $user->ava ?>" width="62" height="62" alt="Аватар заказчика">
                     <div class="profile-mini__name five-stars__rate">
                         <p><?= $user->username; ?></p>
-                        <? for ($i = 0; $i < 5; $i++):
-                            if ($i < round($user->rating / 100, 0)):
-                                echo '<span></span>';
-                            else:
-                                echo "<span class='star-disabled'></span>";
-                            endif;
+                        <?php for ($i = 0; $i < 5; $i++):
+                            if ($i < round($user->rating / 100, 0)): ?>
+                                '<span></span>
+                            <?php else: ?>
+                                <span class='star-disabled'></span>
+                            <?php endif;
                         endfor; ?>
                         <b><?= round($user->rating / 100, 2); ?></b>
                     </div>
